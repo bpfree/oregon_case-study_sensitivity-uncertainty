@@ -13,7 +13,7 @@ data/a_raw_data/AISVesselTransitCounts2019
 data/a_raw_data/ais_counts_2019
 
 #### Bathymetry
-data/a_raw_data/crm_vol5.nc
+data/a_raw_data/crm_vol8.nc
 
 #### Land
 data/a_raw_data/USGSEsriWCMC_GlobalIslands_v3
