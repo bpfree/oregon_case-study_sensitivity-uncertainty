@@ -85,6 +85,7 @@ data_download_function <- function(download_list, data_dir){
       unzip(zipfile = file.path(data_dir, file),
             # export file to the new data directory
             exdir = new_dir)
+      
       # remove original zipped file
       file.remove(file.path(data_dir, file))
     }
@@ -132,67 +133,21 @@ usgs_data <- "https://rmgsc.cr.usgs.gov/outgoing/ecosystems/Global/USGSEsriWCMC_
 
 #####################################
 
-## Seagrass data
-### TPWD Seagrass (map viewer: https://tpwd.maps.arcgis.com/apps/webappviewer/index.html?id=af7ff35381144b97b38fe553f2e7b562)
-#### Source: https://tpwd.texas.gov/gis/resources/tpwd-seagrass.zip)
-seagrass_tpwd_data <-"https://tpwd.texas.gov/gis/resources/tpwd-seagrass.zip"
-
-### NOAA US + Territories (source: ftp://ftp.coast.noaa.gov/pub/MSP/Seagrasses.zip)
-#### Alternative data accessed here: https://marinecadastre.gov/downloads/data/mc/Seagrass.zip (has 3 fewer features -- none in study area)
-seagrass_noaa_data <- "ftp://ftp.coast.noaa.gov/pub/MSP/Seagrasses.zip"
-
-### Gulfwide Seagrass (source: https://www.ncei.noaa.gov/waf/data-atlas-waf/biotic/documents/GulfwideSAV.zip)
-seagrass_ncei_data <- "https://www.ncei.noaa.gov/waf/data-atlas-waf/biotic/documents/GulfwideSAV.zip"
-
-#####################################
-
-## Oyster data
-### Texas Parks & Wildlife (https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/)
-#### Copano Bay survey (2015) (source: https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/copano-bay-habitat-classification-shapefiles.zip)
-#### Metadata: https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/copano-bay-metadata.docx
-copano_bay_data <- "https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/copano-bay-habitat-classification-shapefiles.zip"
-
-### Espiritu Santo survey (source: https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/espiritu-santo-oyster-habitat-shapefiles.zip)
-#### Metadata: https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/espiritu-santo-metadata.docx
-#### ***Note: None of these data fall within the present study area
-espiritu_santo_data <- "https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/espiritu-santo-oyster-habitat-shapefiles.zip"
-
-### Galveston Bay survey (2004 - 2015) (source: https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/galveston-bay-habitat-classification-shapefiles.zip)
-#### Metadata: https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/galveston-bay-metadata.zip
-galveston_bay_data <- "https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/galveston-bay-habitat-classification-shapefiles.zip"
-
-### Lavaca and Tres Palacios survey (source: https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/lavaca-tres-palacios-habitat-shapefile.zip)
-#### Metadata: https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/lavaca-tres-palacios-metadata.zip
-#### ***Note: None of these data fall within the present study area
-lavaca_tres_palacios_data <- "https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/lavaca-tres-palacios-habitat-shapefile.zip"
-
-### West Galveston Bay survey (source: https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/west-galveston-bay-habitat-classification-shapefiles.zip)
-#### Metadata: https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/west-galveston-bay-metadata.zip
-west_galveston_bay_data <- "https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/west-galveston-bay-habitat-classification-shapefiles.zip"
-
-### Oyster restoration sites (source: https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/tpwd-oyster-restoration-sites.zip)
-oyster_restoration_data <- "https://tpwd.texas.gov/landwater/water/habitats/coastal-fisheries-habitat-assessment-team/resources/tpwd-oyster-restoration-sites.zip"
-
-### Gulf of Mexico Atlas (2011) -- American oyster (source: https://www.sciencebase.gov/catalog/item/594830afe4b062508e344418)
-#### Alternative Gulf of Mexico source: https://www.ncei.noaa.gov/waf/data-atlas-waf/living-marine/documents/Oysters_GOM_2011.zip
-#### Gulf of Mexico Metadata: https://www.ncei.noaa.gov/maps/gulf-data-atlas//Metadata/ISO/Oysters_GOM_2011.html
-##### Texas only: https://www.ncei.noaa.gov/waf/data-atlas-waf/living-marine/documents/Oysters_TX_2011.zip
-##### Texas metadata: https://www.ncei.noaa.gov/maps/gulf-data-atlas//Metadata/ISO/Oysters_TX_2011.html
-##### ***Note: To download Texas only data:
-#####    1.) Visit: https://www.ncei.noaa.gov/maps/gulf-data-atlas/atlas.htm
-#####    2.) Click "Living Marine Resources" tab to display dropdown
-#####    3.) Navigate to "Invertebrates"
-#####    4.) Click "1. Eastern Oyster"
-#####    5.) On right panel, click "More Information"
-#####    6.) Click on folder icon next to "Data Download / Access Links"
-#####    7.) Click blue "Download" hyperlinked text for Texas
-gom_atlas_data <- "https://www.ncei.noaa.gov/waf/data-atlas-waf/living-marine/documents/Oysters_GOM_2011.zip"
-
-#####################################
-
-## Bathymetry data (source: https://www.ngdc.noaa.gov/thredds/fileServer/crm/crm_vol5.nc)
+## Bathymetry data for Northwest Pacific (source: https://www.ngdc.noaa.gov/thredds/fileServer/crm/crm_vol8.nc)
 ### For more United States coverage and spatial resolution information, visit: https://www.ngdc.noaa.gov/mgg/coastal/crm.html
-bathymetry_data <- "https://www.ngdc.noaa.gov/thredds/fileServer/crm/crm_vol5.nc"
+bathymetry_data <- "https://www.ngdc.noaa.gov/thredds/fileServer/crm/crm_vol8.nc"
+
+#####################################
+
+## Military operating area boundaries (source: https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip)
+### Metadata: https://www.fisheries.noaa.gov/inport/item/55364
+military_operating_data <- "https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip"
+
+#####################################
+
+## Essential fish habitat conservation areas (source: https://media.fisheries.noaa.gov/2021-02/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020.zip)
+### Text: https://www.ecfr.gov/current/title-50/chapter-VI/part-660/subpart-C/section-660.76
+efhca_data <- "https://media.fisheries.noaa.gov/2021-02/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020.zip"
 
 #####################################
 
@@ -215,29 +170,10 @@ federal_shipping_lanes_data <- "http://encdirect.noaa.gov/theme_layers/data/ship
 
 #####################################
 
-## Conservation areas data
-### Texas Wildlife Management Areas (source: https://tpwd.texas.gov/gis/resources/wildlife-management-areas.zip)
-wma_texas_data <- "https://tpwd.texas.gov/gis/resources/wildlife-management-areas.zip"
-
-### Texas State Parks (source: https://tpwd.texas.gov/gis/resources/tpwd-statepark-boundaries.zip)
-state_parks_texas_data <- "https://tpwd.texas.gov/gis/resources/tpwd-statepark-boundaries.zip"
-
-### Flower Garden Banks National Marine Sanctuary (source: https://sanctuaries.noaa.gov/media/gis/fgbnms_py.zip)
-#### Metadata: https://nmssanctuaries.blob.core.windows.net/sanctuaries-prod/media/gis/fgbnms_py.pdf
-flower_garden_nms_data <- "https://sanctuaries.noaa.gov/media/gis/fgbnms_py.zip"
-
-#####################################
-
 ## NOAA lightering zones data (source: https://marinecadastre.gov/downloads/data/mc/LighteringZone.zip)
 ### Metadata: https://www.fisheries.noaa.gov/inport/item/66149
 ### For more detailed information on lightering zones and coordinates for polygons: https://www.govinfo.gov/content/pkg/CFR-2018-title33-vol2/xml/CFR-2018-title33-vol2-part156.xml#seqnum156.300
 lightering_zone_data <- "https://marinecadastre.gov/downloads/data/mc/LighteringZone.zip"
-
-#####################################
-
-## Artificial reefs (source: https://tpwd.texas.gov/gis/resources/tpwd-artificial-reef-data.zip)
-### Data are from Texas Parks and Wildlife
-artificial_reefs_data <- "https://tpwd.texas.gov/gis/resources/tpwd-artificial-reef-data.zip"
 
 #####################################
 
@@ -254,17 +190,6 @@ unexploded_ordnance_data <- "https://marinecadastre.gov/downloads/data/mc/Unexpl
 #### Metadata: https://www.data.boem.gov/Mapping/Files/actlease_meta.html
 ##### ***Note: data are updated each month near the first of the month
 boem_active_oil_gas_data <- "https://www.data.boem.gov/Mapping/Files/ActiveLeasePolygons.gdb.zip"
-
-#####################################
-
-## Significant sediment data
-### ***Note: There are a few ways to obtain the data
-#### 1.) BOEM Marine Mineral Mapping and Data page: https://www.boem.gov/marine-minerals/marine-minerals-mapping-and-data
-##### Here you can download the geodatabase or shapefile for the Gulf of Mexico or the Atlantic
-######   - Geodatabase download link: https://mmis.doi.gov/boemmmis/downloads/layers/GOMSigSedBlocks_fgdb.zip
-######   - Shapefile download link: https://mmis.doi.gov/boemmmis/downloads/layers/GOMSigSedBlocks_shp.zip
-######   - Metadata: https://mmis.doi.gov/boemmmis/metadata/PlanningAndAdministration/GOMSigSedBlocks.xml
-significant_sediment_data <- "https://mmis.doi.gov/boemmmis/downloads/layers/GOMSigSedBlocks_fgdb.zip"
 
 #####################################
 
@@ -288,6 +213,8 @@ drilling_platform_data <- "https://www.data.boem.gov/Mapping/Files/Platforms.gdb
 ### Metadata: https://www.fisheries.noaa.gov/inport/item/66190
 submarine_cable_areas_data <- "https://marinecadastre.gov/downloads/data/mc/SubmarineCableArea.zip"
 
+#####################################
+
 ### NOAA Charted submarine cable (source: https://marinecadastre.gov/downloads/data/mc/SubmarineCable.zip)
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/57238
 submarine_cable_noaa_data <- "https://marinecadastre.gov/downloads/data/mc/SubmarineCable.zip"
@@ -305,14 +232,6 @@ aids_navigation_data <- "https://marinecadastre.gov/downloads/data/mc/AtoN.zip"
 ### Options page: https://www.data.boem.gov/Main/Mapping.aspx#ascii
 ### Metadata: https://www.data.boem.gov/Mapping/Files/ppl_arcs_meta.html
 pipeline_data <- "https://www.data.boem.gov/Mapping/Files/Pipelines.gdb.zip"
-
-#####################################
-
-## Coral habitat area of particular concern (source: http://portal.gulfcouncil.org/Regulations/HAPCshapefiles.zip)
-## Habitat Areas of Particular Concern are a subset of Essential Fish Habitat
-## Older areas can have regulations or no regulations; newer ones under Amendment 9 might have proposed regulations or none proposed
-## Amendment 9 went into effect on November 16, 2020 (read more about amendment here: https://www.govinfo.gov/content/pkg/FR-2020-10-16/pdf/2020-21298.pdf)
-coral_hapc_data <- "http://portal.gulfcouncil.org/Regulations/HAPCshapefiles.zip"
 
 #####################################
 
@@ -339,22 +258,13 @@ download_list <- c(
   # USGS global islands
   usgs_data,
   
-  # seagrass
-  seagrass_tpwd_data,
-  seagrass_noaa_data,
-  seagrass_ncei_data,
-  
-  # oyster
-  copano_bay_data,
-  espiritu_santo_data,
-  galveston_bay_data,
-  lavaca_tres_palacios_data,
-  west_galveston_bay_data,
-  oyster_restoration_data,
-  gom_atlas_data,
-  
   # bathymetry
   bathymetry_data,
+  
+  # military operating areas
+  military_operating_data,
+  
+  # essential fish habitat conservation areas
   
   # vessel traffic
   ais_transit2019_data,
@@ -363,16 +273,8 @@ download_list <- c(
   # shipping lanes
   federal_shipping_lanes_data,
   
-  # conservation areas
-  wma_texas_data,
-  state_parks_texas_data,
-  flower_garden_nms_data,
-  
   # lightering zones
   lightering_zone_data,
-  
-  # artificial reefs
-  artificial_reefs_data,
   
   # unexploded ordnances
   unexploded_ordnance_data,
@@ -380,14 +282,8 @@ download_list <- c(
   # BOEM active lease areas
   boem_active_oil_gas_data,
   
-  # BOEM significant sediments
-  significant_sediment_data,
-  
   # anchorage areas
   anchorage_area_data,
-  
-  # BOEM drilling platforms
-  drilling_platform_data,
   
   # submarine cable
   submarine_cable_areas_data,
@@ -398,9 +294,6 @@ download_list <- c(
   
   # pipelines
   pipeline_data,
-  
-  # coral habitats
-  coral_hapc_data,
   
   # BOEM lease blocks
   boem_lease_blocks_data,
