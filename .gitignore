@@ -1,4 +1,21 @@
+# Ignore miscellaneous files
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+.DS_Store
+
+# Ignore data too large to add (over 100MB)
+## Raw data
+### AIS data
+data/a_raw_data/AISVesselTracks2019
+data/a_raw_data/AISVesselTransitCounts2019
+data/a_raw_data/ais_counts_2019
+
+#### Bathymetry
+data/a_raw_data/crm_vol5.nc
+
+#### Land
+data/a_raw_data/USGSEsriWCMC_GlobalIslands_v3
+data/a_raw_data/USGSEsriWCMC_GlobalIslands_v3.zip
+# data/a_raw_data/globalislandsfix.gdb
