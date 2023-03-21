@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Department of Commerce (DOC), National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office for Coastal Management (OCM); Bureau of Ocean Energy Management (BOEM)</origin>
+        <pubdate>20180508</pubdate>
+        <title>Unexploded Ordnance Locations</title>
+        <geoform>vector digital data</geoform>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>Unexploded ordnances (UXO) are explosive weapons (bombs, bullets, shells, grenades, mines, etc.) that did not explode when they were employed and still pose a risk of detonation. Ocean disposal of munitions was an accepted international practice until 1970, when it was prohibited the Department of Defense. In 1972 Congress also passed the Marine Protection, Research, and Sanctuaries Act banning ocean disposal of munitions and other pollutants. This dataset represents known or possible individual or tightly grouped unexploded ordnances on the ocean floor.  This is NOT a complete collection of unexploded ordnances on the seafloor, nor are the locations considered to be accurate. Two related datasets should be viewed in tandem: Unexploded Ordnance Areas displays known or possible former explosive dumping areas and Formerly Used Defense Sites (FUDS) displays areas identified by the United States Army Corps of Engineers where unexploded ordnances may exist.</abstract>
+      <purpose>To support coastal and ocean planning and other activities pursuant to the Energy Policy Act, Coastal Zone Management Act, Magnuson-Stevens Fishery Conservation and Management Act, National Environmental Policy Act, Rivers and Harbors Act and the Submerged Lands Act. NOAA ENC Direct to GIS Internet Mapping Service is designed to allow for the visualization, querying and downloading of NOAA's Electronic Navigational Chart's (NOAA ENC) data in common Geographic Information System (GIS) formats.
+      </purpose>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <sngdate>
+          <caldate>20180508</caldate>
+        </sngdate>
+      </timeinfo>
+      <current>ground condition</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>As needed</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-166.573812</westbc>
+        <eastbc>174.155420</eastbc>
+        <northbc>71.383004</northbc>
+        <southbc>13.469160</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>missile</themekey>
+        <themekey>mines</themekey>
+        <themekey>ordnance</themekey>
+        <themekey>unexploded</themekey>
+        <themekey>depth charge</themekey>
+        <themekey>explosives</themekey>
+        <themekey>rockets</themekey>
+        <themekey>ammunition</themekey>
+        <themekey>projectiles</themekey>
+        <themekey>dumping ground</themekey>
+        <themekey>danger</themekey>
+        <themekey>torpedo</themekey>
+        <themekey>UXO</themekey>
+        <themekey>oceans</themekey>
+        <themekey>bombs</themekey>
+        <themekey>caution</themekey>
+        <themekey>obstruction</themekey>
+        <themekey>shells</themekey>
+      </theme>
+      <theme>
+        <themekt>ISO 19115 Topic Categories</themekt>
+        <themekey>oceans</themekey>
+      </theme>
+    </keywords>
+    <accconst>None</accconst>
+    <useconst>These data are intended for coastal and ocean use planning. Not for navigation. NOAA ENC Direct to GIS data is not intended for navigational purposes. This data is provided for use in GIS software packages for coastal planning and research. http://www.marinecadastre.gov/about/disclaimer.html</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Office for Coastal Management</cntorg>
+          <cntper>Department of Commerce (DOC), National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office for Coastal Management (OCM)</cntper>
+        </cntorgp>
+        <cntpos>NOAA Office for Coastal Management</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>2234 South Hobson Ave</address>
+          <city>North Charleston</city>
+          <state>SC</state>
+          <postal>29405-2413</postal>
+        </cntaddr>
+        <cntvoice>843-740-1202</cntvoice>
+        <cntemail>coastal.info@noaa.gov</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <datacred>NOAA Office for Coastal Management</datacred>
+    <native>Version 6.2 (Build 9200); Esri ArcGIS 10.4.1.5713</native>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>The attributes in this dataset are believed to be accurate. The NOAA ENC Direct to GIS data is derived from NOAA ENC's which conforms to the International Hydrographic Organization Transfer Standard for Digital Hydrographic Data, Special Publication S-57, ENC Product Specification Edition 2.0.</attraccr>
+    </attracc>
+    <logic>These data are believed to be logically consistent. Geometry is topologically clean. The NOAA ENC Direct data is derived from NOAA ENC's which conforms to the International Hydrographic Organization Transfer Standard for Digital Hydrographic Data, Special Publication S-57, ENC Product Specification Edition 2.0. NOAA ENC Direct to GIS data has added generalized nautical chart symbology to aid in the visualization of this data.</logic>
+    <complete>Spatial and attribute properties are believed to be complete, although attribute information has been simplified. Geometric thresholds from original data are preserved. No tests have been completed for exhaustiveness. NOAA ENC Direct to GIS data represents current coverage of all ENC Charts. As new NOAA ENCs and NOAA ENC editions are created they will be added to the NOAA ENC Direct to GIS data on the first of every month.</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>Maximum scale of intended use is 1:80,000. The NOAA ENC Direct to GIS data is derived from data that conforms to the International Hydrographic Organization Transfer Standard for Digital Hydrographic Data, Special Publication S-57, ENC Product Specification Edition 2.0. </horizpar>
+      </horizpa>
+    </posacc>
+    <lineage>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>NOAA Office for Coastal Management</origin>
+            <pubdate>20170215</pubdate>
+            <title>Unexploded Ordnances</title>
+            <onlink>ftp://ftp.coast.noaa.gov/pub/MSP/UnexplodedOrdnances.zip</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>onLine</typesrc>
+        <srctime>
+          <timeinfo>
+            <sngdate>
+              <caldate>20170215</caldate>
+            </sngdate>
+          </timeinfo>
+          <srccurr>ground condition</srccurr>
+        </srctime>
+        <srccitea>NOAA_UXO</srccitea>
+        <srccontr>Feature Class</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>NOS Special Projects</origin>
+            <pubdate>20180419</pubdate>
+            <title>RNC/NOAA_RNC (ImageServer)</title>
+            <onlink>https://seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>onLine</typesrc>
+        <srctime>
+          <timeinfo>
+            <sngdate>
+              <caldate>20180419</caldate>
+            </sngdate>
+          </timeinfo>
+          <srccurr>ground condition</srccurr>
+        </srctime>
+        <srccitea>NOAA_RNC_IMAGERY</srccitea>
+        <srccontr>Image server</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>NOAA ENC Direct to GIS Technical Contact, NOAA, NOS, OCS</origin>
+            <pubdate>20161029</pubdate>
+            <title>(multiple, see details within other citation field)</title>
+            <othercit>The following layers were downloaded from ENCDirect: Approach_Caution_Point, Approach_Obstruction_Point, Approach_Dumping_Ground_Point, Coastal_Caution_Point, Coastal_Obstruction_Point, Coastal_Dumping_Ground_Point, General_Caution_Point, General_Obstruction_Point, General_Dumping_Ground_Point, Harbour_Caution_Point, Harbour_Obstruction_Point, Harbour_Dumping_Ground_Point, Overview_Caution_Point Overview_Obstruction_Point Overview_Dumping_Ground_Point</othercit>
+            <onlink>https://encdirect.noaa.gov/</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>onLine</typesrc>
+        <srctime>
+          <timeinfo>
+            <sngdate>
+              <caldate>20161029</caldate>
+            </sngdate>
+          </timeinfo>
+          <srccurr>ground condition</srccurr>
+        </srctime>
+        <srccitea>ENC_DIRECT_DATASETS</srccitea>
+        <srccontr>Feature Classes and Shapefiles</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>Office of Coast Survey (OCS), NOAA Ocean Service (NOS)</origin>
+            <pubdate>20120101</pubdate>
+            <title>UXOlocations2012</title>
+            <onlink>http://www.mainecoastalatlas.org/layers/geonode:uxolocations2012</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>None</typesrc>
+        <srctime>
+          <timeinfo>
+            <sngdate>
+              <caldate>20120101</caldate>
+            </sngdate>
+          </timeinfo>
+          <srccurr>ground condition</srccurr>
+        </srctime>
+        <srccitea>UXOlocations2012</srccitea>
+        <srccontr>Shapefile</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>Joan Delos Santos, State of Hawaii, Office of Planning</origin>
+            <pubdate>20021231</pubdate>
+            <title>UnexplodedOrdnance</title>
+            <onlink>http://files.hawaii.gov/dbedt/op/gis/data/unexploded_ordnance.zip</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>None</typesrc>
+        <srctime>
+          <timeinfo>
+            <sngdate>
+              <caldate>20021231</caldate>
+            </sngdate>
+          </timeinfo>
+          <srccurr>ground condition</srccurr>
+        </srctime>
+        <srccitea>HI_UnexplodedOrdnance</srccitea>
+        <srccontr>Shapefile</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>Department of Commerce (DOC), National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</origin>
+            <pubdate>20130913</pubdate>
+            <title>Maritime Limits and Boundaries of United States of America</title>
+            <othercit>https://nauticalcharts.noaa.gov/data/us-maritime-limits-and-boundaries.html</othercit>
+            <onlink>http://maritimeboundaries.noaa.gov/downloads/USMaritimeLimitsAndBoundariesSHP.zip</onlink>
+            <onlink>http://maritimeboundaries.noaa.gov/arcgis/rest/services/MaritimeBoundaries/US_Maritime_Limits_Boundaries/MapServer/</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>online</typesrc>
+        <srctime>
+          <timeinfo>
+            <sngdate>
+              <caldate>20180601</caldate>
+            </sngdate>
+          </timeinfo>
+          <srccurr>ground condition</srccurr>
+        </srctime>
+        <srccitea>US_EEZ</srccitea>
+        <srccontr>Maritime limits and boundaries of the United States shapefile including the exclusive economic zone (EEZ) of the U.S. extending 200 nautical miles from the territorial sea baseline and adjacent to the 12 nm territorial sea of the U.S., overlapping the 12-24nm contiguous zone. The EEZ was used to clip the source datasets.</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>Bureau of Ocean Energy Management, Mapping and Boundary Branch, Branch Chief</origin>
+            <origin>NOAA Office for Coastal Management</origin>
+            <pubdate>20180411</pubdate>
+            <title>Federal and State Waters</title>
+          </citeinfo>
+        </srccite>
+        <typesrc>downloadable data</typesrc>
+        <srctime>
+          <timeinfo>
+            <sngdate>
+              <caldate>20180601</caldate>
+            </sngdate>
+          </timeinfo>
+          <srccurr>ground condition</srccurr>
+        </srctime>
+        <srccitea>FederalAndStateWaters</srccitea>
+        <srccontr>State and Federal waters within the Economic Exclusion Zone of the United States feature class used to clip source datasets.</srccontr>
+      </srcinfo>
+      <procstep>
+        <procdesc>Download polygon ENC_DIRECT_DATASETS. Merge the point files into a single feature class and merge the area files into a single feature class. Extract all point and polygon features that intersect the US_EEZ boundary, then project these layers into WGS 1984 World Mercator.</procdesc>
+        <procdate>20180507</procdate>
+        <proccont>
+          <cntinfo>
+            <cntperp>
+              <cntper>Quantum Spatial, Inc.</cntper>
+            </cntperp>
+            <cntpos>E-GIS Data Manager</cntpos>
+            <cntaddr>
+              <addrtype>mailing and physical</addrtype>
+              <address>10033 MLK St N, Suite 200</address>
+              <city>St. Petersburg</city>
+              <state>FL</state>
+              <postal>33716</postal>
+            </cntaddr>
+            <cntvoice>727-576-9500</cntvoice>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>Reading the attribute tables of each feature class, delete any features with no mention of unexploded items or explosive weapons. Delete features that are duplicates. Visually confirm and adjust size, placement, and description of each feature. Compare between all layers, removing duplicates, and compare to NOAA_RNC imagery as a guide to determine which polygon features to convert to point<!--. Where features were found on the NOAA_RNC imagery that were not in the source ENC_DIRECT_DATASETS, the RNC was used as a source to update the missing ENC features for this product,--> as well as to update attributes in the layers. Clip the resulting features to the FederalAndStateWaters shoreline, check geometry, and project data into WGS 1984 World Mercator.</procdesc>
+        <procdate>20180507</procdate>
+        <proccont>
+          <cntinfo>
+            <cntperp>
+              <cntper>Quantum Spatial, Inc.</cntper>
+            </cntperp>
+            <cntpos>E-GIS Data Manager</cntpos>
+            <cntaddr>
+              <addrtype>mailing and physical</addrtype>
+              <address>10033 MLK St N, Suite 200</address>
+              <city>St. Petersburg</city>
+              <state>FL</state>
+              <postal>33716</postal>
+            </cntaddr>
+            <cntvoice>727-576-9500</cntvoice>
+          </cntinfo>
+        </proccont>
+      </procstep>
+      <procstep>
+        <procdesc>Delete all extraneous fields then append attributed features into final schema to ensure the original NOAA_UXO schema is preserved.</procdesc>
+        <procdate>20180507</procdate>
+        <proccont>
+          <cntinfo>
+            <cntperp>
+              <cntper>Quantum Spatial, Inc.</cntper>
+            </cntperp>
+            <cntpos>E-GIS Data Manager</cntpos>
+            <cntaddr>
+              <addrtype>mailing and physical</addrtype>
+              <address>10033 MLK St N, Suite 200</address>
+              <city>St. Petersburg</city>
+              <state>FL</state>
+              <postal>33716</postal>
+            </cntaddr>
+            <cntvoice>727-576-9500</cntvoice>
+          </cntinfo>
+        </proccont>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <direct>Vector</direct>
+    <ptvctinf>
+      <sdtsterm>
+        <sdtstype>Entity point</sdtstype>
+        <ptvctcnt>130</ptvctcnt>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <planar>
+        <mapproj>
+          <mapprojn>WGS 1984 World Mercator</mapprojn>
+          <mercator>
+            <stdparll>0.0</stdparll>
+            <longcm>0.0</longcm>
+            <feast>0.0</feast>
+            <fnorth>0.0</fnorth>
+          </mercator>
+        </mapproj>
+        <planci>
+          <plance>coordinate pair</plance>
+          <coordrep>
+            <absres>0.0001</absres>
+            <ordres>0.0001</ordres>
+          </coordrep>
+          <plandu>meter</plandu>
+        </planci>
+      </planar>
+      <geodetic>
+        <horizdn>D WGS 1984</horizdn>
+        <ellips>WGS 1984</ellips>
+        <semiaxis>6378137.0</semiaxis>
+        <denflat>298.257223563</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>UnexplodedOrdnanceLocations</enttypl>
+        <enttypd>Unexploded ordnance location points located in US marine waters</enttypd>
+        <enttypds>NOAA Office for Coastal Management</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>OBJECTID</attrlabl>
+        <attrdef>Internal feature number.</attrdef>
+        <attrdefs>Esri</attrdefs>
+        <attrdomv>
+          <udom>Sequential unique whole numbers that are automatically generated.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Shape</attrlabl>
+        <attrdef>Feature geometry.</attrdef>
+        <attrdefs>Esri</attrdefs>
+        <attrdomv>
+          <udom>Coordinates defining the features.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Name</attrlabl>
+        <attrdef>Name or description of site.</attrdef>
+        <attrdefs>NOAA Office for Coastal Management</attrdefs>
+        <attrdomv>
+          <udom>Free text</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Source Date</attrlabl>
+        <attrdef>Date the corresponding Raster Nautical Chart (RNC) was published, or the reported date listed on RNC next to the feature. MM/DD/YYYY. Unknown month and/or day values were replaced with "01".</attrdef>
+        <attrdefs>NOAA Office for Coastal Management</attrdefs>
+        <attrdomv>
+          <udom>Free text</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Raster Chart</attrlabl>
+        <attrdef>Raster Nautical Chart where area is visible.</attrdef>
+        <attrdefs>NOAA Office for Coastal Management</attrdefs>
+        <attrdomv>
+          <udom>Free text</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>State</attrlabl>
+        <attrdef>The postal code of the state(s)/territory nearest the feature location. Multiple states listed for polygons crossing unofficial state water boundaries. A full list of state and territory postal codes can be found at https://www.infoplease.com/state-abbreviations-and-state-postal-codes</attrdef>
+        <attrdefs>NOAA Office for Coastal Management</attrdefs>
+        <attrdomv>
+          <udom>Alphanumeric characters</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <overview>
+      <eaover>The data provided through the NOAA ENC Direct to GIS service is derived from electronic data that conforms to the International Hydrographic Organization Transfer Standard for Digital Hydrographic Data, Special Publication S-57, ENCProduct Specification Edition 2.0. The entity and attribute descriptions are contained in the standard. The standard is available from the IHO at http://www.iho.shom.fr.</eaover>
+      <eadetcit>IHO S-57, Edition 3.1</eadetcit>
+    </overview>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>NOAA Office for Coastal Management</cntorg>
+        </cntorgp>
+        <cntpos>Data Steward</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>2234 South Hobson Ave</address>
+          <city>North Charleston</city>
+          <state>SC</state>
+          <postal>29405-2413</postal>
+          <country>US</country>
+        </cntaddr>
+        <cntvoice>843-740-1202</cntvoice>
+        <cntemail>coastal.info@noaa.gov</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>See access and use constraints information.</distliab>
+  </distinfo>
+  <metainfo>
+    <metd>20180615</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>Quantum Spatial, Inc.</cntper>
+        </cntperp>
+        <cntpos>E-GIS Data Manager</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>10033 MLK St N, Suite 200</address>
+          <city>St. Petersburg</city>
+          <state>FL</state>
+          <postal>33716</postal>
+        </cntaddr>
+        <cntvoice>727-576-9500</cntvoice>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+    <mettc>local time</mettc>
+  </metainfo>
+</metadata>
