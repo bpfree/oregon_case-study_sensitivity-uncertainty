@@ -62,7 +62,7 @@ data_download_function <- function(download_list, data_dir){
     
     # Download the data
     if (!file.exists(file)) {
-      options(timeout=1000)
+      options(timeout=10000)
       # download the file from the URL
       download.file(url = url,
                     # place the downloaded file in the data directory
@@ -164,50 +164,6 @@ ais_tracks2019_data <- "https://marinecadastre.gov/downloads/data/ais/ais2019/AI
 
 #####################################
 
-## Shipping lanes data (source: http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip)
-### These are federal water shipping lanes
-federal_shipping_lanes_data <- "http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip"
-
-#####################################
-
-## NOAA lightering zones data (source: https://marinecadastre.gov/downloads/data/mc/LighteringZone.zip)
-### Metadata: https://www.fisheries.noaa.gov/inport/item/66149
-### For more detailed information on lightering zones and coordinates for polygons: https://www.govinfo.gov/content/pkg/CFR-2018-title33-vol2/xml/CFR-2018-title33-vol2-part156.xml#seqnum156.300
-lightering_zone_data <- "https://marinecadastre.gov/downloads/data/mc/LighteringZone.zip"
-
-#####################################
-
-## Unexploded ordnance data
-### Unexploded ordnance (source: https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnance.zip)
-#### Metadata: https://www.fisheries.noaa.gov/inport/item/66208
-unexploded_ordnance_data <- "https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnance.zip"
-
-#####################################
-
-## BOEM active oil and gas lease data (source: https://www.data.boem.gov/Main/Mapping.aspx#ascii)
-### Geodatabase download link: https://www.data.boem.gov/Mapping/Files/ActiveLeasePolygons.gdb.zip
-### Shapefile download link: https://www.data.boem.gov/Mapping/Files/actlease.zip
-#### Metadata: https://www.data.boem.gov/Mapping/Files/actlease_meta.html
-##### ***Note: data are updated each month near the first of the month
-boem_active_oil_gas_data <- "https://www.data.boem.gov/Mapping/Files/ActiveLeasePolygons.gdb.zip"
-
-#####################################
-
-## Anchorage area data (source: https://marinecadastre.gov/downloads/data/mc/Anchorage.zip)
-### Metadata: https://www.fisheries.noaa.gov/inport/item/48849
-anchorage_area_data <- "https://marinecadastre.gov/downloads/data/mc/Anchorage.zip"
-
-#####################################
-
-## BOEM drilling platforms data (source: https://www.data.boem.gov/Mapping/Files/Platforms.gdb.zip)
-### Metadata: https://www.data.boem.gov/Mapping/Files/platform_meta.html
-#### Note: These data came from the mapping page: https://www.data.boem.gov/Main/Mapping.aspx#ascii
-#### Note: These data are different from the platform query page that BOEM has: https://www.data.boem.gov/Platform/PlatformStructures/Default.aspx
-#### That query page seems to mirror the data that BSEE also has
-drilling_platform_data <- "https://www.data.boem.gov/Mapping/Files/Platforms.gdb.zip"
-
-#####################################
-
 ## Submarine cables data
 ### Submarine cable area (source: https://marinecadastre.gov/downloads/data/mc/SubmarineCableArea.zip)
 ### Metadata: https://www.fisheries.noaa.gov/inport/item/66190
@@ -227,20 +183,6 @@ aids_navigation_data <- "https://marinecadastre.gov/downloads/data/mc/AtoN.zip"
 
 #####################################
 
-## Pipelines data
-### Source: https://www.data.boem.gov/Mapping/Files/Pipelines.gdb.zip
-### Options page: https://www.data.boem.gov/Main/Mapping.aspx#ascii
-### Metadata: https://www.data.boem.gov/Mapping/Files/ppl_arcs_meta.html
-pipeline_data <- "https://www.data.boem.gov/Mapping/Files/Pipelines.gdb.zip"
-
-#####################################
-
-## BOEM Lease Blocks data (source: https://www.data.boem.gov/Mapping/Files/Blocks.gdb.zip) -- shapefile format is also available
-### Metadata: https://www.data.boem.gov/Mapping/Files/blocks_meta.html
-boem_lease_blocks_data <- "https://www.data.boem.gov/Mapping/Files/Blocks.gdb.zip"
-
-#####################################
-
 ## NREL Net Value -- 2015 data (source: https://data.nrel.gov/system/files/67/170514_OSW%20cost%20analysis_output%20file%20%281%29.xlsx)
 ### Data page: https://data.nrel.gov/submissions/67, report: https://www.nrel.gov/docs/fy17osti/67675.pdf
 ### ***Note: Data come as an Excel spreadsheet. To use data, delete tabs expect 2015 (COD) and save as CSV
@@ -253,50 +195,30 @@ nrel_net_value_data <- "https://data.nrel.gov/system/files/67/170514_OSW%20cost%
 # Download list
 download_list <- c(
   # BOEM wind energy areas
-  boem_wind_area_data,
+  #boem_wind_area_data,
   
   # USGS global islands
-  usgs_data,
+  #usgs_data,
   
   # bathymetry
-  bathymetry_data,
+  #bathymetry_data,
   
   # military operating areas
-  military_operating_data,
+  #military_operating_data,
   
   # essential fish habitat conservation areas
+  #efhca_data,
   
   # vessel traffic
-  ais_transit2019_data,
+  #ais_transit2019_data,
   ais_tracks2019_data,
   
-  # shipping lanes
-  federal_shipping_lanes_data,
-  
-  # lightering zones
-  lightering_zone_data,
-  
-  # unexploded ordnances
-  unexploded_ordnance_data,
-  
-  # BOEM active lease areas
-  boem_active_oil_gas_data,
-  
-  # anchorage areas
-  anchorage_area_data,
-  
   # submarine cable
-  submarine_cable_areas_data,
-  submarine_cable_noaa_data,
+  #submarine_cable_areas_data,
+  #submarine_cable_noaa_data,
   
   # aids to navigation
-  aids_navigation_data,
-  
-  # pipelines
-  pipeline_data,
-  
-  # BOEM lease blocks
-  boem_lease_blocks_data,
+  #aids_navigation_data,
   
   # NREL net value
   nrel_net_value_data
