@@ -52,7 +52,7 @@ analysis_gpkg <- "data/c_analysis_data/gom_cable_study.gpkg"
 
 #### Intermediate directories
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
-wind_farm_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
+wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 #####################################
 #####################################
@@ -89,9 +89,25 @@ wind_area_grid <- sf::st_make_grid(x = wind_areas,
 # Subset by location: hexagonal grids that intersect with wind areas
 wind_area_hex <- wind_area_grid[wind_areas, ]
 
+# Oregon call area hexes as single feature
+## ***Note: This dataset will be used to extract any data from datasets
+##           within the model that will impact wind siting suitability
+oregon_call_area_hex_dissolve <- wind_area_hex %>%
+  # create field called "call area"
+  dplyr::mutate(call_area = "call_area") %>%
+  # group all rows by the different elements with "call area" field -- this will create a row for the grouped data
+  dplyr::group_by(call_area) %>%
+  # summarise all those grouped elements together -- in effect this will create a single feature
+  dplyr::summarise()
+
 #####################################
 #####################################
 
 # Export data
-sf::st_write(wind_area_grid, dsn = wind_farm_gpkg, layer = "oregon_call_area_grid", append = F)
-sf::st_write(wind_area_hex, dsn = wind_farm_gpkg, layer = "oregon_call_area_hex", append = F)
+## Study Area
+sf::st_write(wind_area_grid, dsn = study_area_gpkg, layer = "oregon_call_area_grid", append = F)
+sf::st_write(wind_area_hex, dsn = study_area_gpkg, layer = "oregon_call_area_hex", append = F)
+sf::st_write(oregon_call_area_hex_dissolve, dsn = study_area_gpkg, layer = "oregon_call_areas_dissolve", append = F)
+
+## Wind Call Areas
+sf::st_write(wind_areas, dsn = wind_area_gpkg, layer = "oregon_wind_call_areas", append = F)
