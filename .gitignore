@@ -19,3 +19,7 @@ data/a_raw_data/crm_vol8.nc
 data/a_raw_data/USGSEsriWCMC_GlobalIslands_v3
 data/a_raw_data/USGSEsriWCMC_GlobalIslands_v3.zip
 # data/a_raw_data/globalislandsfix.gdb
+
+## Intermediate data
+### Oregon
+data/b_intermediate_data/oregon_study_area.gpkg
