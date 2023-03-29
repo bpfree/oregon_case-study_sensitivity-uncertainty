@@ -29,6 +29,8 @@ pacman::p_load(dplyr,
 ## Define data directory (as this is an R Project, pathnames are simplified)
 ### Input directories
 nmfs_efhca_dir <- "data/a_raw_data/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020/EFHCA shapefile_2020"
+study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
+wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
 #### Analysis directories
