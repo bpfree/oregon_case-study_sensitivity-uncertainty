@@ -20,6 +20,9 @@ data/a_raw_data/USGSEsriWCMC_GlobalIslands_v3
 data/a_raw_data/USGSEsriWCMC_GlobalIslands_v3.zip
 # data/a_raw_data/globalislandsfix.gdb
 
+#### NMFS HAPC
+data/a_raw_data/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020/HAPCs_2006
+
 ## Intermediate data
 ### Oregon
 data/b_intermediate_data/oregon_study_area.gpkg
