@@ -61,7 +61,7 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 wind_areas <- sf::st_read(wind_area_dir, "Wind_Planning_Area_Outlines_2_2023") %>%
   # filter for only Oregon call areas
   dplyr::filter(grepl("Oregon", CATEGORY1)) %>%
-  # reproject data into a coordinate system that will convert units from degrees to meters
+  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
   sf::st_transform("EPSG:26910")
 
 ## verify that units are in meters and no longer degrees
@@ -87,7 +87,9 @@ wind_area_grid <- sf::st_make_grid(x = wind_areas,
 #####################################
 
 # Subset by location: hexagonal grids that intersect with wind areas
-wind_area_hex <- wind_area_grid[wind_areas, ]
+wind_area_hex <- wind_area_grid[wind_areas, ] %>%
+  # add field "index" that will be populated with the row_number
+  dplyr::mutate(index = row_number())
 
 # Oregon call area hexes as single feature
 ## ***Note: This dataset will be used to extract any data from datasets
