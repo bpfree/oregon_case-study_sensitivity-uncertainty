@@ -118,18 +118,10 @@ boem_wind_area_data <- "https://www.boem.gov/BOEM-Renewable-Energy-Geodatabase.z
 
 #####################################
 
-## Land boundary data
-### Shoreline data (USGS Global Islands Vector dataset)
-### Global Island Explorer has detailed information about the dataset and can link to the paper detailing the methods (https://rmgsc.cr.usgs.gov/gie/)
-### For visual inspection, navigate here: https://rmgsc.cr.usgs.gov/gie/gie.shtml
-### For manual downloading the data (https://rmgsc.cr.usgs.gov/outgoing/ecosystems/Global/USGSEsriWCMC_GlobalIslands_v3.mpk):
-#### 1.) Navigate to this page: https://rmgsc.cr.usgs.gov/outgoing/ecosystems/Global/
-#### 2.) Click the USGSEsriWCMC_GlobalIslands_v3.mpk (***Note: there may be a newer version so name could be different -- Version 3 as of `October 11 October 2022)
-#### 3.) Where file is located change .mpk (Esri mappackage) to .zip
-#### 4.) Unzip file
-#### 5.) Navigate to and copy geodatabase (as of 11 October 2021, v10 and v108 had no differences in their data)
-#### 6.) Paste to data dictionary
-usgs_data <- "https://rmgsc.cr.usgs.gov/outgoing/ecosystems/Global/USGSEsriWCMC_GlobalIslands_v3.mpk"
+## Oregon state boundary (source: http://navigator.state.or.us/sdl/data/shapefile/k24/or_state_boundary.zip)
+### Metadata: https://spatialdata.oregonexplorer.info/osdl-geoportal/rest/document?id=%7BCF375EB0-FF70-42D9-9DAE-A17A776821A8%7D
+### Geospatial library: https://spatialdata.oregonexplorer.info/geoportal/details;id=cf375eb0ff7042d99daea17a776821a8
+oregon_boundary_data <- "http://navigator.state.or.us/sdl/data/shapefile/k24/or_state_boundary.zip"
 
 #####################################
 
@@ -142,6 +134,12 @@ bathymetry_data <- "https://www.ngdc.noaa.gov/thredds/fileServer/crm/crm_vol8.nc
 ## Military operating area boundaries (source: https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip)
 ### Metadata: https://www.fisheries.noaa.gov/inport/item/55364
 military_operating_data <- "https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip"
+
+#####################################
+
+## Pacific Coast Port Access Route Study (source: https://navcen.uscg.gov/sites/default/files/pdf/PARS/PAC_PARS_22/Draft%20PAC-PARS.pdf)
+### Federal Register: https://www.federalregister.gov/documents/2022/08/26/2022-18453/port-access-route-study-the-pacific-coast-from-washington-to-california
+pacpars_data <- "https://navcen.uscg.gov/sites/default/files/pdf/PARS/PAC_PARS_22/Draft%20PAC-PARS.pdf"
 
 #####################################
 
@@ -195,30 +193,33 @@ nrel_net_value_data <- "https://data.nrel.gov/system/files/67/170514_OSW%20cost%
 # Download list
 download_list <- c(
   # BOEM wind energy areas
-  #boem_wind_area_data,
-  
-  # USGS global islands
-  #usgs_data,
+  boem_wind_area_data,
   
   # bathymetry
-  #bathymetry_data,
+  bathymetry_data,
+  
+  # Oregon state boundary
+  oregon_boundary_data,
   
   # military operating areas
-  #military_operating_data,
+  military_operating_data,
+  
+  # PACPARS
+  pacpars_data,
   
   # essential fish habitat conservation areas
-  #efhca_data,
+  efhca_data,
   
   # vessel traffic
   #ais_transit2019_data,
   ais_tracks2019_data,
   
   # submarine cable
-  #submarine_cable_areas_data,
-  #submarine_cable_noaa_data,
+  submarine_cable_areas_data,
+  submarine_cable_noaa_data,
   
   # aids to navigation
-  #aids_navigation_data,
+  aids_navigation_data,
   
   # NREL net value
   nrel_net_value_data
@@ -236,9 +237,8 @@ list.files(data_dir)
 file.rename(from = file.path(data_dir, "170514_OSW%20cost%20analysis_output%20file%20%281%29.xlsx"),
             to = file.path(data_dir, "nrel_2015_net_value.xlsx"))
 
-## USGS Global Island dataset
-### ***Note: will need to manually unzip the data
-file.rename(from = file.path(data_dir, "USGSEsriWCMC_GlobalIslands_v3.mpk"),
-            to = file.path(data_dir, "USGSEsriWCMC_GlobalIslands_v3.zip"))
+## PACPARS report
+file.rename(from = file.path(data_dir, "Draft%20PAC-PARS.pdf"),
+            to = file.path(data_dir, "pacpars_draft_report.pdf"))
 
 list.files(data_dir)
