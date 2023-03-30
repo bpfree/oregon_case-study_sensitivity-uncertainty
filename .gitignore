@@ -23,6 +23,14 @@ data/a_raw_data/USGSEsriWCMC_GlobalIslands_v3.zip
 #### NMFS HAPC
 data/a_raw_data/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020/HAPCs_2006
 
+#### Deep sea coral and sponge habitat
+data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Demosponges.zip
+data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Glass_Sponges.zip
+data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Gorgonian_Corals.zip
+data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Ocean_Currents.zip
+data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Sea_Pens.zip
+data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Seafloor_Topography.zip
+data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/USWestCoast_DeepSeaCoralsSponges_Modeling_BrowseGraphic.jpg
 ## Intermediate data
 ### Oregon
 data/b_intermediate_data/oregon_study_area.gpkg
