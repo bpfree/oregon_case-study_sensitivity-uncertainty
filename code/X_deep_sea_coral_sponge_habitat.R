@@ -74,8 +74,75 @@ unzip_function <- function(data_dir, file){
 
 unzip_function(coral_sponge_dir, file)
 
-
 #####################################
 #####################################
 
 # Load data
+
+## Oregon Call Areas
+oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
+                                 layer = paste(sf::st_layers(dsn = wind_area_gpkg,
+                                                             do_count = TRUE)))
+
+## Oregon hex areas
+oregon_hex <- sf::st_read(dsn = study_area_gpkg,
+                          layer = paste(sf::st_layers(dsn = study_area_gpkg,
+                                                      do_count = TRUE)[[1]][2]))
+
+#####################################
+
+## set directory
+richness_dir <- "data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Coral_Richness/Coral_Richness"
+
+## Open high and robust high datasets
+high_habitat <- terra::rast(paste(richness_dir, "Num_Taxa_Corals_HardSubstrate_with_High_Habitat_Suitability.tif", sep = "/"))
+robust_habitat <- terra::rast(paste(richness_dir, "Num_Taxa_Corals_HardSubstrate_with_Robust_High_Habitat_Suitability.tif", sep = "/"))
+
+# Convert raster to polygon
+## High habitat suitability
+high_habitat_polygon <- terra::as.polygons(x = high_habitat) %>%
+  # change to simple feature (sf)
+  sf::st_as_sf() %>%
+  # cast to polygon
+  sf::st_cast("POLYGON") %>%
+  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
+  sf::st_transform("EPSG:26910") %>%
+  # simplify column name to "richness"
+  dplyr::rename(richness = colnames(.)[1]) %>%
+  # obtain areas with species (richness >= 1)
+  dplyr::filter(richness >= 1) %>%
+  # add 500-meter setback
+  sf::st_buffer(dist = 500) %>%
+  # obtain data within Oregon call areas
+  rmapshaper::ms_clip(clip = oregon_call_areas)
+
+## Robust high habitat suitability
+robust_habitat_polygon <- terra::as.polygons(x = robust_habitat) %>%
+  sf::st_as_sf() %>%
+  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
+  sf::st_transform("EPSG:26910") %>%
+  # simplify column name to "richness"
+  dplyr::rename(richness = colnames(.)[1]) %>%
+  # obtain areas with species (richness >= 1)
+  dplyr::filter(richness >= 1) %>%
+  # add 500-meter setback
+  sf::st_buffer(dist = 500) %>%
+  # obtain data within Oregon call areas
+  rmapshaper::ms_clip(clip = oregon_call_areas)
+
+#####################################
+
+# Deep-sea coral and sponge habitat in call area
+## High habitat suitability
+oregon_hex_coral_sponge_high <- oregon_hex[high_habitat_polygon, ]
+
+## Robust high habitat suitability
+oregon_hex_coral_sponge_robust <- oregon_hex[robust_habitat_polygon, ]
+
+#####################################
+#####################################
+
+# Export data
+## Natural resources submodel
+sf::st_write(obj = oregon_hex_coral_sponge_high, dsn = natural_resources_geopackage, layer = "oregon_hex_high_habitat_coral_sponge500")
+sf::st_write(obj = oregon_hex_coral_sponge_robust, dsn = natural_resources_geopackage, layer = "oregon_hex_robust_habitat_coral_sponge1000")
