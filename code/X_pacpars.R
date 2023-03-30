@@ -93,7 +93,7 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg, "oregon_call_area_hex")
 
 #####################################
 
-## Oregon state boundary
+## Oregon state boundary (source: http://navigator.state.or.us/sdl/data/shapefile/k24/or_state_boundary.zip)
 ### Oregon state boundary with 2-nautical mile buffer
 #### ***Note: The 2-nautical mile buffer is added so points can be generated to later generate a polygon to meet PACPARS documentation
 oregon_boundary_2nm <- st_read(dsn = oregon_dir, layer = "or_state_boundary") %>%
@@ -149,10 +149,11 @@ oregon_2nm_east <- oregon_3nm_points %>%
 
 list.files(data_dir)
 
-# PACPARS PDF
+# PACPARS PDF (source: https://navcen.uscg.gov/sites/default/files/pdf/PARS/PAC_PARS_22/Draft%20PAC-PARS.pdf)
 pdf <- paste(data_dir, "pacpars_draft_report.pdf", sep = "/")
 
 ## Extract the two tables to create the data
+### D13 Offshore Fairway and D13 Coastal Fairway
 table <- tabulizer::extract_tables(pdf,
                                    # page tables are found (33)
                                    pages = 33)
