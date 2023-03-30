@@ -147,6 +147,14 @@ pacpars_data <- "https://navcen.uscg.gov/sites/default/files/pdf/PARS/PAC_PARS_2
 ### Text: https://www.ecfr.gov/current/title-50/chapter-VI/part-660/subpart-C/section-660.76
 efhca_data <- "https://media.fisheries.noaa.gov/2021-02/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020.zip"
 
+
+
+## Deep-sea coral and sponge habitat (source: https://www.ncei.noaa.gov/archive/archive-management-system/OAS/bin/prd/jquery/download/276883.1.1.tar.gz)
+### NCEI: https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0276883
+### Metadata: https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0276883;view=iso
+#### Link for habitat suitability data only: https://www.nodc.noaa.gov/archive/arc0211/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Coral_Richness.zip
+coral_sponge_habitat <- "https://www.ncei.noaa.gov/archive/archive-management-system/OAS/bin/prd/jquery/download/276883.1.1.tar.gz"
+
 #####################################
 
 ## Load AIS data (2019)
@@ -209,6 +217,9 @@ download_list <- c(
   
   # essential fish habitat conservation areas
   efhca_data,
+  
+  # deep-sea coral and sponge habitat
+  coral_sponge_habitat,
   
   # vessel traffic
   #ais_transit2019_data,
