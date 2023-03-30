@@ -71,7 +71,7 @@ oregon_nmfs_efhca <- nmfs_efhca_data %>%
 
 # NMFS EFHCA hex grids
 oregon_hex_efhca <- oregon_hex[oregon_nmfs_efhca, ]
-  
+
 #####################################
 #####################################
 
