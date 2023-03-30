@@ -36,9 +36,12 @@ data_dir <- "data/a_raw_data"
 land_dir <- "data/a_raw_data/BOEM-Renewable-Energy-Geodatabase/BOEMWindLayers_4Download.gdb"
 oregon_dir <- "data/a_raw_data/or_state_boundary"
 
+study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
+wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
+
 ### Output directories
-#### Analysis directories
-analysis_gpkg <- "data/c_analysis_data/oregon_case_study.gpkg"
+#### Constraint directories
+constraint_geopackage <- "data/c_submodel_data/constraints.gpkg"
 
 #### Intermediate directories
 intermediate_dir <- "data/b_intermediate_data"
@@ -79,6 +82,15 @@ continents <- sf::st_read(dsn = land_dir, layer = "USGSEsriWCMC_GlobalIslandsv2_
   sf::st_transform("EPSG:26910")
 
 #####################################
+#####################################
+
+# Load data
+## Oregon wind study area
+oregon_wind_call_area <- sf::st_read(dsn = wind_area_gpkg, "oregon_wind_call_areas")
+
+## Oregon call area hex
+oregon_hex <- sf::st_read(dsn = study_area_gpkg, "oregon_call_area_hex")
+
 #####################################
 
 ## Oregon state boundary
@@ -320,7 +332,7 @@ d13_coastal_point <- d13_coastal %>%
   sf::st_transform("EPSG:26910")
 
 #### Polygon creation (D13 coast PACPARS polygon)
-ds13_coast_3nm <- d13_coastal_point %>%
+d13_coast_3nm <- d13_coastal_point %>%
   # combine with points marking the 2-nautical mile eastern boundary
   dplyr::bind_rows(oregon_2nm_east) %>%
   # group by the points field
@@ -339,7 +351,41 @@ ds13_coast_3nm <- d13_coastal_point %>%
 #####################################
 #####################################
 
+# PACPARS in call areas
+## D13 Offshore fairway
+d13_offshore_call_area <- d13_offshore_polygon %>%
+  rmapshaper::ms_clip(target = .,
+                      clip = oregon_wind_call_area)
+
+oregon_hex_d13_offshore <- oregon_hex[d13_offshore_call_area, ]
+
+## D13 Coastal fairway
+d13_coastal_call_area <- d13_coast_3nm %>%
+  rmapshaper::ms_clip(target = .,
+                      clip = oregon_wind_call_area)
+
+oregon_hex_d13_coastal <- oregon_hex[d13_coastal_call_area, ]
+
+#####################################
+
+# Oregon fairway areas in call area
+oregon_hex_d13_fairway <- oregon_hex_d13_offshore %>%
+  # combine offshore fairway area with coastal area
+  dplyr::bind_rows(oregon_hex_d13_coastal) %>%
+  # add field "layer" and populate with "fairway"
+  dplyr::mutate(layer = "fairway") %>%
+  # "value" will get pulled in from the study area layer
+  dplyr::group_by(layer) %>%
+  # summarise the single feature
+  dplyr::summarise()
+
+#####################################
+#####################################
+
 # Export data
+## Constraints geopackage
+sf::st_write(oregon_hex_d13_fairway, dsn = constraint_geopackage, layer = "oregon_hex_pacpars", append = F)
+
 ## PACPARS
 ### D13 Offshore Fairway
 sf::st_write(d13_offshore_table, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore_table", append = F)
@@ -360,7 +406,16 @@ sf::st_write(d13_coastal, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coasta
 sf::st_write(d13_coastal_point, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coastal_point", append = F)
 sf::st_write(d13_coastal_polygon, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coastal_polygon", append = F)
 
-sf::st_write(ds13_coast_3nm, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_coast_3nm_polygon", append = F)
+sf::st_write(d13_coast_3nm, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coast_3nm_polygon", append = F)
+
+
+### D13 Fairway -- call area
+sf::st_write(d13_offshore_call_area, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore_call_area", append = F)
+sf::st_write(oregon_hex_d13_offshore, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore_hex", append = F)
+sf::st_write(d13_coastal_call_area, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_coastal_call_area", append = F)
+sf::st_write(oregon_hex_d13_coastal, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_coastal_hex", append = F)
+sf::st_write(oregon_hex_d13_fairway, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_fairway_hex", append = F)
+
 
 # Oregon boundary
 sf::st_write(oregon_boundary_2nm, dsn = oregon_gpkg, layer = "oregon_state_boundary_2nm_buffer", append = F)
