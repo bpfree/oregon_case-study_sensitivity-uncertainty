@@ -90,6 +90,26 @@ data_download_function <- function(download_list, data_dir){
       file.remove(file.path(data_dir, file))
     }
     
+    # Unzip the file if the data are compressed as tar.gz
+    ## Examine if the filename contains the pattern "tar.gz"
+    ### grepl returns a logic statement when pattern ".zip" is met in the file
+    if (grepl("tar.gz", file)){
+      
+      # grab text before "tar.gz" and keep only text before that
+      new_dir_name <- sub("tar.gz", "", file)
+      
+      # create new directory for data
+      new_dir <- file.path(data_dir, new_dir_name)
+      
+      # unzip the file
+      untar(tarfile = file.path(data_dir, file),
+            # export file to the new data directory
+            exdir = new_dir)
+      
+      # remove original zipped file
+      file.remove(file.path(data_dir, file))
+    }
+    
     dir <- file.path(data_dir, new_dir_name)
     
   }
@@ -147,7 +167,7 @@ pacpars_data <- "https://navcen.uscg.gov/sites/default/files/pdf/PARS/PAC_PARS_2
 ### Text: https://www.ecfr.gov/current/title-50/chapter-VI/part-660/subpart-C/section-660.76
 efhca_data <- "https://media.fisheries.noaa.gov/2021-02/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020.zip"
 
-
+#####################################
 
 ## Deep-sea coral and sponge habitat (source: https://www.ncei.noaa.gov/archive/archive-management-system/OAS/bin/prd/jquery/download/276883.1.1.tar.gz)
 ### NCEI: https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0276883
@@ -251,5 +271,9 @@ file.rename(from = file.path(data_dir, "170514_OSW%20cost%20analysis_output%20fi
 ## PACPARS report
 file.rename(from = file.path(data_dir, "Draft%20PAC-PARS.pdf"),
             to = file.path(data_dir, "pacpars_draft_report.pdf"))
+
+## Deep-sea coral and sponge habitat
+file.rename(from = file.path(data_dir, list.files(data_dir)[2]),
+            to = file.path(data_dir, "deep_sea_coral_sponge_habitat"))
 
 list.files(data_dir)
