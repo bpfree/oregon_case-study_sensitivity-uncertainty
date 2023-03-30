@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<accession manifest_version="2">
+  <head>
+    <id>0276883</id>
+    <version>1.1</version>
+    <timestamp>2023-03-15 18:13:59+00</timestamp>
+    <host>master.ams.ncei.noaa.gov</host>
+    <directory>/nodc/archive/arc0211/0276883/1.1/</directory>
+    <file_count>30</file_count>
+    <byte_count>1859101445</byte_count>
+  </head>
+  <body>
+    <files>
+      <file>
+        <path>NCEI-Readme.txt</path>
+        <digest algorithm="md5">e91932714ba31f21222c897c53a16b96</digest>
+        <digest algorithm="sha1">82edb6b02edde6773d1dbf60f0daa14dd0a2399a</digest>
+        <digest algorithm="sha256">8a28ff0cfd348380edf08df45dffd3af0f7b21e36693b33c2caacf099fc00e47</digest>
+        <digest algorithm="sha384">5f34016a6e2d1509b8a30b4831c1a216df54bb1e865cea0fb6a1ce6f94ac19c39f8abea4ce4fd1d2fc9dbbcc808a7158</digest>
+        <digest algorithm="sha512">3ef7e6ffc7c31d8f016ae4c3654e4476ffebdeef8984c1cca0da3cd3b8410e5b19b0d985d06ecd58609ddce2f39a6add62c08580e018351ab2827c4b06da39c2</digest>
+        <type_category>regular</type_category>
+        <type>text</type>
+        <permissions>-rw-rw-r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>1847</size>
+        <blksize>32768</blksize>
+        <blocks>8</blocks>
+        <modtime>2018-06-07 19:47:08+00</modtime>
+        <changetime>2023-03-15 18:11:05+00</changetime>
+        <acctime>2023-03-15 18:12:57+00</acctime>
+        <sumtime>2023-03-15 18:13:59+00</sumtime>
+        <inode>51642383</inode>
+      </file>
+      <file>
+        <path>about</path>
+        <digest algorithm="md5">d41d8cd98f00b204e9800998ecf8427e</digest>
+        <digest algorithm="sha1">da39a3ee5e6b4b0d3255bfef95601890afd80709</digest>
+        <digest algorithm="sha256">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</digest>
+        <digest algorithm="sha384">38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b</digest>
+        <digest algorithm="sha512">cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e</digest>
+        <type_category>irregular</type_category>
+        <type>directory</type>
+        <permissions>drwxrwxr-x</permissions>
+        <linkcount>2</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>4096</size>
+        <blksize>32768</blksize>
+        <blocks>8</blocks>
+        <modtime>2023-03-10 18:19:46+00</modtime>
+        <changetime>2023-03-15 18:11:07+00</changetime>
+        <acctime>2023-03-15 18:12:57+00</acctime>
+        <sumtime>2023-03-15 18:13:59+00</sumtime>
+        <inode>51642381</inode>
+      </file>
+      <file>
+        <path>about/0276883_lonlat.txt</path>
+        <digest algorithm="md5">7e2a1c40fa1310794162e9fbf06089b7</digest>
+        <digest algorithm="sha1">e08f12d3f9070c606a8175aa8d9444ee90d0186c</digest>
+        <digest algorithm="sha256">c185d5819d2f9dde6649ef58a71a8381a164bb521debb0124d379e4bd9c767c0</digest>
+        <digest algorithm="sha384">2eb2adc5b77a89fe13a17414cc64ee1799841de1006f02136fb84e01f8e7fd87d8dad8c4379cc2e1af5a6e0a8c67efdc</digest>
+        <digest algorithm="sha512">85c5d0b83a20827f7bc7c4056f4c15ba25c93fec0f6db2cfe69eb6658560d5d4eafe37c3dcee484a5dee3980ea021c6ee0b39ddf2d5348117d06bc5e5ed03694</digest>
+        <type_category>regular</type_category>
+        <type>text</type>
+        <permissions>-rw-rw-r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>42</size>
+        <blksize>32768</blksize>
+        <blocks>8</blocks>
+        <modtime>2023-03-03 20:26:15+00</modtime>
+        <changetime>2023-03-15 18:11:06+00</changetime>
+        <acctime>2023-03-15 18:12:57+00</acctime>
+        <sumtime>2023-03-15 18:13:59+00</sumtime>
+        <inode>51642387</inode>
+      </file>
+      <file>
+        <path>about/0276883_map.jpg</path>
+        <digest algorithm="md5">ee41b62f937d68b55f4b882bcf46354d</digest>
+        <digest algorithm="sha1">e9a17454fb2ee28330d52db6008dc7bcd4462b6a</digest>
+        <digest algorithm="sha256">a0f95a618043ac89139ff241e9c07af6994f09c9a432b549a8a85fb59e5e8324</digest>
+        <digest algorithm="sha384">5ee3d33a7b285af051f56e3ba363f6c66bdcbb71790c5323c7052d0642ba87a9704f2db4784cb830e1bdbd41d5bd1ef9</digest>
+        <digest algorithm="sha512">7e825f0cc8b1dc7bb3f5b514cca3f257fc38b7eb6dc8122fcf8c44b88eaa4b3a35325047b40f691ee37f3e285130180e2401e87e26b2c3c51cea6b3103dc3328</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rw-rw-r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>235422</size>
+        <blksize>32768</blksize>
+        <blocks>464</blocks>
+        <modtime>2023-03-03 20:49:36+00</modtime>
+        <changetime>2023-03-15 18:11:06+00</changetime>
+        <acctime>2023-03-15 18:12:57+00</acctime>
+        <sumtime>2023-03-15 18:13:59+00</sumtime>
+        <inode>51642388</inode>
+      </file>
+      <file>
+        <path>about/0276883_preview.png</path>
+        <digest algorithm="md5">10103a41227ac0616aaf72f36c94ebf3</digest>
+        <digest algorithm="sha1">becd4366f3c8b94690f67bc919c077dcd5518e24</digest>
+        <digest algorithm="sha256">9045619a14d236fac8ddd0f27dbc10e75aac658716a4884e9d8e0f01b26f8ab4</digest>
+        <digest algorithm="sha384">cdf6333d98376e9d55021382583fbe788a41c136aad3fa1211a4af3a0e57ad8cc3ae19654966282f004448231a129da0</digest>
+        <digest algorithm="sha512">f88d5ac8959eadfe81e2d6d6e0c1f28b1c301a9a0fe92b9e86e769d72e55363342dbb50ac9f89d72c662ac845c89e1ed78067c1beff5993d497579fc5f8edcae</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>597718</size>
+        <blksize>32768</blksize>
+        <blocks>1168</blocks>
+        <modtime>2023-03-10 18:19:07+00</modtime>
+        <changetime>2023-03-15 18:11:07+00</changetime>
+        <acctime>2023-03-15 18:12:57+00</acctime>
+        <sumtime>2023-03-15 18:13:59+00</sumtime>
+        <inode>51642389</inode>
+      </file>
+      <file>
+        <path>about/J1KUMA-confirmation_email.txt</path>
+        <digest algorithm="md5">8420992a3c766bf9d8e52cae0bc4ecce</digest>
+        <digest algorithm="sha1">801fb9346649ae7278592099ffdf38f7c4bf0ffa</digest>
+        <digest algorithm="sha256">c222e70931829744adcb51a07700172b41239e98548c66704c0be8af8b69e1c6</digest>
+        <digest algorithm="sha384">9e9f9845d6f0284713a25faae4cd558946597628b24f479466e4eab89acf4019d45d29c4f3de4ab506a7b41683b191e1</digest>
+        <digest algorithm="sha512">3ebf957dff5437839460a8e18b5fe6d3abc261761e51e04510c08e1f92eace505b08746352350318cfd7f1b6e088f9416c7dedd056994cb22ee60344e983c99a</digest>
+        <type_category>regular</type_category>
+        <type>text</type>
+        <permissions>-rw-rw-r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>2113</size>
+        <blksize>32768</blksize>
+        <blocks>8</blocks>
+        <modtime>2023-02-25 16:43:52+00</modtime>
+        <changetime>2023-03-15 18:11:07+00</changetime>
+        <acctime>2023-03-15 18:12:57+00</acctime>
+        <sumtime>2023-03-15 18:13:59+00</sumtime>
+        <inode>51642390</inode>
+      </file>
+      <file>
+        <path>about/journal.txt</path>
+        <digest algorithm="md5">70e1099dc1da5169404e7ef7bbdf837e</digest>
+        <digest algorithm="sha1">5df69e0730d9266ed7a5b18df569582627ee0ef2</digest>
+        <digest algorithm="sha256">5fcce7f0c6e9bd00506f5c457a3f3107d7d411e26eb5bf41b8d64dc761538300</digest>
+        <digest algorithm="sha384">8f429f23b8d5c2f6398d1a49420f4634b59a55e4a0d08e32973f7e68dc7717dfe02fc93da83ceee7b3524181bdfd8bb3</digest>
+        <digest algorithm="sha512">e94fbc483e494a41293c219a53a42f994029af57bdbbbc57d2a794b5f073a4ac873a5383f78e197183ceb57f7e54e5485d903e9938b0e6bd6eac68cdecfe99d5</digest>
+        <type_category>regular</type_category>
+        <type>text</type>
+        <permissions>-rw-rw-r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>2229</size>
+        <blksize>32768</blksize>
+        <blocks>8</blocks>
+        <modtime>2023-03-15 15:29:59+00</modtime>
+        <changetime>2023-03-15 18:11:07+00</changetime>
+        <acctime>2023-03-15 18:12:57+00</acctime>
+        <sumtime>2023-03-15 18:13:59+00</sumtime>
+        <inode>51642391</inode>
+      </file>
+      <file>
+        <path>data</path>
+        <digest algorithm="md5">d41d8cd98f00b204e9800998ecf8427e</digest>
+        <digest algorithm="sha1">da39a3ee5e6b4b0d3255bfef95601890afd80709</digest>
+        <digest algorithm="sha256">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</digest>
+        <digest algorithm="sha384">38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b</digest>
+        <digest algorithm="sha512">cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e</digest>
+        <type_category>irregular</type_category>
+        <type>directory</type>
+        <permissions>drwxrwxr-x</permissions>
+        <linkcount>4</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>4096</size>
+        <blksize>32768</blksize>
+        <blocks>8</blocks>
+        <modtime>2023-03-03 21:08:54+00</modtime>
+        <changetime>2023-03-15 18:11:07+00</changetime>
+        <acctime>2023-03-15 18:12:57+00</acctime>
+        <sumtime>2023-03-15 18:13:59+00</sumtime>
+        <inode>51642382</inode>
+      </file>
+      <file>
+        <path>data/0-data</path>
+        <digest algorithm="md5">d41d8cd98f00b204e9800998ecf8427e</digest>
+        <digest algorithm="sha1">da39a3ee5e6b4b0d3255bfef95601890afd80709</digest>
+        <digest algorithm="sha256">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</digest>
+        <digest algorithm="sha384">38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b</digest>
+        <digest algorithm="sha512">cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e</digest>
+        <type_category>irregular</type_category>
+        <type>directory</type>
+        <permissions>drwxrwxr-x</permissions>
+        <linkcount>3</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>4096</size>
+        <blksize>32768</blksize>
+        <blocks>8</blocks>
+        <modtime>2023-03-02 20:55:44+00</modtime>
+        <changetime>2023-03-15 18:11:07+00</changetime>
+        <acctime>2023-03-15 18:12:57+00</acctime>
+        <sumtime>2023-03-15 18:13:59+00</sumtime>
+        <inode>51642384</inode>
+      </file>
+      <file>
+        <path>data/0-data/J1KUMA-ISO-19115-2.xml</path>
+        <digest algorithm="md5">fbdf4815ffc29d414839c193118c1602</digest>
+        <digest algorithm="sha1">73b01c93caa0b6ffc82eef34f2bb7d47dd13b200</digest>
+        <digest algorithm="sha256">484da38799c611a8bb76f4134377dfc54eed6445814176e344970aa876ab5c66</digest>
+        <digest algorithm="sha384">8d1146b48e6cd461ee908f8e330438c99ffc7cfa9563f0a7622be6e9af3dfd19868ac2f3098e71702fbf9c21c630bc34</digest>
+        <digest algorithm="sha512">b7627a7712e122b6c42f704384194a655be274805346ee150fad5b65829f2cbecde48516ac7f0e03c2f6faf3c5ca675c96b4608ac49f95d7360246ffd08427dc</digest>
+        <type_category>regular</type_category>
+        <type>text</type>
+        <permissions>-rw-rw-r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>42813</size>
+        <blksize>32768</blksize>
+        <blocks>88</blocks>
+        <modtime>2023-02-25 15:45:27+00</modtime>
+        <changetime>2023-03-15 18:11:07+00</changetime>
+        <acctime>2023-03-15 18:12:57+00</acctime>
+        <sumtime>2023-03-15 18:13:59+00</sumtime>
+        <inode>51642392</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020</path>
+        <digest algorithm="md5">d41d8cd98f00b204e9800998ecf8427e</digest>
+        <digest algorithm="sha1">da39a3ee5e6b4b0d3255bfef95601890afd80709</digest>
+        <digest algorithm="sha256">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</digest>
+        <digest algorithm="sha384">38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b</digest>
+        <digest algorithm="sha512">cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e</digest>
+        <type_category>irregular</type_category>
+        <type>directory</type>
+        <permissions>drwxrwxr-x</permissions>
+        <linkcount>2</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>4096</size>
+        <blksize>32768</blksize>
+        <blocks>8</blocks>
+        <modtime>2023-03-03 19:58:25+00</modtime>
+        <changetime>2023-03-15 18:12:39+00</changetime>
+        <acctime>2023-03-15 18:12:57+00</acctime>
+        <sumtime>2023-03-15 18:13:59+00</sumtime>
+        <inode>51642386</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Black_Corals.zip</path>
+        <digest algorithm="md5">312680537a13a93bf3ff16693156c2fc</digest>
+        <digest algorithm="sha1">5293908a4a95963b9616e94341fe0c4ede1a4614</digest>
+        <digest algorithm="sha256">e989f462d20e9321ab3ddb6ecccc34882162289e1ad30eb89cae29f6624c0641</digest>
+        <digest algorithm="sha384">5816161dedadd94f913a5f22b6ff04b6ea57b9a9f5a53a7536db9be95dc12367b7e76be5b90746c963fb88106f36c86b</digest>
+        <digest algorithm="sha512">60b55294450f65dbbb04eb335b534ca33bd83a24c6960a4d0f4b0d7e4716d4826eb980fe880702c5bb987fd503ad8ae0919a4f3c3d6ae2dd148ba97083474a8f</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>74917973</size>
+        <blksize>32768</blksize>
+        <blocks>146328</blocks>
+        <modtime>2023-03-03 17:52:21+00</modtime>
+        <changetime>2023-03-15 18:11:13+00</changetime>
+        <acctime>2023-03-15 18:12:57+00</acctime>
+        <sumtime>2023-03-15 18:14:02+00</sumtime>
+        <inode>51642393</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Bottom_Salinity_and_Temp.zip</path>
+        <digest algorithm="md5">d8e64dd8b95ce5ba2cf2132fa45f3857</digest>
+        <digest algorithm="sha1">1faa8a6eeedc39f3bf0d01edfc5152291f561596</digest>
+        <digest algorithm="sha256">296ff3142f6af76f154931cdb2b42399a60dc130cb25454eb10f362baba92f6d</digest>
+        <digest algorithm="sha384">a64103d156bf834532c7350a3dbb652aacc1cde9e93c80e2779184c54a5162d6265cbd9209c5cdbcd63baa8d8331541f</digest>
+        <digest algorithm="sha512">235132702034faa8970476c2f2f3bce73b759797f3044c02aa2d7690bcfc39c99bf3f459158eba54a2fbfb7f0b3de0bcc8e468d36efcb9ceb6bdb1d603a31f7c</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>79861904</size>
+        <blksize>32768</blksize>
+        <blocks>155984</blocks>
+        <modtime>2023-03-03 17:53:10+00</modtime>
+        <changetime>2023-03-15 18:11:17+00</changetime>
+        <acctime>2023-03-15 18:13:00+00</acctime>
+        <sumtime>2023-03-15 18:14:05+00</sumtime>
+        <inode>51642394</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Coral_Richness.zip</path>
+        <digest algorithm="md5">bdcfd6c91795a9553388ce57bcea0065</digest>
+        <digest algorithm="sha1">ae2a810f1cbf088186a8990a7f9fe9e3d5474037</digest>
+        <digest algorithm="sha256">4f42b5e11139cf3cb1775763d160a743e838b21858c0540d3386260a659b8bc8</digest>
+        <digest algorithm="sha384">d9c230bfa854fcf4e63b24767c910b10a0c69d7270e173f11e34169fc72999a64075d69262d480445a8a133cc8ee2681</digest>
+        <digest algorithm="sha512">5832d533059cf2dd6b421c167d1f699c1e8e90bfc593473ddb35e4ec10abd87d258981b8e64fc285a8b7f7ef17ef621f9b8b81ff538b7f52e958cd5f3322dca2</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>685086</size>
+        <blksize>32768</blksize>
+        <blocks>1344</blocks>
+        <modtime>2023-03-03 17:53:54+00</modtime>
+        <changetime>2023-03-15 18:11:18+00</changetime>
+        <acctime>2023-03-15 18:13:02+00</acctime>
+        <sumtime>2023-03-15 18:14:05+00</sumtime>
+        <inode>51642395</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/DataDocumentation.pdf</path>
+        <digest algorithm="md5">5381d2c74b6b7b187860ba0664ed7f3c</digest>
+        <digest algorithm="sha1">34ee04733d42503e406f69098a6f13616d101d15</digest>
+        <digest algorithm="sha256">acee3daf7c14b361a8856348965df31622748c3997ea1f7541d601473f7164fc</digest>
+        <digest algorithm="sha384">ec68831a15a060d5f4561b843702a9381de637d3d19271c835256fcbbb9a51dfb76d6dba523631f03b26319ea0e337d0</digest>
+        <digest algorithm="sha512">089be329fbdb7978f8261de2487e499b01e22823a7f9cd17653d951fb5716c16b6a4eca0a5c5ec763eaa5a1c2b5516c9703b4655b9b9cc61c696a4d85e6921ed</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rw-rw-r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>238887</size>
+        <blksize>32768</blksize>
+        <blocks>472</blocks>
+        <modtime>2023-02-25 08:30:50+00</modtime>
+        <changetime>2023-03-15 18:11:19+00</changetime>
+        <acctime>2023-03-15 18:13:02+00</acctime>
+        <sumtime>2023-03-15 18:14:05+00</sumtime>
+        <inode>51642396</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Demosponges.zip</path>
+        <digest algorithm="md5">34e8cefe5c21608a53c3453ea61e7ad2</digest>
+        <digest algorithm="sha1">db01ab6c3d375aed355914e110267f2fe28926e3</digest>
+        <digest algorithm="sha256">8351ffd4431f6ed2310dd186b9dbb9b97af4abf79f997890a661cc18c9d876d1</digest>
+        <digest algorithm="sha384">c437fda26ec6f4e778bca625795bdd678036a4975f721497b53c779f0ba959479f49189979956a555db26b694f9f3f65</digest>
+        <digest algorithm="sha512">b2fede8380d7c5472211c8a6fe9d4a8b2e2b474edf51ad7654fff3d8aa7c42b9b78b512e0e00eaacbc57e02c331502dd65a1353fe2d6a31dbd6bb06be9ff9d8b</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>200598185</size>
+        <blksize>32768</blksize>
+        <blocks>391800</blocks>
+        <modtime>2023-03-03 17:55:10+00</modtime>
+        <changetime>2023-03-15 18:11:30+00</changetime>
+        <acctime>2023-03-15 18:13:03+00</acctime>
+        <sumtime>2023-03-15 18:14:12+00</sumtime>
+        <inode>51642397</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Glass_Sponges.zip</path>
+        <digest algorithm="md5">d22de4db41d9c0b7e6d966fecb22f719</digest>
+        <digest algorithm="sha1">715def8ef3db7654f957415384383e336aac6f88</digest>
+        <digest algorithm="sha256">536b272648e1c542cfe50d64d336e75fe6df53cfa9b3222057cc019e8b482b17</digest>
+        <digest algorithm="sha384">de7be900c3506aae7572041266198dd10d76aee89dc2c2372afdb1e805da85d67d531b0c1c2c41a023613e2cc997eb42</digest>
+        <digest algorithm="sha512">95c0d7df995c2f2f0b2f379a2731c73050607ad15066a37296f6f9d4a3c741bc362819879aac37c3b6d4ed628d36f7941a6f83df55e493bda432f97dcd693845</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>175227748</size>
+        <blksize>32768</blksize>
+        <blocks>342248</blocks>
+        <modtime>2023-03-03 17:57:55+00</modtime>
+        <changetime>2023-03-15 18:11:37+00</changetime>
+        <acctime>2023-03-15 18:13:09+00</acctime>
+        <sumtime>2023-03-15 18:14:15+00</sumtime>
+        <inode>51642398</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Gorgonian_Corals.zip</path>
+        <digest algorithm="md5">94e127e6cb168f05157af050649ce845</digest>
+        <digest algorithm="sha1">04e20bc23b0e9313e0d9749020c006625ef6b2f7</digest>
+        <digest algorithm="sha256">54eca38e30aa28b45b5ba58fe5a0411eac2b1c3a77d378142e65675ddb45c8da</digest>
+        <digest algorithm="sha384">443202457cf88f99374627435c1b53fc6aa0214fac795855ee02d981780451c7129c46f3801d7a4de8dabd90b469c636</digest>
+        <digest algorithm="sha512">ac15f3c111631224a34ab1e858f0d93cd586a8db5e43773ea2c74b714a9b6ca9eec35f77bc83d300238f5c1afc0d654694bccb546fff5af9955e3bc0f80e292d</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>299441872</size>
+        <blksize>32768</blksize>
+        <blocks>584848</blocks>
+        <modtime>2023-03-03 17:59:58+00</modtime>
+        <changetime>2023-03-15 18:11:59+00</changetime>
+        <acctime>2023-03-15 18:13:15+00</acctime>
+        <sumtime>2023-03-15 18:14:23+00</sumtime>
+        <inode>51642399</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Ocean_Color.zip</path>
+        <digest algorithm="md5">5d9775e1733a6143cd7d52ec865e3913</digest>
+        <digest algorithm="sha1">1bcee01363e0d1433ece221a3fe979ebc6645e7e</digest>
+        <digest algorithm="sha256">c40797c50a1adf930e8eb649c7edb079620c8d85cdf10d7e2a0cbc366ccaaa9b</digest>
+        <digest algorithm="sha384">3731b0a43855173479cb714d614033f80c34c637d3f68dee83418154c774ddc71cf0a6bd45483ac5358b9852beb8caad</digest>
+        <digest algorithm="sha512">04dfa7addb14d667be7481177559232b1925a805d76fff0ec62b293cbeee8b3bb2f61028bb6e9b843a9ddc47643ac3af6690b5eff75fb7b6be7098be7e64b228</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>90946861</size>
+        <blksize>32768</blksize>
+        <blocks>177632</blocks>
+        <modtime>2023-03-03 18:02:28+00</modtime>
+        <changetime>2023-03-15 18:12:03+00</changetime>
+        <acctime>2023-03-15 18:13:26+00</acctime>
+        <sumtime>2023-03-15 18:14:27+00</sumtime>
+        <inode>51642400</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Ocean_Currents.zip</path>
+        <digest algorithm="md5">3f8c8264fa05efe5c61f0c37edcb7368</digest>
+        <digest algorithm="sha1">e37973dfeae3077a189489093ef0ba529cade57c</digest>
+        <digest algorithm="sha256">1bba4038265bdc19e48e48995259639a00386ad1ea12e50dbe865ef2301b8a0b</digest>
+        <digest algorithm="sha384">b5bfb737bab197936e3b168de2ba3d39132217bea3d5d305eeea1c9f2260083c151607ec00ec5be37ca6fc32e945cd46</digest>
+        <digest algorithm="sha512">ea2c5dfcf6db84101b49f238455f9acb9d1b4a54d0dc5a9801a919352f4530a5fb420e88790233f7eb09727bfa62f3b7e30b9f532723c292ffb3531c4f8bc226</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>148486285</size>
+        <blksize>32768</blksize>
+        <blocks>290016</blocks>
+        <modtime>2023-03-03 18:05:27+00</modtime>
+        <changetime>2023-03-15 18:12:08+00</changetime>
+        <acctime>2023-03-15 18:13:28+00</acctime>
+        <sumtime>2023-03-15 18:14:33+00</sumtime>
+        <inode>51642401</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Sea_Pens.zip</path>
+        <digest algorithm="md5">29648b5e472a7ffc0f175780b377bdee</digest>
+        <digest algorithm="sha1">02f0652c8b7322a4b76a5a4f858801176fb0d39e</digest>
+        <digest algorithm="sha256">ef0b222e57a372c147b1584f374a346cc6d72a6b3a203130ffda456be189cde1</digest>
+        <digest algorithm="sha384">bf4fc4268a957fad6a245c3f5733262c6974c38295bcd01e08293e3b1246aac9f2a6a11be5be264b1527adbdb1260cf7</digest>
+        <digest algorithm="sha512">9fef404cfa3994b05bb3b639ad08b095a30e0987eff1c30a4628eedefa39d717268d5d31b828f10d6a6aeee9ed4c0608a597c995462daed2318a6caee87b5d1a</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>226234141</size>
+        <blksize>32768</blksize>
+        <blocks>441864</blocks>
+        <modtime>2023-03-03 19:42:08+00</modtime>
+        <changetime>2023-03-15 18:12:16+00</changetime>
+        <acctime>2023-03-15 18:13:34+00</acctime>
+        <sumtime>2023-03-15 18:14:39+00</sumtime>
+        <inode>51642402</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Seafloor_Topography.zip</path>
+        <digest algorithm="md5">b3cb197720a148f9c2b3e4b3a5ab7918</digest>
+        <digest algorithm="sha1">eb7c0ec25b192044a35649383b52b9f7dace3ea7</digest>
+        <digest algorithm="sha256">554a3d9aa6049eae4a203d599b913a4516c7f12bf92aa1d10ae9d199a20e0bab</digest>
+        <digest algorithm="sha384">0e82f058029a088432fc80b91333fb2473bd8f60cae3000d2091668423ec46cbbc9ae5d9799b535eacbb3e705d7dfa7d</digest>
+        <digest algorithm="sha512">40d5d8d11036e3d0a5e0699a2ae7e64e9a200cbac5ff9660f6351c2bbaa24885ac4ca4745a914e7061ec2185c4c11bae48385aa3f7d535f90098bc24d88f4428</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>155942608</size>
+        <blksize>32768</blksize>
+        <blocks>304576</blocks>
+        <modtime>2023-03-03 18:06:33+00</modtime>
+        <changetime>2023-03-15 18:12:22+00</changetime>
+        <acctime>2023-03-15 18:13:41+00</acctime>
+        <sumtime>2023-03-15 18:14:46+00</sumtime>
+        <inode>51642403</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Soft_Corals_and_Stylasterids.zip</path>
+        <digest algorithm="md5">23bcda55d9eecb7aeb5984610123adf9</digest>
+        <digest algorithm="sha1">180d8b5b4240bf03010e39ca8e6027dea47aa76b</digest>
+        <digest algorithm="sha256">1087334e30eb37e077a8174792bd4dc78c30729ca80ece79b82b5b6a57f98e06</digest>
+        <digest algorithm="sha384">c255c067ac276c09a5a16a79d3aed52853eaf7835484eb0e9aa7fd1de7869bdac6ace2ecb89b15ce94fb4ea24611b863</digest>
+        <digest algorithm="sha512">82d9de14380a28e996cf81e6108d2dd42a7f9cd61fb35aad88595e7bcbee6861beaf4fa6a332c778503f2d0f77abf73c6e58ff4068665b6dabd689c32e04684b</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>75843900</size>
+        <blksize>32768</blksize>
+        <blocks>148136</blocks>
+        <modtime>2023-03-03 18:08:55+00</modtime>
+        <changetime>2023-03-15 18:12:26+00</changetime>
+        <acctime>2023-03-15 18:13:46+00</acctime>
+        <sumtime>2023-03-15 18:14:49+00</sumtime>
+        <inode>51642404</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Stony_Corals.zip</path>
+        <digest algorithm="md5">87e4c52e0862837fef3e0a4104c326f0</digest>
+        <digest algorithm="sha1">9bc06cd9b7a421cad975b96cf16ec0d6b1b9c60a</digest>
+        <digest algorithm="sha256">8523fd988a00147ad40aa6ff151608bf3cb2804a517bb9be4e9ba05090335841</digest>
+        <digest algorithm="sha384">7f0ec37ae0cc166f4b8493a016e5adb411e9eddf544d7671b03af702d6659792aa9fd5f2da50d4469992ff3a4845ceab</digest>
+        <digest algorithm="sha512">c2c9241a0a2e92085994873ad679b83750e84509c13ec9377a4c183191d9172e8f6b0664d548fc2d4ac5217251903af631a82d3ab0d25dd9159c21a1d05e14dc</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>100426416</size>
+        <blksize>32768</blksize>
+        <blocks>196152</blocks>
+        <modtime>2023-03-03 18:09:57+00</modtime>
+        <changetime>2023-03-15 18:12:30+00</changetime>
+        <acctime>2023-03-15 18:13:48+00</acctime>
+        <sumtime>2023-03-15 18:14:51+00</sumtime>
+        <inode>51642405</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Substrate_and_Geography.zip</path>
+        <digest algorithm="md5">a4e64548b65265c29afb8c46876e36ad</digest>
+        <digest algorithm="sha1">ee72be553ab3c280a4bf8b0e53f24d445dc929f7</digest>
+        <digest algorithm="sha256">740bc77b54063428394aa825a57191cfe5a426feb18c9749a4c904826e6f0920</digest>
+        <digest algorithm="sha384">97dc2d61466b30048239a5512a4d2b2e05733f168d6308be37d76169a77973a0bcfd549e4c104116b7a0e3bf4da104b0</digest>
+        <digest algorithm="sha512">98f7e84c1a539005cf2b501d4d91a4f861e439edc4730e99326ca33fcc87c4fffa450b74781a831f6c15ebe135fe17a3368750422d0f9b0329cfe3976d9dd59a</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>52158796</size>
+        <blksize>32768</blksize>
+        <blocks>101880</blocks>
+        <modtime>2023-03-03 18:10:31+00</modtime>
+        <changetime>2023-03-15 18:12:32+00</changetime>
+        <acctime>2023-03-15 18:13:52+00</acctime>
+        <sumtime>2023-03-15 18:14:53+00</sumtime>
+        <inode>51642406</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/USWestCoast_DeepSeaCoralsSponges_Modeling_BrowseGraphic.jpg</path>
+        <digest algorithm="md5">f948b4dc76f49816bbd53b3e44b65c46</digest>
+        <digest algorithm="sha1">e129413122f781270ec9eb45316499458233a794</digest>
+        <digest algorithm="sha256">88275a077fd99e6cf2e96bb773da1cd85d3d6c6b286ede5abf6787c7d50280dd</digest>
+        <digest algorithm="sha384">412c4deca4401e8b3527e8fe3a0cdb65fb629eb44132b6ceb0242ed2e16f34c996fc477521ff0207fd1b75c54a4d855f</digest>
+        <digest algorithm="sha512">261cbf885a11f99716ae2c1d8743f4327a11d092defe7664a9e0478b955d4c7bc6779df6ffc74830495367a067074375e105525d283014c93d6c9e8e5ca65751</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rw-rw-r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>195288</size>
+        <blksize>32768</blksize>
+        <blocks>384</blocks>
+        <modtime>2021-08-16 12:55:18+00</modtime>
+        <changetime>2023-03-15 18:12:32+00</changetime>
+        <acctime>2023-03-15 18:13:54+00</acctime>
+        <sumtime>2023-03-15 18:14:53+00</sumtime>
+        <inode>51642407</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Wave_Height.zip</path>
+        <digest algorithm="md5">09aabec75805ee45237cfddfcd0f9197</digest>
+        <digest algorithm="sha1">d52c341987674bc15ec74cebbee9dffbc8a0c26c</digest>
+        <digest algorithm="sha256">ed3b11440e1c404c61645b502867f0f0e7af219bff230260608c331e10c418c7</digest>
+        <digest algorithm="sha384">b766bcaad1cd0cff5f4bb3903238acf529ead68f1e7dfe3e63c6da81e25f4376e5e16a5f1e479702f925c40067bd8633</digest>
+        <digest algorithm="sha512">cc371af3e58fbd25d06f461722b1fceb7db521f6f887c14a912e9c91facc739350197cc43be5f52d8cb19346fcb863a6f2112e46120e7e0c842bdc3c123b49c1</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>86292305</size>
+        <blksize>32768</blksize>
+        <blocks>168544</blocks>
+        <modtime>2023-03-03 18:11:15+00</modtime>
+        <changetime>2023-03-15 18:12:36+00</changetime>
+        <acctime>2023-03-15 18:13:54+00</acctime>
+        <sumtime>2023-03-15 18:14:55+00</sumtime>
+        <inode>51642408</inode>
+      </file>
+      <file>
+        <path>data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Wave_Power.zip</path>
+        <digest algorithm="md5">b7dfbf2c6ac378a89b513d9042001a8a</digest>
+        <digest algorithm="sha1">9a7c2f8f783948ab5b246a098aee4e0e422614c1</digest>
+        <digest algorithm="sha256">8fcb6420a3fe51fe3af814d93a96768f00b2100fc131259f47188e12ca57c402</digest>
+        <digest algorithm="sha384">63ea3b08d38353e44541ef783b147aa05b4f19b7a182800e6ed9201d72a53614bd7aa135a8e785e99fdac25aa0ba6f21</digest>
+        <digest algorithm="sha512">083521c1111c3715407fb0dcef2a42cb9dd95025989f9d9735b3e1adf7e2ed0420944e9ec08a43028c380229ac3e8b810a023782cf38db262657abb65aac77d0</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>89924273</size>
+        <blksize>32768</blksize>
+        <blocks>175640</blocks>
+        <modtime>2023-03-03 19:20:08+00</modtime>
+        <changetime>2023-03-15 18:12:39+00</changetime>
+        <acctime>2023-03-15 18:13:56+00</acctime>
+        <sumtime>2023-03-15 18:14:58+00</sumtime>
+        <inode>51642409</inode>
+      </file>
+      <file>
+        <path>data/1-data</path>
+        <digest algorithm="md5">d41d8cd98f00b204e9800998ecf8427e</digest>
+        <digest algorithm="sha1">da39a3ee5e6b4b0d3255bfef95601890afd80709</digest>
+        <digest algorithm="sha256">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</digest>
+        <digest algorithm="sha384">38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b</digest>
+        <digest algorithm="sha512">cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e</digest>
+        <type_category>irregular</type_category>
+        <type>directory</type>
+        <permissions>drwxr-xr-x</permissions>
+        <linkcount>2</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>4096</size>
+        <blksize>32768</blksize>
+        <blocks>8</blocks>
+        <modtime>2023-03-03 21:09:09+00</modtime>
+        <changetime>2023-03-15 18:12:39+00</changetime>
+        <acctime>2023-03-15 18:13:59+00</acctime>
+        <sumtime>2023-03-15 18:14:58+00</sumtime>
+        <inode>51642385</inode>
+      </file>
+      <file>
+        <path>data/1-data/DataDocumentation.pdf</path>
+        <digest algorithm="md5">2177e5b0cdec78011c5f76f76101737d</digest>
+        <digest algorithm="sha1">3583b1a8fe0b6b8b34157a2f7ae4e8199cdebec3</digest>
+        <digest algorithm="sha256">353ef6db3bd1055ae462534a27928160914100674e825e45aab8d026aea2b20a</digest>
+        <digest algorithm="sha384">ace7316b13b4f043a37a5f2859a3d89b361e1e7fbd95f10a8a084d7a6a596232a9f5c8d7856b116f35d62328f65230c4</digest>
+        <digest algorithm="sha512">337abc5a3ee911c56331624d88e265dc9f32112d0f456f6c8ac0ba46966f866c55f8f1b15657dface9eb71a57289d7d2b7fa52f7fd0eef8cbb699aea58da81d7</digest>
+        <type_category>regular</type_category>
+        <type>binary</type>
+        <permissions>-rwxr--r--</permissions>
+        <linkcount>1</linkcount>
+        <user>root</user>
+        <group>root</group>
+        <size>776253</size>
+        <blksize>32768</blksize>
+        <blocks>1520</blocks>
+        <modtime>2023-03-03 21:08:26+00</modtime>
+        <changetime>2023-03-15 18:12:39+00</changetime>
+        <acctime>2023-03-15 18:13:59+00</acctime>
+        <sumtime>2023-03-15 18:14:58+00</sumtime>
+        <inode>51642410</inode>
+      </file>
+    </files>
+  </body>
+</accession>
