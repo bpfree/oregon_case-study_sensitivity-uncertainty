@@ -73,6 +73,8 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg,
                           layer = paste(sf::st_layers(dsn = study_area_gpkg,
                                                       do_count = TRUE)[[1]][2]))
 
+#####################################
+
 ## NOAA Charted submarine cable data (source: https://marinecadastre.gov/downloads/data/mc/SubmarineCable.zip)
 ### Metadata: https://www.fisheries.noaa.gov/inport/item/57238
 submarine_cables_noaa <- sf::st_read(dsn = submarine_cable_dir,
