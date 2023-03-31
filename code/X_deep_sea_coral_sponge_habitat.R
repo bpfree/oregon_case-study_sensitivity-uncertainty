@@ -38,7 +38,9 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 natural_resources_geopackage <- "data/c_submodel_data/natural_resources.gpkg"
 
 #### Intermediate directories
-coral_sponge_habitat_gpkg <- "data/b_intermediate_data/pacpars.gpkg"
+coral_sponge_habitat_gpkg <- "data/b_intermediate_data/coral_sponge_habitat.gpkg"
+
+raster_dir <- "data/b_intermediate_data"
 
 #####################################
 #####################################
