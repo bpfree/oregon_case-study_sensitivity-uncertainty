@@ -107,7 +107,7 @@ high_habitat_polygon <- terra::as.polygons(x = high_habitat) %>%
   sf::st_cast("POLYGON") %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
   sf::st_transform("EPSG:26910") %>%
-  # simplify column name to "richness"
+  # simplify column name to "richness" (this is the first column of the object, thus the colnames(.)[1] means take the first column name from the high_habitat object)
   dplyr::rename(richness = colnames(.)[1]) %>%
   # obtain areas with species (richness >= 1)
   dplyr::filter(richness >= 1) %>%
@@ -144,5 +144,15 @@ oregon_hex_coral_sponge_robust <- oregon_hex[robust_habitat_polygon, ]
 
 # Export data
 ## Natural resources submodel
-sf::st_write(obj = oregon_hex_coral_sponge_high, dsn = natural_resources_geopackage, layer = "oregon_hex_high_habitat_coral_sponge500")
-sf::st_write(obj = oregon_hex_coral_sponge_robust, dsn = natural_resources_geopackage, layer = "oregon_hex_robust_habitat_coral_sponge1000")
+sf::st_write(obj = oregon_hex_coral_sponge_high, dsn = natural_resources_geopackage, layer = "oregon_hex_high_habitat_coral_sponge", append = F)
+sf::st_write(obj = oregon_hex_coral_sponge_robust, dsn = natural_resources_geopackage, layer = "oregon_hex_robust_habitat_coral_sponge", append = F)
+
+## Deep-sea coral and sponge habitat
+sf::st_write(obj = high_habitat_polygon, dsn = coral_sponge_habitat_gpkg, layer = "coral_sponge_high_habitat_polygon", append = F)
+sf::st_write(obj = robust_habitat_polygon, dsn = coral_sponge_habitat_gpkg, layer = "coral_sponge_robust_habitat_polygon", append = F)
+
+sf::st_write(obj = oregon_hex_coral_sponge_high, dsn = coral_sponge_habitat_gpkg, layer = "oregon_hex_high_habitat_coral_sponge", append = F)
+sf::st_write(obj = oregon_hex_coral_sponge_robust, dsn = coral_sponge_habitat_gpkg, layer = "oregon_hex_robust_habitat_coral_sponge", append = F)
+
+terra::writeRaster(high_habitat, filename = file.path(raster_dir, "coral_sponge_high_habitat.grd"), overwrite = T)
+terra::writeRaster(robust_habitat, filename = file.path(raster_dir, "coral_sponge_robust_habitat.grd"), overwrite = T)
