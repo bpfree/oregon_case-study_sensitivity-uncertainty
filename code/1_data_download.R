@@ -163,6 +163,13 @@ pacpars_data <- "https://navcen.uscg.gov/sites/default/files/pdf/PARS/PAC_PARS_2
 
 #####################################
 
+## Biologically Important Areas I (https://cetsound.noaa.gov/Assets/cetsound/data/CetMap_BIA_WGS84.zip)
+### ***Note: currently the BIA I data are informing blue whale foraging; in the future the BIA II data may affect the analysis
+### BIA I Map (2015): https://cetsound.noaa.gov/biologically-important-area-map
+### BIA II Paper (2023): https://www.frontiersin.org/articles/10.3389/fmars.2023.1081893/full
+### BIA II Map (2023 Update): https://experience.arcgis.com/experience/51a9e25c75a1470386827439a918e056
+bia_data <- "https://cetsound.noaa.gov/Assets/cetsound/data/CetMap_BIA_WGS84.zip"
+
 ## Essential fish habitat conservation areas (source: https://media.fisheries.noaa.gov/2021-02/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020.zip)
 ### Text: https://www.ecfr.gov/current/title-50/chapter-VI/part-660/subpart-C/section-660.76
 efhca_data <- "https://media.fisheries.noaa.gov/2021-02/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020.zip"
@@ -234,6 +241,9 @@ download_list <- c(
   
   # PACPARS
   pacpars_data,
+  
+  # BIAs
+  bia_data,
   
   # essential fish habitat conservation areas
   efhca_data,
