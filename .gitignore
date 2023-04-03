@@ -24,7 +24,7 @@ data/a_raw_data/USGSEsriWCMC_GlobalIslands_v3.zip
 data/a_raw_data/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020/HAPCs_2006
 
 #### NMFS ESA critical habitats
-data/a_raw_data/
+data/a_raw_data/NMFS_ESA_Critical_Habitat_20221017.gdb
 
 #### Deep sea coral and sponge habitat
 data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Demosponges.zip
