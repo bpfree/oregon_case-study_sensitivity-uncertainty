@@ -126,11 +126,13 @@ killer_whale_critical_habitat <- sf::st_read(dsn = nmfs_esa_habitat_dir, layer =
   dplyr::mutate(layer = "protected species")
 
 ### Blue Whale
-### ***Note: Comments from NMFS seeks to close any areas between 42-degrees and 10 minutes and south to the Oregon-California border
+### ***Note: Comments from NOAA (NMFS, NCCOS, & IOOS) seeks to close any areas between 42-degrees and 10 minutes and south to the Oregon-California border
 ### These are closed as foraging grounds to the blue whale. The comments reference 9 areas for blue whales for the biologically
 ### important areas. None of these areas (https://cetsound.noaa.gov/Assets/cetsound/data/CetMap_BIA_WGS84.zip) intersect the Oregon
 ### call areas. Those data came from the 2015 dataset. In 2023, a new update was conducted (https://www.frontiersin.org/articles/10.3389/fmars.2023.1081893/full)
 ### Presently (31 March 2023) the data are limited to Alaska, yet it is expected data for the west coast will be produced.
+
+### NOAA (NMFS, NCCOS, & IOOS) Comments: https://www.regulations.gov/comment/BOEM-2022-0009-0178
 
 ### Oregon and California border is detailed as the 42nd parallel in both of their constitutions.
 #### Oregon (Article XVI - Boundaries): https://www.oregonlegislature.gov/bills_laws/Pages/OrConst.aspx
@@ -145,78 +147,20 @@ cal_ore_boundary <- rbind(c("point",-124.1,42),
                           c("point",-124.9,42),
                           c("point",-125.2,42),
                           c("point",-125.5,42),
-                          c("point",-125.8,42)) %>%
-  # convert to data frame
-  as.data.frame() %>%
-  # rename column names
-  dplyr::rename("point" = "V1",
-                "lon" = "V2",
-                "lat" = "V3") %>%
-  # convert to simple feature
-  sf::st_as_sf(coords = c("lon", "lat"),
-               # set the coordinate reference system to WGS84
-               crs = 4326) %>% # EPSG 4326 (https://epsg.io/4326)
-  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
-  sf::st_transform("EPSG:26910") %>% # EPSG 26910 (https://epsg.io/26910)
-  # group all the points
-  dplyr::group_by(point) %>%
-  # combine geometries without resolving borders to create multipoint feature
-  dplyr::summarise(geometry = st_combine(geometry)) %>%
-  # convert back to sf
-  sf::st_as_sf() %>%
-  # convert to linestring simple feature
-  sf::st_cast("LINESTRING") %>%
-  # convert back to sf
-  sf::st_as_sf()
+                          c("point",-125.8,42))
 
 #### Oregon Call area line
-oregon_4210_line <- rbind(c("point",-124.1,42.10),
-                          c("point",-124.3,42.10),
-                          c("point",-124.6,42.10),
-                          c("point",-124.3,42.10),
-                          c("point",-124.9,42.10),
-                          c("point",-125.2,42.10),
-                          c("point",-125.5,42.10),
-                          c("point",-125.8,42.10)) %>%
-  # convert to data frame
-  as.data.frame() %>%
-  # rename column names
-  dplyr::rename("point" = "V1",
-                "lon" = "V2",
-                "lat" = "V3") %>%
-  # convert to simple feature
-  sf::st_as_sf(coords = c("lon", "lat"),
-               # set the coordinate reference system to WGS84
-               crs = 4326) %>% # EPSG 4326 (https://epsg.io/4326)
-  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
-  sf::st_transform("EPSG:26910") %>% # EPSG 26910 (https://epsg.io/26910)
-  # group all the points
-  dplyr::group_by(point) %>%
-  # combine geometries without resolving borders to create multipoint feature
-  dplyr::summarise(geometry = st_combine(geometry)) %>%
-  # convert back to sf
-  sf::st_as_sf() %>%
-  # convert to linestring simple feature
-  sf::st_cast("LINESTRING") %>%
-  # convert back to sf
-  sf::st_as_sf()
+oregon_4210_line <- rbind(c("point",-125.8,42.1666667),
+                          c("point",-125.5,42.1666667),
+                          c("point",-125.2,42.1666667),
+                          c("point",-124.9,42.1666667),
+                          c("point",-124.3,42.1666667),
+                          c("point",-124.6,42.1666667),
+                          c("point",-124.3,42.1666667),
+                          c("point",-124.1,42.1666667))
 
-test <- rbind(c("point",-124.1,42),
-              c("point",-124.3,42),
-              c("point",-124.6,42),
-              c("point",-124.3,42),
-              c("point",-124.9,42),
-              c("point",-125.2,42),
-              c("point",-125.5,42),
-              c("point",-125.8,42),
-              c("point",-124.1,42.10),
-              c("point",-124.3,42.10),
-              c("point",-124.6,42.10),
-              c("point",-124.3,42.10),
-              c("point",-124.9,42.10),
-              c("point",-125.2,42.10),
-              c("point",-125.5,42.10),
-              c("point",-125.8,42.10)) %>%
+blue_whale_foraging <- rbind(cal_ore_boundary,
+                             oregon_4210_line) %>%
   # convert to data frame
   as.data.frame() %>%
   # rename column names
@@ -242,7 +186,7 @@ test <- rbind(c("point",-124.1,42),
 
 blue_whale <- oregon_call_areas %>%
   sf::st_make_valid() %>%
-  rmapshaper::ms_clip(clip = test)
+  rmapshaper::ms_clip(clip = blue_whale_foraging)
 
 #####################################
 
@@ -251,6 +195,7 @@ oregon_leatherback <- oregon_hex[leatherback_exclusion_area, ]
 oregon_humpback_ca_dps <- oregon_hex[humpback_central_america_dps, ]
 oregon_humpback_mexico_dps <- oregon_hex[humpback_mexico_dps, ]
 oregon_killer_whale <- oregon_hex[killer_whale_critical_habitat, ]
+oregon_blue_whale <- oregon_hex[blue_whale, ]
 
 #####################################
 #####################################
@@ -260,4 +205,5 @@ sf::st_write(obj = oregon_leatherback, dsn = fisheries_submodel, layer = "oregon
 sf::st_write(obj = oregon_humpback_ca_dps, dsn = fisheries_submodel, layer = "oregon_hex_humpback_ca_dps", append = F)
 sf::st_write(obj = oregon_humpback_mexico_dps, dsn = fisheries_submodel, layer = "oregon_hex_humpback_mexico_dps", append = F)
 sf::st_write(obj = oregon_killer_whale, dsn = fisheries_submodel, layer = "oregon_hex_killer_whale", append = F)
+sf::st_write(obj = oregon_blue_whale, dsn = fisheries_submodel, layer = "oregon_hex_blue_whale", append = F)
 
