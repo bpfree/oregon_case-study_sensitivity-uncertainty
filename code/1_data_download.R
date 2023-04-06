@@ -320,7 +320,7 @@ file.rename(from = file.path(data_dir,
                              list.files(data_dir,
                                         # search for pattern that matches dataset
                                         pattern = "Supplemental-Tables")),
-            to = file.path(data_dir, "methane_bubble_streams_merle.csv"))
+            to = file.path(data_dir, "methane_bubble_streams_merle.xlsx"))
 
 ## Methane bubble streams (Reidel et al. 2018)
 file.rename(from = file.path(data_dir,
@@ -328,7 +328,7 @@ file.rename(from = file.path(data_dir,
                              list.files(data_dir,
                                         # search for pattern that matches dataset
                                         pattern = "MOESM4_ESM")),
-            to = file.path(data_dir, "methane_bubble_streams_reidel.csv"))
+            to = file.path(data_dir, "methane_bubble_streams_reidel.xlsx"))
 
 ## Methane bubble streams (Johnson et al. 2015)
 file.rename(from = file.path(data_dir,
