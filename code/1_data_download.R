@@ -19,7 +19,6 @@ pacman::p_load(dplyr,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
-               stringr,
                terra, # is replacing the raster package
                tidyr)
 
