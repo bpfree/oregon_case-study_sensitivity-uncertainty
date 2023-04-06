@@ -1,0 +1,19 @@
+[general]
+[georeference]
+nrows=8657
+ncols=4002
+xmin=-56584.9089603199973
+ymin=-755550.625106879976
+xmax=743815.091039446881
+ymax=975849.374893120024
+projection=+proj=omerc +lat_0=39 +lonc=-125 +alpha=75 +gamma=75 +k=0.9996 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs
+[data]
+datatype=INT1U
+nodatavalue=255
+byteorder=little
+nbands=1
+minvalue=0
+maxvalue=6
+categorical=FALSE
+[description]
+layername=Num_Taxa_Corals_HardSubstrate_with_Robust_High_Habitat_Suitability
