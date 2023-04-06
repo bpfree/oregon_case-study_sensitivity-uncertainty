@@ -19,6 +19,7 @@ pacman::p_load(dplyr,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
@@ -163,12 +164,28 @@ pacpars_data <- "https://navcen.uscg.gov/sites/default/files/pdf/PARS/PAC_PARS_2
 
 #####################################
 
+## Submarine cables data
+### Submarine cable area (source: https://marinecadastre.gov/downloads/data/mc/SubmarineCableArea.zip)
+### Metadata: https://www.fisheries.noaa.gov/inport/item/66190
+submarine_cable_areas_data <- "https://marinecadastre.gov/downloads/data/mc/SubmarineCableArea.zip"
+
+#####################################
+
+### NOAA Charted submarine cable (source: https://marinecadastre.gov/downloads/data/mc/SubmarineCable.zip)
+#### Metadata: https://www.fisheries.noaa.gov/inport/item/57238
+submarine_cable_noaa_data <- "https://marinecadastre.gov/downloads/data/mc/SubmarineCable.zip"
+
+#####################################
+
 ## Biologically Important Areas I (https://cetsound.noaa.gov/Assets/cetsound/data/CetMap_BIA_WGS84.zip)
 ### ***Note: currently the BIA I data are informing blue whale foraging; in the future the BIA II data may affect the analysis
+### ***Alternative data (same footprint, different data column): https://coast.noaa.gov/digitalcoast/data/biologicallyimportantareas.html
 ### BIA I Map (2015): https://cetsound.noaa.gov/biologically-important-area-map
 ### BIA II Paper (2023): https://www.frontiersin.org/articles/10.3389/fmars.2023.1081893/full
 ### BIA II Map (2023 Update): https://experience.arcgis.com/experience/51a9e25c75a1470386827439a918e056
 bia_data <- "https://cetsound.noaa.gov/Assets/cetsound/data/CetMap_BIA_WGS84.zip"
+
+#####################################
 
 ## Essential fish habitat conservation areas (source: https://media.fisheries.noaa.gov/2021-02/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020.zip)
 ### Text: https://www.ecfr.gov/current/title-50/chapter-VI/part-660/subpart-C/section-660.76
@@ -184,6 +201,28 @@ coral_sponge_habitat <- "https://www.ncei.noaa.gov/archive/archive-management-sy
 
 #####################################
 
+## Methane bubble streams (Merle et al. 2021) (source: https://www.pmel.noaa.gov/eoi/Cascadia/Supplemental-Tables-US-only-revised-dec30-2020.xlsx)
+### ***Note: data come from the supplemental table
+### Paper: https://www.frontiersin.org/articles/10.3389/feart.2021.531714/full
+methane_bubble_merle <- "https://www.pmel.noaa.gov/eoi/Cascadia/Supplemental-Tables-US-only-revised-dec30-2020.xlsx"
+
+#####################################
+
+## Methane bubble streams (Reidel et al. 2018) (source: https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-018-05736-x/MediaObjects/41467_2018_5736_MOESM4_ESM.xlsx)
+### ***Note: data come from the supplementary data 2
+### Paper: https://www.nature.com/articles/s41467-018-05736-x
+methane_bubble_reidel <- "https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-018-05736-x/MediaObjects/41467_2018_5736_MOESM4_ESM.xlsx"
+
+#####################################
+
+## Methane bubble streams (Johnson et al. 2015) (source: https://agupubs.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2F2015GC005955&file=ggge20859-sup-0001-2015GC005955-SupInfo.docx)
+### ***Note: data come from the supporting information document (see S2 and S3)
+### ***Note: S3 does not contain any sites that fall within Oregon call areas
+### Paper: https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2015GC005955
+methane_bubble_johnson <- "https://agupubs.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2F2015GC005955&file=ggge20859-sup-0001-2015GC005955-SupInfo.docx"
+
+#####################################
+
 ## Load AIS data (2019)
 ### Transit counts: https://marinecadastre.gov/downloads/data/ais/ais2019/AISVesselTransitCounts2019.zip
 ### Metadata: https://www.fisheries.noaa.gov/inport/item/61037
@@ -194,19 +233,6 @@ ais_transit2019_data <- "https://marinecadastre.gov/downloads/data/ais/ais2019/A
 ## Vessel tracks (other): https://marinecadastre.gov/downloads/data/ais/ais2019/AISVesselTracks2019.zip
 ### Metadata: https://www.fisheries.noaa.gov/inport/item/59927
 ais_tracks2019_data <- "https://marinecadastre.gov/downloads/data/ais/ais2019/AISVesselTracks2019.zip"
-
-#####################################
-
-## Submarine cables data
-### Submarine cable area (source: https://marinecadastre.gov/downloads/data/mc/SubmarineCableArea.zip)
-### Metadata: https://www.fisheries.noaa.gov/inport/item/66190
-submarine_cable_areas_data <- "https://marinecadastre.gov/downloads/data/mc/SubmarineCableArea.zip"
-
-#####################################
-
-### NOAA Charted submarine cable (source: https://marinecadastre.gov/downloads/data/mc/SubmarineCable.zip)
-#### Metadata: https://www.fisheries.noaa.gov/inport/item/57238
-submarine_cable_noaa_data <- "https://marinecadastre.gov/downloads/data/mc/SubmarineCable.zip"
 
 #####################################
 
@@ -242,6 +268,10 @@ download_list <- c(
   # PACPARS
   pacpars_data,
   
+  # submarine cable
+  submarine_cable_areas_data,
+  submarine_cable_noaa_data,
+  
   # BIAs
   bia_data,
   
@@ -251,13 +281,15 @@ download_list <- c(
   # deep-sea coral and sponge habitat
   coral_sponge_habitat,
   
-  # vessel traffic
-  #ais_transit2019_data,
-  ais_tracks2019_data,
+  # methane bubble streams
+  methane_bubble_merle,
+  methane_bubble_reidel,
+  methane_bubble_johnson,
   
-  # submarine cable
-  submarine_cable_areas_data,
-  submarine_cable_noaa_data,
+  # vessel traffic
+  ais_transit2019_data,
+  ais_tracks2019_data,
+
   
   # aids to navigation
   aids_navigation_data,
@@ -272,18 +304,55 @@ data_download_function(download_list, data_dir)
 #####################################
 
 # Rename datasets
-list.files(data_dir)
+files <- list.files(data_dir)
+files
+
+## Deep-sea coral and sponge habitat
+file.rename(from = file.path(data_dir,
+                             # find original name
+                             list.files(data_dir,
+                                        # search for pattern that matches dataset
+                                        pattern = "276883.1.1.")),
+            to = file.path(data_dir, "deep_sea_coral_sponge_habitat"))
+
+## Methane bubble streams (Merle et al. 2021)
+file.rename(from = file.path(data_dir,
+                             # find original name
+                             list.files(data_dir,
+                                        # search for pattern that matches dataset
+                                        pattern = "Supplemental-Tables")),
+            to = file.path(data_dir, "methane_bubble_streams_merle.csv"))
+
+## Methane bubble streams (Reidel et al. 2018)
+file.rename(from = file.path(data_dir,
+                             # find original name
+                             list.files(data_dir,
+                                        # search for pattern that matches dataset
+                                        pattern = "MOESM4_ESM")),
+            to = file.path(data_dir, "methane_bubble_streams_reidel.csv"))
+
+## Methane bubble streams (Johnson et al. 2015)
+file.rename(from = file.path(data_dir,
+                             # find original name
+                             list.files(data_dir,
+                                        # search for pattern that matches dataset
+                                        pattern = "SupInfo.docx")),
+            to = file.path(data_dir, "methane_bubble_streams_johnson.docx"))
 
 ## NREL (2015) net value data
-file.rename(from = file.path(data_dir, "170514_OSW%20cost%20analysis_output%20file%20%281%29.xlsx"),
+file.rename(from = file.path(data_dir,
+                             # find original name
+                             list.files(data_dir,
+                                        # search for pattern that matches dataset
+                                        pattern = "170514_OSW")),
             to = file.path(data_dir, "nrel_2015_net_value.xlsx"))
 
 ## PACPARS report
-file.rename(from = file.path(data_dir, "Draft%20PAC-PARS.pdf"),
+file.rename(from = file.path(data_dir,
+                             # find original name
+                             list.files(data_dir,
+                                        # search for pattern that matches dataset
+                                        pattern = "PAC-PARS")),
             to = file.path(data_dir, "pacpars_draft_report.pdf"))
-
-## Deep-sea coral and sponge habitat
-file.rename(from = file.path(data_dir, list.files(data_dir)[2]),
-            to = file.path(data_dir, "deep_sea_coral_sponge_habitat"))
 
 list.files(data_dir)
