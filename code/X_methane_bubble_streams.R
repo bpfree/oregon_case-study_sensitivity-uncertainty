@@ -64,7 +64,7 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg,
 ### Paper: https://www.frontiersin.org/articles/10.3389/feart.2021.531714/full
 methane_merle <- readxl::read_xlsx(path = paste(data_dir, "methane_bubble_streams_merle.xlsx", sep = "/"),
                                     # designate the sheet with the data, in this case 2 = 2015 (COD)
-                                    sheet = 2) %>%
+                                    sheet = 1) %>%
   # delete the 1st row as it does not relevant information
   dplyr::filter(!row_number() %in% c(1)) %>%
   # convert to simple feature
