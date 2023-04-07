@@ -248,6 +248,23 @@ aids_navigation_data <- "https://marinecadastre.gov/downloads/data/mc/AtoN.zip"
 nrel_net_value_data <- "https://data.nrel.gov/system/files/67/170514_OSW%20cost%20analysis_output%20file%20%281%29.xlsx"
 
 #####################################
+
+## Offshore mean annual wind speed at 90m (source: https://gds-files.nrelcloud.org/archive/wind-prospector.zip)
+### All NREL data sources: https://maps.nrel.gov/
+### 90m specific data: https://marinecadastre.gov/downloads/data/mc/OffshoreMeanAnnualWindSpeed90m.zip)
+### Metadata: https://www.fisheries.noaa.gov/inport/item/67200
+### Technical report: https://www.nrel.gov/docs/fy10osti/45889.pdf
+offshore_mean_wind_90m <- "https://gds-files.nrelcloud.org/archive/wind-prospector.zip"
+
+#####################################
+
+## Offshore mean annual wind speed (source: https://marinecadastre.gov/downloads/data/mc/OffshoreMeanAnnualWindSpeed.zip)
+### Metadata: https://www.fisheries.noaa.gov/inport/item/68434
+### Paper: https://www.sciencedirect.com/science/article/abs/pii/S0306261915004237?via%3Dihub
+### Technical report: https://www.nrel.gov/docs/fy15osti/61740.pdf
+offshore_mean_wind <- "https://marinecadastre.gov/downloads/data/mc/OffshoreMeanAnnualWindSpeed.zip"
+
+#####################################
 #####################################
 
 # Download list
@@ -294,7 +311,11 @@ download_list <- c(
   aids_navigation_data,
   
   # NREL net value
-  nrel_net_value_data
+  nrel_net_value_data,
+  
+  # offshore mean annual wind speed
+  offshore_mean_wind_90m,
+  offshore_mean_wind
 )
 
 data_download_function(download_list, data_dir)
