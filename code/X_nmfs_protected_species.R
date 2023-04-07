@@ -106,7 +106,7 @@ humpback_central_america_dps <- sf::st_read(dsn = nmfs_esa_habitat_dir, layer = 
 #### Code of regulations: https://www.ecfr.gov/current/title-50/chapter-II/subchapter-C/part-226/section-226.227
 humpback_mexico_dps <- sf::st_read(dsn = nmfs_esa_habitat_dir, layer = "WhaleHumpback_CentralAmericaDPS_20210421") %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
-  sf::st_transform("EPSG:26910")  %>% # EPSG 26910 (https://epsg.io/26910) %>%
+  sf::st_transform("EPSG:26910")  %>% # EPSG 26910 (https://epsg.io/26910)
   # obtain only submarine cables in the study area
   rmapshaper::ms_clip(target = .,
                       clip = oregon_call_areas) %>%
@@ -140,14 +140,14 @@ killer_whale_critical_habitat <- sf::st_read(dsn = nmfs_esa_habitat_dir, layer =
 #### California (see Article 3 Section 170): https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?division=1.&chapter=1.&lawCode=GOV&title=1.&article=3.
 
 #### California-Oregon boundary line
-cal_ore_boundary <- rbind(c("point",-124.1,42),
-                          c("point",-124.3,42),
-                          c("point",-124.6,42),
-                          c("point",-124.3,42),
-                          c("point",-124.9,42),
-                          c("point",-125.2,42),
-                          c("point",-125.5,42),
-                          c("point",-125.8,42))
+cal_ore_boundary <- rbind(c("point",-124.1,39),
+                          c("point",-124.3,39),
+                          c("point",-124.6,39),
+                          c("point",-124.3,39),
+                          c("point",-124.9,39),
+                          c("point",-125.2,39),
+                          c("point",-125.5,39),
+                          c("point",-125.8,39))
 
 #### Oregon Call area line
 oregon_4210_line <- rbind(c("point",-125.8,42.1666667),
