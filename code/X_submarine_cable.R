@@ -120,10 +120,17 @@ oregon_submarine_cable1000 <- submarine_cables_noaa %>%
 
 # Oregon hex
 ## Submarine Cable with 500-meter setback
-oregon_hex_submarine_cable500 <- oregon_hex[oregon_submarine_cable500, ]
+oregon_hex_submarine_cable500 <- oregon_hex[oregon_submarine_cable500, ] %>%
+  sf::st_join(x = .,
+              y = oregon_submarine_cable500,
+              join = st_intersects)
 
 ## Submarine Cable with 501-1000-meter setback
-oregon_hex_submarine_cable1000 <- oregon_hex[oregon_submarine_cable1000, ]
+oregon_hex_submarine_cable1000 <- oregon_hex[oregon_submarine_cable1000, ] %>%
+  sf::st_join(x = .,
+              y = oregon_submarine_cable1000,
+              join = st_intersects)
+
 
 #####################################
 #####################################
