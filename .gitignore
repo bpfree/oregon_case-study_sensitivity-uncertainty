@@ -51,6 +51,10 @@ data/a_raw_data/wind_prospector/Rose_120m
 data/a_raw_data/wind_prospector/Wind_Speed_January
 data/a_raw_data/wind_prospector/Wind_Speed_August
 
+#### NREL wind speed
+data/a_raw_data/month.h5
+data/a_raw_data/hour.h5
+
 ## Intermediate data
 ### Oregon
 data/b_intermediate_data/oregon_study_area.gpkg
