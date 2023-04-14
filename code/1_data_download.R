@@ -151,6 +151,12 @@ bathymetry_data <- "https://www.ngdc.noaa.gov/thredds/fileServer/crm/crm_vol8.nc
 
 #####################################
 
+## Bathymetric contour data (source: https://marinecadastre.gov/downloads/data/mc/BathymetricContour.zip)
+### Metadata: https://www.fisheries.noaa.gov/inport/item/54364
+bathymetric_contours_data <- "https://marinecadastre.gov/downloads/data/mc/BathymetricContour.zip"
+
+#####################################
+
 ## Military operating area boundaries (source: https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip)
 ### Metadata: https://www.fisheries.noaa.gov/inport/item/55364
 military_operating_data <- "https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip"
@@ -274,6 +280,7 @@ download_list <- c(
   
   # bathymetry
   bathymetry_data,
+  bathymetric_contours_data,
   
   # Oregon state boundary
   oregon_boundary_data,
