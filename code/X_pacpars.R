@@ -24,6 +24,7 @@ pacman::p_load(dplyr,
                terra, # is replacing the raster package
                tidyr)
 
+### ***Note: running install below will provide message that it skipped install if the package has not changed since last install
 remotes::install_github(c("ropensci/tabulizerjars", "ropensci/tabulizer"), INSTALL_opts = "--no-multiarch")
 
 #####################################
@@ -158,10 +159,10 @@ table <- tabulizer::extract_tables(pdf,
                                    # page tables are found (33)
                                    pages = 33)
 
-## View D13 Offshore Fairway (page 33)
+## View D13 Offshore Fairway (page 33) -- raw
 View(table[[1]])
 
-## View D13 Coastal Fairway Zone (page 33)
+## View D13 Coastal Fairway Zone (page 33) -- raw
 View(table[[2]])
 
 #####################################
@@ -182,7 +183,9 @@ d13_offshore_table <- data.frame(table[[1]]) %>%
   # delete the 1st row as it does not relevant information
   dplyr::filter(!row_number() %in% c(1)) %>%
   # replace any "" values with NA
-  dplyr::na_if("") %>%
+  dplyr::mutate(across(where(is.character),
+                       ~na_if(x = .,
+                              y = ""))) %>%
   # split the data across columns by 3 (point, lat, lon)
   split.default(., (seq_along(.)-1) %/% 3) %>%
   # recombine so in long format (all features share same fields)
@@ -216,7 +219,7 @@ d13_offshore <- dplyr::bind_rows(d13_offshore1,
                                  d13_offshore2,
                                  d13_offshore3) %>%
   # remove NA values
-  drop_na(point)
+  drop_na(lat)
 
 #####################################
 
@@ -264,11 +267,14 @@ d13_coastal_table <- data.frame(table[[2]]) %>%
                         # remove above rows
                         remove_rows_above = TRUE) %>%
   # clean column names
-  janitor::clean_names() %>%
-  # place NA into cell in row 5, column 6
-  dplyr::na_if(.[5,6]) %>%
-  # place NA into cell in row 6, column 6
-  dplyr::na_if(.[6,6]) %>%
+  janitor::clean_names()
+
+### set cells in row 5 and 6 of column 6 as NA
+d13_coastal_table[5,6] <- NA # row 5, column 6
+d13_coastal_table[6,6] <- NA # row 6, column 6
+
+### Split columns to have cleaned longitudes and latitudes
+d13_coastal_table <- d13_coastal_table %>%
   # split out column to be two columns
   tidyr::separate(latitude_longitude, into=c("latitude2", "longitude2"), sep=" ", remove=T, convert = T) %>%
   # split out column to be two columns
@@ -358,14 +364,22 @@ d13_offshore_call_area <- d13_offshore_polygon %>%
   rmapshaper::ms_clip(target = .,
                       clip = oregon_wind_call_area)
 
-oregon_hex_d13_offshore <- oregon_hex[d13_offshore_call_area, ]
+oregon_hex_d13_offshore <- oregon_hex[d13_offshore_call_area, ] %>%
+  # spatially join D13 offshore fairway values to Oregon hex cells
+  sf::st_join(x = .,
+              y = d13_offshore_call_area,
+              join = st_intersects)
 
 ## D13 Coastal fairway
 d13_coastal_call_area <- d13_coast_3nm %>%
   rmapshaper::ms_clip(target = .,
                       clip = oregon_wind_call_area)
 
-oregon_hex_d13_coastal <- oregon_hex[d13_coastal_call_area, ]
+oregon_hex_d13_coastal <- oregon_hex[d13_coastal_call_area, ] %>%
+  # spatially join D13 coastal fairway values to Oregon hex cells
+  sf::st_join(x = .,
+              y = d13_coastal_call_area,
+              join = st_intersects)
 
 #####################################
 
@@ -375,10 +389,8 @@ oregon_hex_d13_fairway <- oregon_hex_d13_offshore %>%
   dplyr::bind_rows(oregon_hex_d13_coastal) %>%
   # add field "layer" and populate with "fairway"
   dplyr::mutate(layer = "fairway") %>%
-  # "value" will get pulled in from the study area layer
-  dplyr::group_by(layer) %>%
-  # summarise the single feature
-  dplyr::summarise()
+  # select fields of importance
+  dplyr::select(index, layer)
 
 #####################################
 #####################################
