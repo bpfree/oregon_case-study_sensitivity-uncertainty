@@ -85,4 +85,10 @@ dod_opnav <- sf::st_read(dsn = dod_opnav_dir, layer = "OPNAV_CombinedAssesment_M
 
 #####################################
 
-oregon_hex_dod_opnav <- oregon_hex[dod_opnav, ]
+oregon_hex_dod_opnav <- oregon_hex[dod_opnav, ] %>%
+  # spatially join DoD OPNAV data to Oregon hex cells
+  sf::st_join(x = .,
+              y = dod_opnav,
+              join = st_intersects) %>%
+  # select fields of interest
+  dplyr::select(index, layer)
