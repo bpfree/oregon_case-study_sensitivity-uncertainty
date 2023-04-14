@@ -33,7 +33,8 @@ study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
 wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
-#### Analysis directories
+#### Submodel directory
+natural_resources_geopackage <- "data/c_submodel_data/natural_resources.gpkg"
 
 #### Intermediate directories
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
@@ -70,7 +71,15 @@ oregon_nmfs_efhca <- nmfs_efhca_data %>%
 #####################################
 
 # NMFS EFHCA hex grids
-oregon_hex_efhca <- oregon_hex[oregon_nmfs_efhca, ]
+oregon_hex_efhca <- oregon_hex[oregon_nmfs_efhca, ] %>%
+  # spatially join NMFS EFHCA values to Oregon hex cells
+  sf::st_join(x = .,
+              y = oregon_nmfs_efhca,
+              join = st_intersects) %>%
+  # add field "layer" and populate with "efhca"
+  dplyr::mutate(layer = "efhca") %>%
+  # select fields of importance
+  dplyr::select(index, layer)
 
 #####################################
 #####################################
