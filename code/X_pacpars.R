@@ -49,6 +49,11 @@ intermediate_dir <- "data/b_intermediate_data"
 oregon_gpkg <- "data/b_intermediate_data/oregon.gpkg"
 pacpars_gpkg <- "data/b_intermediate_data/pacpars.gpkg"
 
+dir.create(paste0(intermediate_dir, "/",
+                 "pacpars"))
+
+pacpars_dir <- "data/b_intermediate_data/pacpars"
+
 #####################################
 #####################################
 
@@ -77,20 +82,20 @@ pacpars_gpkg <- "data/b_intermediate_data/pacpars.gpkg"
 #### 8.) Navigate to and copy geodatabase (as of 11 October 2021, v10 and v108 had no differences in their data)
 #### 9.) Paste to data dictionary
 
-### Continental land data
-continents <- sf::st_read(dsn = land_dir, layer = "USGSEsriWCMC_GlobalIslandsv2_Continents") %>%
-  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
-  sf::st_transform("EPSG:26910")
+### Continental land data (uncomment below if used)
+# continents <- sf::st_read(dsn = land_dir, layer = "USGSEsriWCMC_GlobalIslandsv2_Continents") %>%
+#   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
+#   sf::st_transform("EPSG:26910")
 
 #####################################
 #####################################
 
 # Load data
-## Oregon wind study area
-oregon_wind_call_area <- sf::st_read(dsn = wind_area_gpkg, "oregon_wind_call_areas")
-
 ## Oregon call area hex
 oregon_hex <- sf::st_read(dsn = study_area_gpkg, "oregon_call_area_hex")
+
+## Oregon wind study area
+oregon_wind_call_area <- sf::st_read(dsn = wind_area_gpkg, "oregon_wind_call_areas")
 
 #####################################
 
@@ -253,8 +258,6 @@ d13_offshore_polygon <- d13_offshore_point1 %>%
   # convert back to sf
   sf::st_as_sf()
 
-plot(d13_offshore_polygon)
-
 #####################################
 #####################################
 
@@ -401,28 +404,33 @@ sf::st_write(oregon_hex_d13_fairway, dsn = constraint_geopackage, layer = "orego
 
 ## PACPARS
 ### D13 Offshore Fairway
-sf::st_write(d13_offshore_table, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore_table", append = F)
-sf::st_write(d13_offshore1, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore1", append = F)
-sf::st_write(d13_offshore2, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore2", append = F)
-sf::st_write(d13_offshore3, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore3", append = F)
+saveRDS(object = d13_offshore_table, file = paste(pacpars_dir, "oregon_pacpars_ds13_offshore_table.rds", sep = "/"))
+saveRDS(d13_offshore1, paste(pacpars_dir, "oregon_pacpars_ds13_offshore1.rds", sep = "/"))
+saveRDS(d13_offshore2, paste(pacpars_dir, "oregon_pacpars_ds13_offshore2.rds", sep = "/"))
+saveRDS(d13_offshore3, paste(pacpars_dir, "oregon_pacpars_ds13_offshore3.rds", sep = "/"))
+
+saveRDS(d13_offshore, paste(pacpars_dir, "d13_offshore_points.rds", sep = "/"))
+write.csv(d13_offshore, paste(intermediate_dir, "d13_offshore_points.csv", sep = "/"), row.names=FALSE)
+
 sf::st_write(d13_offshore_point1, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore_points", append = F)
 sf::st_write(d13_offshore_polygon, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore_polygon", append = F)
 
-write.csv(d13_offshore, paste(intermediate_dir, "d13_offshore_points.csv", sep = "/"), row.names=FALSE)
 
 ### D13 Coastal Fairway
-sf::st_write(d13_coastal_table, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_coastal_table", append = F)
-sf::st_write(d13_coastal1, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coastal1", append = F)
-sf::st_write(d13_coastal2, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coastal2", append = F)
-sf::st_write(d13_coastal3, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coastal3", append = F)
-sf::st_write(d13_coastal, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coastal", append = F)
+saveRDS(ds_coastal_table, paste(pacpars_dir, "oregon_pacpars_ds13_coastal_table", sep = "/"))
+saveRDS(d13_coastal1, paste(pacpars_dir, "oregon_pacpars_d13_coastal1", sep = "/"))
+saveRDS(d13_coastal2, paste(pacpars_dir, "oregon_pacpars_d13_coastal2", sep = "/"))
+saveRDS(d13_coastal3, paste(pacpars_dir, "oregon_pacpars_d13_coastal3", sep = "/"))
+saveRDS(d13_coastal, paste(pacpars_dir, "oregon_pacpars_d13_coastal", sep = "/"))
+
+
 sf::st_write(d13_coastal_point, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coastal_point", append = F)
 sf::st_write(d13_coastal_polygon, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coastal_polygon", append = F)
 
 sf::st_write(d13_coast_3nm, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coast_3nm_polygon", append = F)
 
 
-### D13 Fairway -- call area
+### D13 Fairway (combined) -- call area
 sf::st_write(d13_offshore_call_area, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore_call_area", append = F)
 sf::st_write(oregon_hex_d13_offshore, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore_hex", append = F)
 sf::st_write(d13_coastal_call_area, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_coastal_call_area", append = F)
