@@ -40,7 +40,11 @@ natural_resources_geopackage <- "data/c_submodel_data/natural_resources.gpkg"
 #### Intermediate directories
 coral_sponge_habitat_gpkg <- "data/b_intermediate_data/coral_sponge_habitat.gpkg"
 
-raster_dir <- "data/b_intermediate_data"
+#### PACPARS directory
+dir.create(paste0(intermediate_dir, "/",
+                  "deep_sea_coral_sponge_habitat"))
+
+coral_sponge_dir <- "data/b_intermediate_data/deep_sea_coral_sponge_habitat"
 
 #####################################
 #####################################
@@ -156,5 +160,5 @@ sf::st_write(obj = robust_habitat_polygon, dsn = coral_sponge_habitat_gpkg, laye
 sf::st_write(obj = oregon_hex_coral_sponge_high, dsn = coral_sponge_habitat_gpkg, layer = "oregon_hex_high_habitat_coral_sponge", append = F)
 sf::st_write(obj = oregon_hex_coral_sponge_robust, dsn = coral_sponge_habitat_gpkg, layer = "oregon_hex_robust_habitat_coral_sponge", append = F)
 
-terra::writeRaster(high_habitat, filename = file.path(raster_dir, "coral_sponge_high_habitat.grd"), overwrite = T)
-terra::writeRaster(robust_habitat, filename = file.path(raster_dir, "coral_sponge_robust_habitat.grd"), overwrite = T)
+terra::writeRaster(high_habitat, filename = file.path(coral_sponge_dir, "coral_sponge_high_habitat.grd"), overwrite = T)
+terra::writeRaster(robust_habitat, filename = file.path(coral_sponge_dir, "coral_sponge_robust_habitat.grd"), overwrite = T)
