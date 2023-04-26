@@ -49,8 +49,9 @@ intermediate_dir <- "data/b_intermediate_data"
 oregon_gpkg <- "data/b_intermediate_data/oregon.gpkg"
 pacpars_gpkg <- "data/b_intermediate_data/pacpars.gpkg"
 
+#### PACPARS directory
 dir.create(paste0(intermediate_dir, "/",
-                 "pacpars"))
+                  "pacpars"))
 
 pacpars_dir <- "data/b_intermediate_data/pacpars"
 
