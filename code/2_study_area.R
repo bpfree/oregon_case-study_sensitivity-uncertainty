@@ -57,8 +57,23 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 #####################################
 #####################################
 
+# Inspect available layers and names within BOEM geodatabase
+sf::st_layers(dsn = wind_area_dir,
+              do_count = TRUE)
+
+#####################################
+
 # Load call areas
-wind_areas <- sf::st_read(wind_area_dir, "Wind_Planning_Area_Outlines_2_2023") %>%
+wind_areas <- sf::st_read(dsn = wind_area_dir,
+                          # select the layer for call areas and use to open desired layer (planning area outlines)
+                          ## ***Note: the planning area outlines is the 4th dataset
+                          ## Using this method will avoid having to update the layer name each time BOEM updates the dataset
+                          ## ***Note: If BOEM changes which layers are available it is possible in the future that the planning
+                          ## area outlines will no longer be the 4th dataset
+                          layer = paste(sf::st_layers(dsn = wind_area_dir,
+                                                # [[1]] --> first component, which is the column "layer_name"
+                                                # [4] --> 4th element of that list, which is the planning area outlines
+                                                do_count = TRUE)[[1]][4])) %>%
   # filter for only Oregon call areas
   dplyr::filter(grepl("Oregon", CATEGORY1)) %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
@@ -70,12 +85,22 @@ st_crs(wind_areas, parameters = TRUE)$units_gdal
 #####################################
 #####################################
 
+# Hexagon area = ((3 * sqrt(3))/2) * side length ^ 2 (https://pro.arcgis.com/en/pro-app/latest/tool-reference/data-management/generatetesellation.htm)
+# 1 acre equals approximately 4064.86 square meters
+# 10 acres = 40468.6 square meters
+# 40468.6 = ((3 * sqrt(3))/2) * side length ^ 2
+# 40468.6 * 2 = 3 * sqrt(3) * side length ^ 2 --> 80937.2
+# 80937.2 / 3 = sqrt(3) * side length ^ 2 --> 26979.07
+# 26979.07 ^ 2 = 3 * side length ^ 4 --> 727870218
+# 727870218 / 3 = side length ^ 4 --> 242623406
+# 242623406 ^ (1/4) = side length --> 124.8053
+
 # Create 10-acre grid around call areas
 wind_area_grid <- sf::st_make_grid(x = wind_areas,
                                    ## see documentation on what cellsize means when relating to hexagons: https://github.com/r-spatial/sf/issues/1505
-                                   ## cellsize is the distance between two vertices (short diagonal --> d = square root of 3 * length of side)
-                                   ### So in this case, square-root of 3 * 123.80533 = 1.73205080757 * 124.80533 = 216.169172615
-                                   cellsize = 216.169172615,
+                                   ## cellsize is the distance between two vertices (short diagonal --> d = square root of 3 * side length)
+                                   ### So in this case, square-root of 3 * 124.8053 = 1.73205080757 * 124.8053 = 216.1691
+                                   cellsize = 216.1691,
                                    # make hexagon (TRUE will generate squares)
                                    square = FALSE,
                                    # make hexagons orientation with a flat topped (FALSE = pointy top)
