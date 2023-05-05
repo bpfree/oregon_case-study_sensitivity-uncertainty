@@ -23,3 +23,4 @@ d13_coastal_table <- data.frame(table[[2]]) %>%
   split.default(., (seq_along(.)-1) %/% 3) %>%
   # recombine so in long format (all features share same fields)
   dplyr::bind_rows()
+
