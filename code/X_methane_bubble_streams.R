@@ -57,16 +57,24 @@ oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
 oregon_hex <- sf::st_read(dsn = study_area_gpkg,
                           layer = paste(sf::st_layers(dsn = study_area_gpkg,
                                                       do_count = TRUE)[[1]][2]))
+
 #####################################
 
 ## Methane bubble streams (Merle et al. 2021) (source: https://www.pmel.noaa.gov/eoi/Cascadia/Supplemental-Tables-US-only-revised-dec30-2020.xlsx)
 ### ***Note: data come from the supplemental table
 ### Paper: https://www.frontiersin.org/articles/10.3389/feart.2021.531714/full
-methane_merle <- readxl::read_xlsx(path = paste(data_dir, "methane_bubble_streams_merle.xlsx", sep = "/"),
-                                    # designate the sheet with the data, in this case 2 = 2015 (COD)
-                                    sheet = 1) %>%
-  # delete the 1st row as it does not relevant information
-  dplyr::filter(!row_number() %in% c(1)) %>%
+#### These data also contain data from earlier research surveys
+#### They include:
+##### 1.) Reidel et al. 2018: https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-018-05736-x/MediaObjects/41467_2018_5736_MOESM4_ESM.xlsx
+##### ***Note: data come from the supplementary data 2
+##### Paper: https://www.nature.com/articles/s41467-018-05736-x
+##### 2.) Johnson et al. 2015: https://agupubs.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2F2015GC005955&file=ggge20859-sup-0001-2015GC005955-SupInfo.docx
+##### ***Note: data come from the supporting information document (see S2 and S3)
+##### ***Note: S3 does not contain any sites that fall within Oregon call areas
+##### Paper: https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2015GC005955
+methane_merle_all <- readxl::read_xlsx(path = paste(data_dir, "methane_bubble_streams_merle.xlsx", sep = "/"),
+                                       # designate the sheet with the data
+                                       sheet = 2) %>%
   # convert to simple feature
   sf::st_as_sf(coords = c("Longitude", "Latitude"),
                # set the coordinate reference system to WGS84
@@ -74,11 +82,32 @@ methane_merle <- readxl::read_xlsx(path = paste(data_dir, "methane_bubble_stream
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
   sf::st_transform("EPSG:26910")
 
-## Methane bubble streams (Reidel et al. 2018) (source: https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-018-05736-x/MediaObjects/41467_2018_5736_MOESM4_ESM.xlsx)
-### ***Note: data come from the supplementary data 2
-### Paper: https://www.nature.com/articles/s41467-018-05736-x
+oregon_methane_merle_all <- methane_merle_all %>%
+  # apply a 1-kilometer buffer on all methane bubble streams
+  sf::st_buffer(dist = 1000) %>%
+  # limit to only Oregon call areas
+  rmapshaper::ms_clip(target = .,
+                      clip = oregon_call_areas)
+
+oregon_hex_methane_merle_all <- oregon_hex[oregon_methane_merle_all, ] %>%
+  # spatially join methane Merle et al. values to Oregon hex cells
+  sf::st_join(x = .,
+              y = oregon_methane_merle_all,
+              join = st_intersects) %>%
+  # add field "layer" and populate with "methane (merle)"
+  dplyr::mutate(layer = "methane (merle)") %>%
+  # select fields of importance
+  dplyr::select(index, layer)
+
+#####################################
+
+## Datasets included in the Merle et al. (2021)
+## ***Note: these data are separately downloaded during script 1 during the data acquistion phase
+## Thus, you will find the raw data in the a_raw_data subdirectory within the data directory
+
+## Methane bubble streams (Reidel et al. 2018)
 methane_reidel <- readxl::read_xlsx(path = paste(data_dir, "methane_bubble_streams_reidel.xlsx", sep = "/"),
-                                   # designate the sheet with the data, in this case 2 = 2015 (COD)
+                                   # designate the sheet with the data
                                    sheet = 1)
 
 # set column names to be values of first row
@@ -98,10 +127,7 @@ methane_reidel <- methane_reidel %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
   sf::st_transform("EPSG:26910")
 
-## Open the methane bubble stream data from Johnson et al. (2015) (source: https://agupubs.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2F2015GC005955&file=ggge20859-sup-0001-2015GC005955-SupInfo.docx)
-### ***Note: data come from the supporting information document (see S2 and S3)
-### ***Note: S3 does not contain any sites that fall within Oregon call areas
-### Paper: https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2015GC005955
+## Johnson et al. (2015)
 methane_johnson_doc <- docxtractr::read_docx(file.path(data_dir, "methane_bubble_streams_johnson.docx"))
 
 ### extract data from supporting information table 2 (S2)
@@ -120,3 +146,16 @@ methane_johnson_s2 <- methane_johnson_s2 %>%
                crs = 4326) %>% # EPSG 4326 (https://epsg.io/4326)
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
   sf::st_transform("EPSG:26910")
+
+#####################################
+#####################################
+
+# Export data
+
+## Methane geopackage
+sf::st_write(methane_merle_all, dsn = methane_bubble_gpkg, layer = "methane_bubble_stream_merle_all")
+sf::st_write(oregon_methane_merle_all, dsn = methane_bubble_gpkg, layer = "oregon_methane_merle_all")
+sf::st_write(oregon_hex_methane_merle_all, dsn = methane_bubble_gpkg, layer = "oregon_hex_methane_merle_all")
+
+sf::st_write(methane_reidel, dsn = methane_bubble_gpkg, layer = "methane_bubble_stream_reidel")
+sf::st_write(methane_johnson_s2, dsn = methane_bubble_gpkg, layer = "methane_bubble_stream_johnson_s2")
