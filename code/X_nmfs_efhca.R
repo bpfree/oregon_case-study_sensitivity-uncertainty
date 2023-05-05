@@ -86,10 +86,10 @@ oregon_hex_efhca <- oregon_hex[oregon_nmfs_efhca, ] %>%
 
 # Export data
 ## Analysis geopackage
-sf::st_write(nmfs_efhca_data, dsn = efhca_gpkg, layer = "nmfs_efhca", append = F)
-sf::st_write(oregon_nmfs_efhca, dsn = efhca_gpkg, layer = "oregon_nmfs_efhca", append = F)
-sf::st_write(oregon_hex_efhca, dsn = efhca_gpkg, layer = "oregon_hex_efhca", append = F)
+sf::st_write(oregon_hex_efhca, dsn = natural_resources_geopackage, layer = "oregon_hex_efhca", append = F)
 
 ## EFHCA geopackage
+sf::st_write(nmfs_efhca_data, dsn = efhca_gpkg, layer = "nmfs_efhca", append = F)
+
 sf::st_write(oregon_nmfs_efhca, dsn = efhca_gpkg, layer = "oregon_nmfs_efhca", append = F)
 sf::st_write(oregon_hex_efhca, dsn = efhca_gpkg, layer = "oregon_hex_efhca", append = F)
