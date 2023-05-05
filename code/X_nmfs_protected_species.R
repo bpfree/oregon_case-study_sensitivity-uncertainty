@@ -32,6 +32,8 @@ pacman::p_load(dplyr,
 ### Input directories
 nmfs_esa_habitat_dir <- "data/a_raw_data/NMFS_ESA_Critical_Habitat_20221017.gdb"
 nmfs_efhca_dir <- "data/a_raw_data/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020/EFHCA shapefile_2020"
+bathymetry_gpkg <- "data/b_intermediate_data/bathymetry/bathymetry.gpkg"
+
 bathymetric_contour_dir <- "data/a_raw_data/BathymetricContour/BathymetryContours.gdb"
 
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
@@ -42,7 +44,14 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 fisheries_submodel <- "data/c_submodel_data/fisheries_submodel.gpkg"
 
 #### Intermediate directories
+intermediate_dir <- "data/b_intermediate_data"
 nmfs_esa_gpkg <- "data/b_intermediate_data/nmfs_esa_protected_species.gpkg"
+
+#### Protected species directory
+dir.create(paste0(intermediate_dir, "/",
+                  "protected_species"))
+
+protected_species_gpkg <- "data/b_intermediate_data/protected_species/protected_species.gpkg"
 
 #####################################
 #####################################
@@ -135,6 +144,32 @@ leatherback_exclusion <- nmfs_efhca_data %>%
   dplyr::select(layer)
 
 #####################################
+
+bathymetric_contour <- sf::st_read(dsn = bathymetry_gpkg, layer = "oregon_contours_50")
+
+bath250 <- bathymetric_contour %>%
+  dplyr::filter(level == -250)
+
+call_areas250 <- oregon_call_areas %>%
+  # split the call area by the 250m bathymetry
+  lwgeom::st_split(x = .,
+                   y = bath250)
+
+call_areas250_polygons <- call_areas250 %>%
+  # extract only the polygons within the GeometryCollective
+  sf::st_collection_extract(x = .,
+                            type = "POLYGON") %>%
+  # create area field (***note: this will be used to remove areas )
+  dplyr::mutate(area = as.numeric(sf::st_area(.))) %>%
+  # arrange areas by total area
+  dplyr::arrange(area) %>%
+  dplyr::mutate(fid = row_number()) %>%
+  dplyr::filter(!fid %in% c(119, 118, 114)) %>%
+  # have dataframes match each other
+  dplyr::mutate(layer = "protected species") %>%
+  dplyr::rename(geometry = geom) %>%
+  # select only needed fields
+  dplyr::select(layer)
 
 ### ***Note: Comments from NOAA (NMFS, NCCOS, & IOOS) seeks to close any areas between 0 and 200m and 250m of depth
 ### The 0-200m bathymetric contours were for the southern resident killer whale
@@ -385,3 +420,8 @@ sf::st_write(obj = oregon_humpback_ca_dps, dsn = fisheries_submodel, layer = "or
 sf::st_write(obj = oregon_humpback_mexico_dps, dsn = fisheries_submodel, layer = "oregon_hex_humpback_mexico_dps", append = F)
 sf::st_write(obj = oregon_killer_whale, dsn = fisheries_submodel, layer = "oregon_hex_killer_whale", append = F)
 sf::st_write(obj = oregon_blue_whale, dsn = fisheries_submodel, layer = "oregon_hex_blue_whale", append = F)
+
+
+
+
+sf::st_write(obj = call_areas250_polygons, dsn = protected_species_gpkg, layer = "call_areas250_poygons")
