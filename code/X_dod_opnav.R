@@ -37,25 +37,25 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
 #### Constraint directories
-constraint_geopackage <- "data/c_submodel_data/constraints.gpkg"
+constraint_gpkg <- "data/c_submodel_data/constraints.gpkg"
 
 #### Intermediate directories
 intermediate_dir <- "data/b_intermediate_data"
-dod_gpkg <- "data/b_intermediate_data/pacpars.gpkg"
+dod_gpkg <- "data/b_intermediate_data/oregon_dod_opnav.gpkg"
 
 #####################################
 #####################################
 
 # Load data
-## Oregon Call Areas
-oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
-                                 layer = paste(sf::st_layers(dsn = wind_area_gpkg,
-                                                             do_count = TRUE)))
-
 ## Oregon hex areas
 oregon_hex <- sf::st_read(dsn = study_area_gpkg,
                           layer = paste(sf::st_layers(dsn = study_area_gpkg,
                                                       do_count = TRUE)[[1]][2]))
+
+## Oregon call areas
+oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
+                                 layer = paste(sf::st_layers(dsn = wind_area_gpkg,
+                                                             do_count = TRUE)))
 
 #####################################
 
@@ -68,7 +68,7 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg,
 ### Alternative link on dataset: https://portal.westcoastoceans.org/geoportal/rest/metadata/item/45b6aa29abe7427a91d8f430eac0ab75/html
 ### InPort: https://www.fisheries.noaa.gov/inport/item/48875
 
-### Explaination of data
+### Explanation of data
 #### Green = no mitigation necessary -- open areas
 #### Red = mitigation not feasible -- closed areas
 
@@ -77,10 +77,10 @@ dod_opnav <- sf::st_read(dsn = dod_opnav_dir, layer = "OPNAV_CombinedAssesment_M
   sf::st_transform("EPSG:26910")  %>%
   # limit areas to only ones that will be constraints (no mitigation feasible)
   dplyr::filter(Color == "Red") %>%
-  # obtain only submarine cables in the study area
+  # obtain only DoD exclusion areas in the study area
   rmapshaper::ms_clip(target = .,
                       clip = oregon_call_areas) %>%
-  # create field called "layer" and fill with "submarine cables" for summary
+  # create field called "layer" and fill with "DoD exclusion" for summary
   dplyr::mutate(layer = "DoD exclusion")
 
 #####################################
@@ -92,3 +92,14 @@ oregon_hex_dod_opnav <- oregon_hex[dod_opnav, ] %>%
               join = st_intersects) %>%
   # select fields of interest
   dplyr::select(index, layer)
+
+#####################################
+#####################################
+
+# Export data
+## Constraints
+sf::st_write(obj = oregon_hex_dod_opnav, dsn = constraint_gpkg, layer = "oregon_hex_dod_opnav", append = T)
+
+## DoD OPNAV geopackage
+sf::st_write(obj = oregon_hex_dod_opnav, dsn = dod_gpkg, layer = "oregon_hex_dod_opnav", append = T)
+sf::st_write(obj = dod_opnav, dsn = dod_gpkg, layer = "oregon_call_area_dod_opnav", append = T)
