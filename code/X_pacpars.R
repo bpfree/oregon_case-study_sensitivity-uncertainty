@@ -34,7 +34,7 @@ remotes::install_github(c("ropensci/tabulizerjars", "ropensci/tabulizer"), INSTA
 ## Define data directory (as this is an R Project, pathnames are simplified)
 ### Input directories
 data_dir <- "data/a_raw_data"
-land_dir <- "data/a_raw_data/BOEM-Renewable-Energy-Geodatabase/BOEMWindLayers_4Download.gdb"
+land_dir <- "data/a_raw_data/USGSEsriWCMC_GlobalIslandsv2_Continents"
 oregon_dir <- "data/a_raw_data/or_state_boundary"
 
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
@@ -42,12 +42,12 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
 #### Constraint directories
-constraint_geopackage <- "data/c_submodel_data/constraints.gpkg"
+constraint_gpkg <- "data/c_submodel_data/constraints.gpkg"
 
 #### Intermediate directories
 intermediate_dir <- "data/b_intermediate_data"
 oregon_gpkg <- "data/b_intermediate_data/oregon.gpkg"
-pacpars_gpkg <- "data/b_intermediate_data/pacpars.gpkg"
+pacpars_gpkg <- "data/b_intermediate_data/oregon_pacpars.gpkg"
 
 #### PACPARS directory
 dir.create(paste0(intermediate_dir, "/",
@@ -401,7 +401,7 @@ oregon_hex_d13_fairway <- oregon_hex_d13_offshore %>%
 
 # Export data
 ## Constraints geopackage
-sf::st_write(oregon_hex_d13_fairway, dsn = constraint_geopackage, layer = "oregon_hex_pacpars", append = F)
+sf::st_write(oregon_hex_d13_fairway, dsn = constraint_gpkg, layer = "oregon_hex_pacpars", append = F)
 
 ## PACPARS
 ### D13 Offshore Fairway
