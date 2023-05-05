@@ -145,9 +145,29 @@ oregon_boundary_data <- "http://navigator.state.or.us/sdl/data/shapefile/k24/or_
 
 #####################################
 
-## Bathymetry data for Northwest Pacific (source: https://www.ngdc.noaa.gov/thredds/fileServer/crm/crm_vol8.nc)
+## Bathymetry data for Central Pacific (source: https://www.ngdc.noaa.gov/thredds/fileServer/crm/crm_vol7.nc)
+### Metadata: https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ngdc.mgg.dem:348
 ### For more United States coverage and spatial resolution information, visit: https://www.ngdc.noaa.gov/mgg/coastal/crm.html
-bathymetry_data <- "https://www.ngdc.noaa.gov/thredds/fileServer/crm/crm_vol8.nc"
+### ***Note alternative download link: https://www.ngdc.noaa.gov/thredds/catalog/crm/catalog.html?dataset=crmDatasetScan/crm_vol7.nc
+crm_v7_data <- "https://www.ngdc.noaa.gov/thredds/fileServer/crm/crm_vol7.nc"
+
+#####################################
+
+## Central Oregon (source: https://www.ngdc.noaa.gov/thredds/fileServer/regional/central_oregon_13_navd88_2015.nc)
+### Metadata: https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ngdc.mgg.dem:11500;view=iso
+central_oregon_data <- "https://www.ngdc.noaa.gov/thredds/fileServer/regional/central_oregon_13_navd88_2015.nc"
+
+#####################################
+
+## Port Orford (source: https://www.ngdc.noaa.gov/thredds/fileServer/regional/port_orford_13_mhw_2008.nc)
+### Metadata: https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ngdc.mgg.dem:410/html
+port_orford_data <- "https://www.ngdc.noaa.gov/thredds/fileServer/regional/port_orford_13_mhw_2008.nc"
+
+#####################################
+
+## Crescent City (source: https://www.ngdc.noaa.gov/thredds/fileServer/regional/crescent_city_13_navd88_2010.nc)
+### Metadata: https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ngdc.mgg.dem:693/html
+crescent_city_data <- "https://www.ngdc.noaa.gov/thredds/fileServer/regional/crescent_city_13_navd88_2010.nc"
 
 #####################################
 
@@ -279,8 +299,11 @@ download_list <- c(
   boem_wind_area_data,
   
   # bathymetry
-  bathymetry_data,
+  crm_v7_data,
   bathymetric_contours_data,
+  central_oregon_data,
+  port_orford_data,
+  crescent_city_data,
   
   # Oregon state boundary
   oregon_boundary_data,
