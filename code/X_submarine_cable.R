@@ -41,7 +41,7 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 industry_operations_submodel <- "data/c_submodel_data/industry_operations_submodel.gpkg"
 
 #### Intermediate directories
-submarine_cable_gpkg <- "data/b_intermediate_data/pacpars.gpkg"
+submarine_cable_gpkg <- "data/b_intermediate_data/oregon_submarine_cable.gpkg"
 
 #####################################
 #####################################
