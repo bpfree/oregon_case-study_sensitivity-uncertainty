@@ -1,5 +1,28 @@
 # Case Study: Sensitivity and Uncertainty Analyses for Oregon wind siting
-Creating a case study on sensitivity and uncertainty analyses for Oregon wind siting
+Creating a case study on sensitivity and uncertainty analyses for Oregon wind siting.
+
+#### **Repository Structure**
+* **data**
+  - **raw_data:** the raw data integrated in the analysis (**Note:** original data name and structure were kept except when either name was not descriptive or similar data were put in same directory to simplify input directories)
+  - **intermediate_data:** disaggregated processed data
+  - **submodel_data:**
+  - **suitability_data:**
+  - **rank_data:** 
+  - **sensitivity_data:**
+  - **uncertainty_data:**
+* **code:** scripts for cleaning, processing, and analyzing data
+* **figures:** figures generated to visualize analysis
+* **methodology:** detailed [methods](/methodology.pdf) for the data and analysis
+
+**_Note for PC users:_** The code was written on a Mac so to run the scripts replace "/" in the pathnames for directories with two "\\".
+
+Please contact Brian Free (brian.free@noaa.gov) with any questions.
+
+#### **Data sources**
+##### _Generic Data_
+| Layer | Data Source | Data Name | Metadata |
+| ------------- | ------------- | ------------- | ------------- |
+| | | | |
 
 Datasets explored but not included in analyses due to not located geographically in study area:
 * [BOEM Active Lease Areas](https://www.data.boem.gov/Main/Mapping.aspx#ascii) ([Geodatabase download link](https://www.data.boem.gov/Mapping/Files/ActiveLeasePolygons.gdb.zip), [Shapefile download link](https://www.data.boem.gov/Mapping/Files/actlease.zip), [Metadata](https://www.data.boem.gov/Mapping/Files/actlease_meta.html))
