@@ -6,6 +6,8 @@
 rm(list = ls())
 
 # Load packages
+## Need to install a development version of terra to open the netCDF
+### ***Note: May need restart R upon installing (stop running after first installation)
 install.packages('terra', repos='https://rspatial.r-universe.dev')
 
 if (!require("pacman")) install.packages("pacman")
