@@ -331,7 +331,7 @@ d13_coastal <- dplyr::bind_rows(d13_coastal1,
 #####################################
 
 # Create polygons
-## D13 Offshore Fairway
+## D13 Coastal Fairway
 ### Convert table to simple feature
 #### Point locations
 d13_coastal_point <- d13_coastal %>%
