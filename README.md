@@ -41,7 +41,25 @@ Please contact Brian Free ([brian.free\@noaa.gov](mailto:brian.free@noaa.gov){.e
 | Bathymetry | NOAA | [Crescent City](https://www.ngdc.noaa.gov/thredds/fileServer/regional/crescent_city_13_navd88_2010.nc) | [Metadata](https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ngdc.mgg.dem:693/html) | [NOAA Bathymetry Viewer](https://www.ncei.noaa.gov/maps/bathymetry/) |
 | Species Habitat | [NOAA](https://oceannoise.noaa.gov/biologically-important-areas) | [Biologically Important Areas](https://cetsound.noaa.gov/Assets/cetsound/data/CetMap_BIA_WGS84.zip) | [Alternative dataset (same footprint, different datatable)](https://coast.noaa.gov/digitalcoast/data/biologicallyimportantareas.html), [BIA Map (2015)](https://cetsound.noaa.gov/biologically-important-area-map), [BIA II Paper (2023)](https://www.frontiersin.org/articles/10.3389/fmars.2023.1081893/full), [BIA II Map Viewer (2023)](https://experience.arcgis.com/experience/51a9e25c75a1470386827439a918e056) |
 
+##### *Constraints Data*
+| Layer | Data Source | Data Name | Metadata  | Notes |
+|---------------|---------------|---------------|---------------|---------------|
 
+##### *Industry and Operations Data*
+| Layer | Data Source | Data Name | Metadata  | Notes |
+|---------------|---------------|---------------|---------------|---------------|
+
+##### *Natural Resources Data*
+| Layer | Data Source | Data Name | Metadata  | Notes |
+|---------------|---------------|---------------|---------------|---------------|
+
+##### *Fisheries Data*
+| Layer | Data Source | Data Name | Metadata  | Notes |
+|---------------|---------------|---------------|---------------|---------------|
+
+##### *Wind Data*
+| Layer | Data Source | Data Name | Metadata  | Notes |
+|---------------|---------------|---------------|---------------|---------------|
 
 Datasets explored but not included in analyses due to not located geographically in study area:
 - [BOEM Active Lease Areas](https://www.data.boem.gov/Main/Mapping.aspx#ascii) ([Geodatabase download link](https://www.data.boem.gov/Mapping/Files/ActiveLeasePolygons.gdb.zip),[Shapefile download link](https://www.data.boem.gov/Mapping/Files/actlease.zip), [Metadata](https://www.data.boem.gov/Mapping/Files/actlease_meta.html))
