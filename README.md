@@ -1,40 +1,50 @@
 # Case Study: Sensitivity and Uncertainty Analyses for Oregon wind siting
+
 Creating a case study on sensitivity and uncertainty analyses for Oregon wind siting.
 
 #### **Repository Structure**
-* **data**
-  - **raw_data:** the raw data integrated in the analysis (**Note:** original data name and structure were kept except when either name was not descriptive or similar data were put in same directory to simplify input directories)
-  - **intermediate_data:** disaggregated processed data
-  - **submodel_data:**
-  - **suitability_data:**
-  - **rank_data:** 
-  - **sensitivity_data:**
-  - **uncertainty_data:**
-* **code:** scripts for cleaning, processing, and analyzing data
-* **figures:** figures generated to visualize analysis
-* **methodology:** detailed [methods](/methodology.pdf) for the data and analysis
 
-**_Note for PC users:_** The code was written on a Mac so to run the scripts replace "/" in the pathnames for directories with two "\\".
+-   **data**
+    -   **raw_data:** the raw data integrated in the analysis (**Note:** original data name and structure were kept except when either name was not descriptive or similar data were put in same directory to simplify input directories)
+    -   **intermediate_data:** disaggregated processed data
+    -   **submodel_data:**
+    -   **suitability_data:**
+    -   **rank_data:**
+    -   **sensitivity_data:**
+    -   **uncertainty_data:**
+-   **code:** scripts for cleaning, processing, and analyzing data
+-   **figures:** figures generated to visualize analysis
+-   **methodology:** detailed [methods](/methodology.pdf) for the data and analysis
 
-Please contact Brian Free (brian.free@noaa.gov) with any questions.
+***Note for PC users:*** The code was written on a Mac so to run the scripts replace "/" in the pathnames for directories with two "\\".
+
+Please contact Brian Free ([brian.free\@noaa.gov](mailto:brian.free@noaa.gov){.email}) with any questions.
 
 #### **Data sources**
-##### _Generic Data_
-| Layer | Data Source | Data Name | Metadata |
-| ------------- | ------------- | ------------- | ------------- |
-| | | | |
+
+##### *Generic Data*
+
+#### **Data sources**
+
+##### *Generic Data*
+
+#### **Data sources**
+
+##### *Generic Data*
+| Layer | Data Source | Data Name | Metadata  | Notes |
+|---------------|---------------|---------------|---------------|---------------|
+| Wind Areas | BOEM | [Renewable Energy Leases and Planning Areas](https://www.boem.gov/renewable-energy/boem-renewable-energy-geodatabase) | [Metadata](https://metadata.boem.gov/geospatial/boem_renewable_lease_areas.xml), [Renewable Energy GIS Data](https://www.boem.gov/renewable-energy/mapping-and-data/renewable-energy-gis-data) | Data are also accessible for download on [MarineCadastre](https://marinecadastre.gov/) (under "Active Renewable Energy Leases") |
+| State Boundary | State of Oregon | [Administrative Boundary](http://navigator.state.or.us/sdl/data/shapefile/k24/or_state_boundary.zip) | [Metadata](https://spatialdata.oregonexplorer.info/osdl-geoportal/rest/document?id=%7BCF375EB0-FF70-42D9-9DAE-A17A776821A8%7D) |  [Geospatial library](https://spatialdata.oregonexplorer.info/geoportal/details;id=cf375eb0ff7042d99daea17a776821a8) |
 
 Datasets explored but not included in analyses due to not located geographically in study area:
-* [BOEM Active Lease Areas](https://www.data.boem.gov/Main/Mapping.aspx#ascii) ([Geodatabase download link](https://www.data.boem.gov/Mapping/Files/ActiveLeasePolygons.gdb.zip), [Shapefile download link](https://www.data.boem.gov/Mapping/Files/actlease.zip), [Metadata](https://www.data.boem.gov/Mapping/Files/actlease_meta.html))
-* [Anchorage Areas](https://marinecadastre.gov/downloads/data/mc/Anchorage.zip) ([Metadata](https://www.fisheries.noaa.gov/inport/item/48849))
-* [BOEM Lease Blocks](https://www.data.boem.gov/Mapping/Files/Blocks.gdb.zip) ([Metadata](https://www.data.boem.gov/Mapping/Files/blocks_meta.html))
-* [Lightering Zones](https://marinecadastre.gov/downloads/data/mc/LighteringZone.zip) ([Metadata](https://www.fisheries.noaa.gov/inport/item/66149), [more information](https://www.govinfo.gov/content/pkg/CFR-2018-title33-vol2/xml/CFR-2018-title33-vol2-part156.xml#seqnum156.300))
-* [Pipelines](https://www.data.boem.gov/Mapping/Files/Pipelines.gdb.zip) ([Option page](https://www.data.boem.gov/Main/Mapping.aspx#ascii), [Metadata](https://www.data.boem.gov/Mapping/Files/ppl_arcs_meta.html))
-* [Shipping Lanes](http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip) (Federal)
-* [Unexploded ordnances](https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnance.zip) (Points and areas, [metadata](https://www.fisheries.noaa.gov/inport/item/66208))
-* [BOEM Drilling Platforms](https://www.data.boem.gov/Mapping/Files/Platforms.gdb.zip) ([Metadata](https://www.data.boem.gov/Mapping/Files/platform_meta.html), [Mapping Page](https://www.data.boem.gov/Main/Mapping.aspx#ascii), [Alternative Platform Structure dataset](https://www.data.boem.gov/Platform/PlatformStructures/Default.aspx))
+- [BOEM Active Lease Areas](https://www.data.boem.gov/Main/Mapping.aspx#ascii) ([Geodatabase download link](https://www.data.boem.gov/Mapping/Files/ActiveLeasePolygons.gdb.zip), [Shapefile download link](https://www.data.boem.gov/Mapping/Files/actlease.zip), [Metadata](https://www.data.boem.gov/Mapping/Files/actlease_meta.html))
+- [Anchorage Areas](https://marinecadastre.gov/downloads/data/mc/Anchorage.zip) ([Metadata](https://www.fisheries.noaa.gov/inport/item/48849))
+-[BOEM Lease Blocks](https://www.data.boem.gov/Mapping/Files/Blocks.gdb.zip) ([Metadata](https://www.data.boem.gov/Mapping/Files/blocks_meta.html))
+- [Lightering Zones](https://marinecadastre.gov/downloads/data/mc/LighteringZone.zip) ([Metadata](https://www.fisheries.noaa.gov/inport/item/66149), [more information](https://www.govinfo.gov/content/pkg/CFR-2018-title33-vol2/xml/CFR-2018-title33-vol2-part156.xml#seqnum156.300)) \* [Pipelines](https://www.data.boem.gov/Mapping/Files/Pipelines.gdb.zip) ([Option page](https://www.data.boem.gov/Main/Mapping.aspx#ascii), [Metadata](https://www.data.boem.gov/Mapping/Files/ppl_arcs_meta.html))
+- [Shipping Lanes](http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip) (Federal)
+- [Unexploded ordnances](https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnance.zip) (Points and areas, [metadata](https://www.fisheries.noaa.gov/inport/item/66208))
+- [BOEM Drilling Platforms](https://www.data.boem.gov/Mapping/Files/Platforms.gdb.zip) ([Metadata](https://www.data.boem.gov/Mapping/Files/platform_meta.html), [Mapping Page](https://www.data.boem.gov/Main/Mapping.aspx#ascii), [Alternative Platform Structure dataset](https://www.data.boem.gov/Platform/PlatformStructures/Default.aspx))
 
-_Known issues_
-The hexagonal grid in R is slightly different than a tessellation grid that ArcGIS Pro generates in its [data management toolbox](https://pro.arcgis.com/en/pro-app/latest/tool-reference/data-management/generatetesellation.htm). This is likely due to differences in the number of significant digits used for the calculations and converting acres into meters.
+*Known issues* The hexagonal grid in R is slightly different than a tessellation grid that ArcGIS Pro generates in its [data management toolbox](https://pro.arcgis.com/en/pro-app/latest/tool-reference/data-management/generatetesellation.htm). This is likely due to differences in the number of significant digits used for the calculations and converting acres into meters.
 
 Hexagon nodes in the grid R creates fall approximately 1.3 meters away from similar nodes for the tessellation generated by ArcGIS. In a 10-acre area, this difference is accounts for 0.64% in distance.
