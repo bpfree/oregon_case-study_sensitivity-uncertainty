@@ -36,7 +36,7 @@ study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
 wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
-#### Constraint directories
+#### Constraint submodel
 constraint_gpkg <- "data/c_submodel_data/constraints.gpkg"
 
 #### Intermediate directories
