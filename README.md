@@ -2,7 +2,7 @@
 
 Creating a case study on sensitivity and uncertainty analyses for Oregon wind siting.
 
-### **Repository Structure**
+#### **Repository Structure**
 
 -   **data**
     -   **raw_data:** the raw data integrated in the analysis (**Note:** original data name and structure were kept except when either name was not descriptive or similar data were put in same directory to simplify input directories)
