@@ -236,6 +236,7 @@ methane_bubble_merle <- "https://www.pmel.noaa.gov/eoi/Cascadia/Supplemental-Tab
 ## Methane bubble streams (Reidel et al. 2018) (source: https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-018-05736-x/MediaObjects/41467_2018_5736_MOESM4_ESM.xlsx)
 ### ***Note: data come from the supplementary data 2
 ### Paper: https://www.nature.com/articles/s41467-018-05736-x
+### ***Note: these data are contained within the Merle et al. (2021) dataset
 methane_bubble_reidel <- "https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-018-05736-x/MediaObjects/41467_2018_5736_MOESM4_ESM.xlsx"
 
 #####################################
@@ -244,6 +245,7 @@ methane_bubble_reidel <- "https://static-content.springer.com/esm/art%3A10.1038%
 ### ***Note: data come from the supporting information document (see S2 and S3)
 ### ***Note: S3 does not contain any sites that fall within Oregon call areas
 ### Paper: https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2015GC005955
+### ***Note: these data are contained within the Merle et al. (2021) dataset
 methane_bubble_johnson <- "https://agupubs.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2F2015GC005955&file=ggge20859-sup-0001-2015GC005955-SupInfo.docx"
 
 #####################################
