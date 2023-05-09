@@ -35,15 +35,19 @@ Please contact Brian Free ([brian.free\@noaa.gov](mailto:brian.free@noaa.gov){.e
 ##### *Constraints Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
-| Military | DoD | Combined Wind Assessment for the Oregon Offshore, BOEM, OPNAV, May 2022 | [Metadata](https://www.coastalatlas.net/waf/boem/OPNAV_CombinedAssesment_May2022.xml) | [Data Portal](https://offshorewind.westcoastoceans.org/) (Human > Military > Combined Oregon Offshore Wind Assessment, OPNAV, May 2022), [Data source provider](https://gis.lcd.state.or.us/server/rest/services/Projects/OCMP_OceanPlanning_Human/MapServer/21), [Alternative link for dataset](https://portal.westcoastoceans.org/geoportal/rest/metadata/item/45b6aa29abe7427a91d8f430eac0ab75/html), [InPort](https://www.fisheries.noaa.gov/inport/item/48875)
+| Military | Department of Defense | Combined Wind Assessment for the Oregon Offshore, BOEM, OPNAV, May 2022 | [Metadata](https://www.coastalatlas.net/waf/boem/OPNAV_CombinedAssesment_May2022.xml) | [Data Portal](https://offshorewind.westcoastoceans.org/) (Human > Military > Combined Oregon Offshore Wind Assessment, OPNAV, May 2022), [Data source provider](https://gis.lcd.state.or.us/server/rest/services/Projects/OCMP_OceanPlanning_Human/MapServer/21), [Alternative link for dataset](https://portal.westcoastoceans.org/geoportal/rest/metadata/item/45b6aa29abe7427a91d8f430eac0ab75/html), [InPort](https://www.fisheries.noaa.gov/inport/item/48875)
+| Military | United States Coast Guard | [Pacific Coast Port Access Route Study](https://navcen.uscg.gov/sites/default/files/pdf/PARS/PAC_PARS_22/Draft%20PAC-PARS.pdf) | | [Federal Registrar](https://www.federalregister.gov/documents/2022/08/26/2022-18453/port-access-route-study-the-pacific-coast-from-washington-to-california), Analysis completed in Districts 11 and 13
 
 ##### *Industry and Operations Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
+| Submarine Cable | NOAA | [NOAA Chartered Submarine Cable](https://marinecadastre.gov/downloads/data/mc/SubmarineCable.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/57238)| |
+
 
 ##### *Natural Resources Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
+| Conservation Areas | NOAA | [Essential Fisheries Habitat Conservation Areas](https://media.fisheries.noaa.gov/2021-02/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020.zip) | | [Text](https://www.ecfr.gov/current/title-50/chapter-VI/part-660/subpart-C/section-660.76) |
 
 ##### *Fisheries Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
