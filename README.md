@@ -18,7 +18,7 @@ Creating a case study on sensitivity and uncertainty analyses for Oregon wind si
 
 ***Note for PC users:*** The code was written on a Mac so to run the scripts replace "/" in the pathnames for directories with two "\\".
 
-Please contact Brian Free ([brian.free\@noaa.gov](mailto:brian.free@noaa.gov){.email}) with any questions.
+Please contact Brian Free ([brian.free@noaa.gov](mailto:brian.free@noaa.gov)) with any questions.
 
 #### **Data sources**
 ##### *Generic Data*
