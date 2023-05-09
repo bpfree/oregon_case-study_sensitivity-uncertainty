@@ -35,6 +35,7 @@ Please contact Brian Free ([brian.free\@noaa.gov](mailto:brian.free@noaa.gov){.e
 ##### *Constraints Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
+| Military | DoD | Combined Wind Assessment for the Oregon Offshore, BOEM, OPNAV, May 2022 | [Metadata](https://www.coastalatlas.net/waf/boem/OPNAV_CombinedAssesment_May2022.xml) | [Data Portal](https://offshorewind.westcoastoceans.org/) (Human > Military > Combined Oregon Offshore Wind Assessment, OPNAV, May 2022), [Data source provider](https://gis.lcd.state.or.us/server/rest/services/Projects/OCMP_OceanPlanning_Human/MapServer/21), [Alternative link for dataset](https://portal.westcoastoceans.org/geoportal/rest/metadata/item/45b6aa29abe7427a91d8f430eac0ab75/html), [InPort](https://www.fisheries.noaa.gov/inport/item/48875)
 
 ##### *Industry and Operations Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
