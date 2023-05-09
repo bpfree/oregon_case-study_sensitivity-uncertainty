@@ -58,6 +58,9 @@ data/a_raw_data/wind_prospector/Wind_Speed_August
 data/a_raw_data/month.h5
 data/a_raw_data/hour.h5
 
+### Surficial Geologic Habitat
+data/a_raw_data/OSU_ATSML_SGH_V4_0_WA_OR_NCA/V4*
+
 ## Intermediate data
 ### Bathymetry
 data/b_intermediate_data/bathymetry/bathymetry
