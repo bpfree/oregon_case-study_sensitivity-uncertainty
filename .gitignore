@@ -12,24 +12,24 @@ data/a_raw_data/AISVesselTracks2019
 data/a_raw_data/AISVesselTransitCounts2019
 data/a_raw_data/ais_counts_2019
 
-#### Bathymetry
+### Bathymetry
 data/a_raw_data/crm_vol7.nc
 data/a_raw_data/central_oregon_13_navd88_2015.nc
 data/a_raw_data/crescent_city_13_mhw_2010.nc
 data/a_raw_data/port_orford_13_mhw_2008.nc
 
-#### Land
+### Land
 data/a_raw_data/USGSEsriWCMC_GlobalIslands_v3
 data/a_raw_data/USGSEsriWCMC_GlobalIslands_v3.zip
 # data/a_raw_data/globalislandsfix.gdb
 
-#### NMFS HAPC
+### NMFS HAPC
 data/a_raw_data/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020/HAPCs_2006
 
-#### NMFS ESA critical habitats
+### NMFS ESA critical habitats
 data/a_raw_data/NMFS_ESA_Critical_Habitat_20221017.gdb
 
-#### Deep sea coral and sponge habitat
+### Deep sea coral and sponge habitat
 data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Demosponges.zip
 data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Glass_Sponges.zip
 data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Gorgonian_Corals.zip
@@ -38,7 +38,7 @@ data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWe
 data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Seafloor_Topography.zip
 data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/USWestCoast_DeepSeaCoralsSponges_Modeling_BrowseGraphic.jpg
 
-#### Offshore mean annual wind speed
+### Offshore mean annual wind speed
 data/a_raw_data/wind_prospector/Aliquots
 data/a_raw_data/wind_prospector/Bald_Eagle_Extent
 data/a_raw_data/wind_prospector/Golden_Eagle_Extent
@@ -54,10 +54,16 @@ data/a_raw_data/wind_prospector/Rose_120m
 data/a_raw_data/wind_prospector/Wind_Speed_January
 data/a_raw_data/wind_prospector/Wind_Speed_August
 
-#### NREL wind speed
+### NREL wind speed
 data/a_raw_data/month.h5
 data/a_raw_data/hour.h5
 
 ## Intermediate data
+### Bathymetry
+data/b_intermediate_data/bathymetry/bathymetry
+
 ### Oregon
 data/b_intermediate_data/oregon_study_area.gpkg
+
+### Rocky Reef
+data/b_intermediate_data/oregon_rocky_reef.gpkg
