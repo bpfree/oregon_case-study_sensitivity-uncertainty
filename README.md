@@ -1,7 +1,5 @@
 # Case Study: Sensitivity and Uncertainty Analyses for Oregon wind siting
 
-Change this for a cause.
-
 Creating a case study on sensitivity and uncertainty analyses for Oregon wind siting.
 
 #### **Repository Structure**
