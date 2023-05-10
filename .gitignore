@@ -63,7 +63,7 @@ data/a_raw_data/OSU_ATSML_SGH_V4_0_WA_OR_NCA/V4*
 
 ## Intermediate data
 ### Bathymetry
-data/b_intermediate_data/bathymetry/bathymetry/
+data/b_intermediate_data/bathymetry
 
 ### Oregon
 data/b_intermediate_data/oregon_study_area.gpkg
