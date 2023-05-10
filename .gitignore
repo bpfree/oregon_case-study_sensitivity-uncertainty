@@ -5,6 +5,8 @@
 .Ruserdata
 .DS_Store
 
+# Ignore confidential data
+
 # Ignore data too large to add (over 100MB)
 ## Raw data
 ### AIS data
