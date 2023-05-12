@@ -1,5 +1,5 @@
 ###################################
-### X. NMFS Habitat Data Layers ###
+### 9. NMFS Habitat Data Layers ###
 ###################################
 
 # Clear environment
