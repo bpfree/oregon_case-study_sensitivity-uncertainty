@@ -1,5 +1,5 @@
 ##############################
-### X. Bathymetry Contours ###
+### 7. Bathymetry Contours ###
 ##############################
 
 # Clear environment
