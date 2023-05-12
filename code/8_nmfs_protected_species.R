@@ -1,5 +1,5 @@
 #################################
-### X. NMFS Protected Species ###
+### 8. NMFS Protected Species ###
 #################################
 
 # Clear environment
@@ -50,10 +50,10 @@ dir.create(paste0(intermediate_dir, "/",
 
 protected_species_dir <- "data/b_intermediate_data/protected_species"
 
-conservation_areas_gpkg <- paste(intermediate_dir, "conservation_areas.gpkg", sep = "/")
-exclusion_area_gpkg <- paste(intermediate_dir, "exclusion_areas.gpkg", sep = "/")
-exclusion_miscellaneous_gpkg <- paste(intermediate_dir, "exclusion_miscellaneous.gpkg", sep = "/")
-protected_species_gpkg <- paste(intermediate_dir, "protected_species.gpkg", sep = "/")
+conservation_areas_gpkg <- paste(protected_species_dir, "conservation_areas.gpkg", sep = "/")
+exclusion_areas_gpkg <- paste(protected_species_dir, "exclusion_areas.gpkg", sep = "/")
+exclusion_miscellaneous_gpkg <- paste(protected_species_dir, "exclusion_miscellaneous.gpkg", sep = "/")
+protected_species_gpkg <- paste(protected_species_dir, "protected_species.gpkg", sep = "/")
 
 #####################################
 #####################################
@@ -422,8 +422,8 @@ sf::st_write(obj = humpback_exclusion, dsn = exclusion_areas_gpkg, layer = "hump
 sf::st_write(obj = blue_whale_exclusion, dsn = exclusion_areas_gpkg, layer = "blue_whale_exclusion", append = F)
 
 ### Miscellaneous exclusion
-saveRDS(cal_ore_boundary, paste(protected_species_dir, "cal_ore_boundary", sep = "/"))
-saveRDS(oregon_4210_line, paste(protected_species_dir, "oregon_4210_line", sep = "/"))
+saveRDS(cal_ore_boundary, paste(protected_species_dir, "cal_ore_boundary.RDS", sep = "/"))
+saveRDS(oregon_4210_line, paste(protected_species_dir, "oregon_4210_line.RDS", sep = "/"))
 sf::st_write(obj = brookings_foraging_box, dsn = exclusion_miscellaneous_gpkg, layer = "brookings_foraging_box_exclusion", append = F)
 
 ### Bathymetric contours
