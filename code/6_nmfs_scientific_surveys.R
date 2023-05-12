@@ -30,6 +30,7 @@ pacman::p_load(dplyr,
 # Set directories
 ## Define data directory (as this is an R Project, pathnames are simplified)
 ### Input directories
+survey_gpkg <- "data/a_raw_data/NCCOS_Share.gdb"
 
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
 wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
@@ -40,6 +41,11 @@ industry_operations_submodel <- "data/c_submodel_data/industry_operations_submod
 
 #### Intermediate directories
 nmfs_scientific_survey_gpkg <- "data/b_intermediate_data/oregon_nmfs_scientific_survey.gpkg"
+
+#####################################
+
+sf::st_layers(dsn = survey_gpkg,
+              do_count = T)
 
 #####################################
 #####################################
@@ -198,7 +204,7 @@ scientific_survey_corridors <- east_west_4320 %>%
         east_west_4200,
         east_west_4210)
 
-oregon_call_area_scientific_survey_corridors <- scientific_survey_corridors %>%
+oregon_scientific_survey_corridors <- scientific_survey_corridors %>%
   # limit survey corridors to the call areas
   rmapshaper::ms_clip(target = .,
                       clip = oregon_call_areas)
@@ -241,6 +247,66 @@ additional_east_west_4230 <- rbind(c("point",-125.8,42.5),
 
 additional_scientific_survey_corridors <- additional_east_west_4220 %>%
   rbind(additional_east_west_4230)
+
+#####################################
+#####################################
+
+## *** Note: NOAA requested additional exclusion areas around the survey stations for the
+## Pre-Recruit and Northern California Current Ecosystem surveys. Table 4 within NOAA's
+## comments to BOEM provide hyperlinks for the surveys. Within the table, the survey design
+## states that there are fixed stations and transects (in the case of Northern California
+## Current Ecosystem survey).
+
+### NOAA (NMFS, NCCOS, & IOOS) Comments: https://www.regulations.gov/comment/BOEM-2022-0009-0178
+
+## The link for the Pre-Recruit data navigates to here (https://www.fisheries.noaa.gov/inport/item/20562).
+## Contained within those metadata is a link to the Coastwide Cooperative Pre-Recruit Survey.
+## It contains two different data tables:
+##  1.) Prerecruit Survey Trawl Data Catch: https://www.webapps.nwfsc.noaa.gov/apex/parrdata/inventory/tables/table/prerecruit_survey_trawl_data_catch
+##  2.) Prerecruit Survey Trawl Data Haul: https://www.webapps.nwfsc.noaa.gov/apex/parrdata/inventory/tables/table/prerecruit_survey_trawl_data_haul
+
+## These datasets have the same spatial locations even as the number of observations are different: data catch (3227) vs. data haul (220)
+
+## The link for the Northern California Current Ecosystem navigates to a page writing about the survey.
+## The page does not contain any data related to the survey.
+
+## NOAA's Integrated Ecosystem Assessment studies the California Current: https://www.integratedecosystemassessment.noaa.gov/index.php/regions/california-current
+## The most recent report states that the assessment surveys along the Newport Line in Oregon: https://www.pcouncil.org/documents/2023/02/h-1-a-cciea-team-report-1-electronic-only-2022-2023-california-current-ecosystem-status-report-and-appendices.pdf/
+## For more information about the Newport Hydrographic Line: https://www.integratedecosystemassessment.noaa.gov/regions/california-current/newport-hydrographic-line
+## This would be too far north for the Oregon call areas
+
+### Data used for the analysis were created and provided by Curt Whitmire (curt.whitmire@noaa.gov).
+### Survey location data were passed to Curt from various partners at the NWFSC and SWFSC.
+### As mentioned above, surveys came as points (fixed stations) and lines (fixed transects).
+
+# Survey stations
+nmfs_survey_stations <- sf::st_read(dsn = survey_gpkg, layer = "NMFS_SurveyStations")%>%
+  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
+  sf::st_transform("EPSG:26910") %>% # EPSG 26910 (https://epsg.io/26910) %>%
+  # select only the two surveys of interest: Pre-Recruit Survey and Northern California Current Ecosystem Survey
+  dplyr::filter(SurveyName %in% c("Pre-Recruit Survey", "Northern California Current Ecosystem Survey"))
+
+oregon_survey_transects <- nmfs_survey_stations %>%
+  # add 2 nautical mile buffer around transect line (1 nautical mile = 1852 meters)
+  sf::st_buffer(dist = 3704) %>%
+  # limit survey transects to the call areas
+  rmapshaper::ms_clip(target = .,
+                      clip = oregon_call_areas)
+
+
+# Survey transects
+nmfs_survey_transects <- sf::st_read(dsn = survey_gpkg, layer = "NMFS_SurveyTransects") %>%
+  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
+  sf::st_transform("EPSG:26910") %>% # EPSG 26910 (https://epsg.io/26910) %>%
+  # select only the two surveys of interest: Pre-Recruit Survey and Northern California Current Ecosystem Survey
+  dplyr::filter(SurveyName %in% c("Pre-Recruit Survey", "Northern California Current Ecosystem Survey"))
+
+oregon_survey_transects <- nmfs_survey_transects %>%
+  # add 1 nautical mile buffer around transect line (1 nautical mile = 1852 meters)
+  sf::st_buffer(dist = 1852) %>%
+  # limit survey transects to the call areas
+  rmapshaper::ms_clip(target = .,
+                      clip = oregon_call_areas)
 
 #####################################
 #####################################
