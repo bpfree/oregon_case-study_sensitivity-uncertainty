@@ -68,8 +68,9 @@ sf::st_layers(dsn = nmfs_esa_habitat_dir,
 #####################################
 #####################################
 
-# Clean and dissolve conservation areas
-## This function will take the imported data and reduce it down to a single feature.
+# Clean and dissolve protected species
+## This function will take the imported data and reduce it down to a single
+## feature after removing exlcusion areas and limiting to Oregon call areas
 protected_species_function <- function(species, exclusion_areas, call_areas){
   protected_species <- species %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
@@ -145,58 +146,38 @@ leatherback_exclusion <- nmfs_efhca_data %>%
 
 #####################################
 
-bathymetric_contour <- sf::st_read(dsn = bathymetry_gpkg, layer = "oregon_contours_50")
-
-bath250 <- bathymetric_contour %>%
-  dplyr::filter(level == -250)
-
-call_areas250 <- oregon_call_areas %>%
-  # split the call area by the 250m bathymetry
-  lwgeom::st_split(x = .,
-                   y = bath250)
-
-call_areas250_polygons <- call_areas250 %>%
-  # extract only the polygons within the GeometryCollective
-  sf::st_collection_extract(x = .,
-                            type = "POLYGON") %>%
-  # create area field (***note: this will be used to remove areas )
-  dplyr::mutate(area = as.numeric(sf::st_area(.))) %>%
-  # arrange areas by total area
-  dplyr::arrange(area) %>%
-  dplyr::mutate(fid = row_number()) %>%
-  dplyr::filter(!fid %in% c(119, 118, 114)) %>%
-  # have dataframes match each other
-  dplyr::mutate(layer = "protected species") %>%
-  dplyr::rename(geometry = geom) %>%
-  # select only needed fields
-  dplyr::select(layer)
-
 ### ***Note: Comments from NOAA (NMFS, NCCOS, & IOOS) seeks to close any areas between 0 and 200m and 250m of depth
-### The 0-200m bathymetric contours were for the southern resident killer whale
-### The 0-250m bathymetric contours were for the humpback whale (Central America and Mexico)
-### The 250m bathymetric contour was a 200m contour with a 50m bathymetric buffer added
+#### The 0-200m bathymetric contours were for the southern resident killer whale
+#### The 0-250m bathymetric contours were for the humpback whale (Central America and Mexico)
+
+##### ***WANRNING: In the initial analysis for offshore wind siting, the dataset reference was CAORWALL.
+##### However, the provenance of the dataset is unclear. It is possible that the original dataset came
+##### from this site: https://coastalmap.marine.usgs.gov/GISdata/regional/westcoast/bathymetry/caorwall.htm
+##### as it is referenced in this presentation: https://www.boem.gov/sites/default/files/documents/regions/pacific-ocs-region/environmental-science/west-coast-science-exchange-20191113.pdf
+##### Yet the mapping page is down for maintenance and no metadata exist for the page.
+##### For that dataset the -250m bathymetric contour was a 50-meter bathymetric buffer added to the -200m contour
 
 ### NOAA (NMFS, NCCOS, & IOOS) Comments: https://www.regulations.gov/comment/BOEM-2022-0009-0178 
 ### See points 1 and 2 at bottom of page 3
 
-#### Bathymetric contours (isobath contour) (source: https://marinecadastre.gov/downloads/data/mc/BathymetricContour.zip)
-##### Metadata: https://www.fisheries.noaa.gov/inport/item/54364
-bathymetric_contour <- sf::st_read(dsn = bathymetric_contour_dir, layer = "BathymetryContours") %>%
-  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
-  sf::st_transform("EPSG:26910") # EPSG 26910 (https://epsg.io/26910)
+### Exclusion areas by bathymetric contour
+#### Load bathymetric contour
+bathymetric_contour <- sf::st_read(dsn = bathymetry_gpkg, layer = "oregon_contours_50")
 
-##### 200m bathymetric contour
+### -200m contour exclusion
+#### Filter for -200m contour line
 bath200 <- bathymetric_contour %>%
-  # obtain only bathymetric contours that are at 200m
-  dplyr::filter(Contour == -200)
+  # subset ony the -200m bathymetric contour
+  dplyr::filter(level == -200)
 
-##### Call areas split into polygons by the 200m contour
+#### Call areas by bathymetric contour
 call_areas200 <- oregon_call_areas %>%
-  # split the call area by the 200m bathymetry
+  # split the call area by the -200m bathymetry
   lwgeom::st_split(x = .,
+                   # split is the -200m bathymetry line
                    y = bath200)
 
-##### Areas that fall in the range of 0 and 200m of depth
+#### Get areas within call areas that are -200m or above
 call_areas200_polygons <- call_areas200 %>%
   # extract only the polygons within the GeometryCollective
   sf::st_collection_extract(x = .,
@@ -206,27 +187,28 @@ call_areas200_polygons <- call_areas200 %>%
   # arrange areas by total area
   dplyr::arrange(area) %>%
   # take 4 smallest areas (these will be the top 4 after being arranged)
-  # as the other two areas are past the 250m bathymetric contour
+  # as the other two areas are past the 200m bathymetric contour
   dplyr::slice(1:4) %>%
   # have dataframes match each other
   dplyr::mutate(layer = "protected species") %>%
   dplyr::rename(geometry = geom) %>%
   # select only needed fields
   dplyr::select(layer)
-  
 
-#### 250m bathymetric contour
+### -250m contour exclusion
+#### Filter for -250m contour line
 bath250 <- bathymetric_contour %>%
-  # obtain only bathymetric contours that are at 250m
-  dplyr::filter(Contour == -250)
+  # subset only the -250m bathymetric contour
+  dplyr::filter(level == -250)
 
-#### Call areas split into polygons by the 250m contour
+#### Call areas by bathymetric contour
 call_areas250 <- oregon_call_areas %>%
-  # split the call area by the 250m bathymetry
+  # split the call area by the -250m bathymetry
   lwgeom::st_split(x = .,
+                   # split is the -250 bathymetry line
                    y = bath250)
 
-#### Areas that fall in the range of 0 and 250m of depth
+#### Get areas within call areas that are -250m or above
 call_areas250_polygons <- call_areas250 %>%
   # extract only the polygons within the GeometryCollective
   sf::st_collection_extract(x = .,
@@ -235,11 +217,13 @@ call_areas250_polygons <- call_areas250 %>%
   dplyr::mutate(area = as.numeric(sf::st_area(.))) %>%
   # arrange areas by total area
   dplyr::arrange(area) %>%
-  # take 5 smallest areas (these will be the top 5 after being arranged)
-  # as the other two areas are past the 250m bathymetric contour
-  dplyr::slice(1:5) %>%
+  # create a new field called "fid" and fill with the row number
+  dplyr::mutate(fid = row_number()) %>%
+  # subset the areas that are -250m or above (3 areas)
+  dplyr::filter(!fid %in% c(119, 118, 114)) %>%
   # have dataframes match each other
   dplyr::mutate(layer = "protected species") %>%
+  # renanme field so it matches other data
   dplyr::rename(geometry = geom) %>%
   # select only needed fields
   dplyr::select(layer)
@@ -317,7 +301,6 @@ plot(brookings_foraging_area)
 #####################################
 
 ### Species exclusions
-
 #### Killer whale exclusion areas (areas between 0-200m + EFHCAs)
 killer_whale_exclusion <- call_areas200_polygons %>%
   # EFHCAs
@@ -415,13 +398,34 @@ oregon_blue_whale <- oregon_hex[blue_whale_areas, ]%>%
 #####################################
 
 # Export data
+## Fisheries submodel
 sf::st_write(obj = oregon_leatherback, dsn = fisheries_submodel, layer = "oregon_hex_leatherback", append = F)
 sf::st_write(obj = oregon_humpback_ca_dps, dsn = fisheries_submodel, layer = "oregon_hex_humpback_ca_dps", append = F)
 sf::st_write(obj = oregon_humpback_mexico_dps, dsn = fisheries_submodel, layer = "oregon_hex_humpback_mexico_dps", append = F)
 sf::st_write(obj = oregon_killer_whale, dsn = fisheries_submodel, layer = "oregon_hex_killer_whale", append = F)
 sf::st_write(obj = oregon_blue_whale, dsn = fisheries_submodel, layer = "oregon_hex_blue_whale", append = F)
 
+## Protected Species geopackage
+### Conservation areas
+sf::st_write(obj = nmfs_efhca_data, dsn = protected_species_gpkg, layer = "nmfs_efhca", append = F)
 
+### Exclusion areas
+sf::st_write(obj = efhca_exclusion, dsn = protected_species_gpkg, layer = "efhca_exclusion", append = F)
+sf::st_write(obj = leatherback_exclusion, dsn = protected_species_gpkg, layer = "leatherback_exclusion", append = F)
+sf::st_write(obj = call_areas200_polygons, dsn = protected_species_gpkg, layer = "call_area_200m_exclusion", append = F)
+sf::st_write(obj = call_areas250_polygons, dsn = protected_species_gpkg, layer = "call_area_250m_exclusion", append = F)
+sf::st_write(obj = brookings_foraging_area, dsn = protected_species_gpkg, layer = "brookings_foraging_exclusion", append = F)
 
+### Bathymetric contours
+sf::st_write(obj = bath200, dsn = protected_species_gpkg, layer = "bathymetric_countor_200m", append = F)
+sf::st_write(obj = bath250, dsn = protected_species_gpkg, layer = "bathymetric_countor_250m", append = F)
 
+### Species areas
+sf::st_write(obj = leatherback_areas, dsn = protected_species_gpkg, layer = "leatherback_areas", append = F)
+sf::st_write(obj = humpback_central_america_dps_areas, dsn = protected_species_gpkg, layer = "humpback_ca_dps_areas", append = F)
+sf::st_write(obj = humpback_mexico_dps_areas, dsn = protected_species_gpkg, layer = "humpback_mexico_dps_areas", append = F)
+sf::st_write(obj = killer_whale_areas, dsn = protected_species_gpkg, layer = "oregon_hex_killer_whale", append = F)
+sf::st_write(obj = blue_whale_areas, dsn = protected_species_gpkg, layer = "blue_whale_areas", append = F)
+
+## Bathymetry geopackage
 sf::st_write(obj = call_areas250_polygons, dsn = protected_species_gpkg, layer = "call_areas250_poygons")
