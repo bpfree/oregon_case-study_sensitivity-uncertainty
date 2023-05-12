@@ -206,9 +206,11 @@ oregon_contours <- terra::as.contour(x = oregon_bath,
 
 # Export data
 ## Bathymetry data
-terra::writeRaster(oregon_bath, filename = file.path(bathymetry_dir, "oregon_study_area_bath.grd"), overwrite = T)
 sf::st_write(obj = oregon_contours, dsn = bathymetry_gpkg, layer = "oregon_contours_50", append = F)
 
 ## Intermediate data
-terra::writeRaster(crm_v7_disagg, filename = file.path(bathymetry_dir, "noaa_crm_v7_disagg_bath.grd"), overwrite = T)
-terra::writeRaster(crm_v7_call_area, filename = file.path(bathymetry_dir, "oregon_call_area_crm_v7.grd"), overwrite = T)
+### ***WARNING: These files are large (e.g., oregon_bath = 2.3 GB, crm_v7_disagg = 33.5 GB)
+### ***Suggestion: Export if want to inspect
+# terra::writeRaster(oregon_bath, filename = file.path(bathymetry_dir, "oregon_study_area_bath.grd"), overwrite = T)
+# terra::writeRaster(crm_v7_disagg, filename = file.path(bathymetry_dir, "noaa_crm_v7_disagg_bath.grd"), overwrite = T)
+# terra::writeRaster(crm_v7_call_area, filename = file.path(bathymetry_dir, "oregon_call_area_crm_v7.grd"), overwrite = T)
