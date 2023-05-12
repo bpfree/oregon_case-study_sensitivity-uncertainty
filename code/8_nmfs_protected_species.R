@@ -43,15 +43,17 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 #### Analysis directories
 fisheries_submodel <- "data/c_submodel_data/fisheries_submodel.gpkg"
 
-#### Intermediate directories
-intermediate_dir <- "data/b_intermediate_data"
-nmfs_esa_gpkg <- "data/b_intermediate_data/nmfs_esa_protected_species.gpkg"
-
 #### Protected species directory
+intermediate_dir <- "data/b_intermediate_data"
 dir.create(paste0(intermediate_dir, "/",
                   "protected_species"))
 
-protected_species_gpkg <- "data/b_intermediate_data/protected_species/protected_species.gpkg"
+protected_species_dir <- "data/b_intermediate_data/protected_species"
+
+conservation_areas_gpkg <- paste(intermediate_dir, "conservation_areas.gpkg", sep = "/")
+exclusion_area_gpkg <- paste(intermediate_dir, "exclusion_areas.gpkg", sep = "/")
+exclusion_miscellaneous_gpkg <- paste(intermediate_dir, "exclusion_miscellaneous.gpkg", sep = "/")
+protected_species_gpkg <- paste(intermediate_dir, "protected_species.gpkg", sep = "/")
 
 #####################################
 #####################################
@@ -364,31 +366,31 @@ blue_whale_areas <- oregon_call_areas %>%
 #####################################
 
 # Oregon hex by species
-oregon_leatherback <- oregon_hex[leatherback_areas, ] %>%
+oregon_hex_leatherback <- oregon_hex[leatherback_areas, ] %>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
               y = leatherback_areas,
               join = st_intersects)
 
-oregon_humpback_ca_dps <- oregon_hex[humpback_central_america_dps_areas, ]%>%
+oregon_hex_humpback_ca_dps <- oregon_hex[humpback_central_america_dps_areas, ]%>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
               y = humpback_central_america_dps_areas,
               join = st_intersects)
 
-oregon_humpback_mexico_dps <- oregon_hex[humpback_mexico_dps_areas, ]%>%
+oregon_hex_humpback_mexico_dps <- oregon_hex[humpback_mexico_dps_areas, ]%>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
               y = humpback_mexico_dps_areas,
               join = st_intersects)
 
-oregon_killer_whale <- oregon_hex[killer_whale_areas, ]%>%
+oregon_hex_killer_whale <- oregon_hex[killer_whale_areas, ]%>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
               y = killer_whale_areas,
               join = st_intersects)
 
-oregon_blue_whale <- oregon_hex[blue_whale_areas, ]%>%
+oregon_hex_blue_whale <- oregon_hex[blue_whale_areas, ]%>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
               y = blue_whale_areas,
@@ -399,33 +401,38 @@ oregon_blue_whale <- oregon_hex[blue_whale_areas, ]%>%
 
 # Export data
 ## Fisheries submodel
-sf::st_write(obj = oregon_leatherback, dsn = fisheries_submodel, layer = "oregon_hex_leatherback", append = F)
-sf::st_write(obj = oregon_humpback_ca_dps, dsn = fisheries_submodel, layer = "oregon_hex_humpback_ca_dps", append = F)
-sf::st_write(obj = oregon_humpback_mexico_dps, dsn = fisheries_submodel, layer = "oregon_hex_humpback_mexico_dps", append = F)
-sf::st_write(obj = oregon_killer_whale, dsn = fisheries_submodel, layer = "oregon_hex_killer_whale", append = F)
-sf::st_write(obj = oregon_blue_whale, dsn = fisheries_submodel, layer = "oregon_hex_blue_whale", append = F)
+sf::st_write(obj = oregon_hex_leatherback, dsn = fisheries_submodel, layer = "oregon_hex_leatherback", append = F)
+sf::st_write(obj = oregon_hex_humpback_ca_dps, dsn = fisheries_submodel, layer = "oregon_hex_humpback_ca_dps", append = F)
+sf::st_write(obj = oregon_hex_humpback_mexico_dps, dsn = fisheries_submodel, layer = "oregon_hex_humpback_mexico_dps", append = F)
+sf::st_write(obj = oregon_hex_killer_whale, dsn = fisheries_submodel, layer = "oregon_hex_killer_whale", append = F)
+sf::st_write(obj = oregon_hex_blue_whale, dsn = fisheries_submodel, layer = "oregon_hex_blue_whale", append = F)
 
-## Protected Species geopackage
+## Geopackages
 ### Conservation areas
-sf::st_write(obj = nmfs_efhca_data, dsn = protected_species_gpkg, layer = "nmfs_efhca", append = F)
+sf::st_write(obj = nmfs_efhca_data, dsn = conservation_areas_gpkg, layer = "nmfs_efhca", append = F)
 
 ### Exclusion areas
-sf::st_write(obj = efhca_exclusion, dsn = protected_species_gpkg, layer = "efhca_exclusion", append = F)
-sf::st_write(obj = leatherback_exclusion, dsn = protected_species_gpkg, layer = "leatherback_exclusion", append = F)
-sf::st_write(obj = call_areas200_polygons, dsn = protected_species_gpkg, layer = "call_area_200m_exclusion", append = F)
-sf::st_write(obj = call_areas250_polygons, dsn = protected_species_gpkg, layer = "call_area_250m_exclusion", append = F)
-sf::st_write(obj = brookings_foraging_area, dsn = protected_species_gpkg, layer = "brookings_foraging_exclusion", append = F)
+sf::st_write(obj = efhca_exclusion, dsn = exclusion_areas_gpkg, layer = "efhca_exclusion", append = F)
+sf::st_write(obj = leatherback_exclusion, dsn = exclusion_areas_gpkg, layer = "leatherback_exclusion", append = F)
+sf::st_write(obj = call_areas200_polygons, dsn = exclusion_areas_gpkg, layer = "call_area_200m_exclusion", append = F)
+sf::st_write(obj = call_areas250_polygons, dsn = exclusion_areas_gpkg, layer = "call_area_250m_exclusion", append = F)
+sf::st_write(obj = brookings_foraging_area, dsn = exclusion_areas_gpkg, layer = "brookings_foraging_exclusion", append = F)
+sf::st_write(obj = killer_whale_exclusion, dsn = exclusion_areas_gpkg, layer = "killer_whale_exclusion", append = F)
+sf::st_write(obj = humpback_exclusion, dsn = exclusion_areas_gpkg, layer = "humpback_exclusion", append = F)
+sf::st_write(obj = blue_whale_exclusion, dsn = exclusion_areas_gpkg, layer = "blue_whale_exclusion", append = F)
+
+### Miscellaneous exclusion
+saveRDS(cal_ore_boundary, paste(protected_species_dir, "cal_ore_boundary", sep = "/"))
+saveRDS(oregon_4210_line, paste(protected_species_dir, "oregon_4210_line", sep = "/"))
+sf::st_write(obj = brookings_foraging_box, dsn = exclusion_miscellaneous_gpkg, layer = "brookings_foraging_box_exclusion", append = F)
 
 ### Bathymetric contours
 sf::st_write(obj = bath200, dsn = protected_species_gpkg, layer = "bathymetric_countor_200m", append = F)
 sf::st_write(obj = bath250, dsn = protected_species_gpkg, layer = "bathymetric_countor_250m", append = F)
 
-### Species areas
+### Protected species areas
 sf::st_write(obj = leatherback_areas, dsn = protected_species_gpkg, layer = "leatherback_areas", append = F)
 sf::st_write(obj = humpback_central_america_dps_areas, dsn = protected_species_gpkg, layer = "humpback_ca_dps_areas", append = F)
 sf::st_write(obj = humpback_mexico_dps_areas, dsn = protected_species_gpkg, layer = "humpback_mexico_dps_areas", append = F)
 sf::st_write(obj = killer_whale_areas, dsn = protected_species_gpkg, layer = "oregon_hex_killer_whale", append = F)
 sf::st_write(obj = blue_whale_areas, dsn = protected_species_gpkg, layer = "blue_whale_areas", append = F)
-
-## Bathymetry geopackage
-sf::st_write(obj = call_areas250_polygons, dsn = protected_species_gpkg, layer = "call_areas250_poygons")
