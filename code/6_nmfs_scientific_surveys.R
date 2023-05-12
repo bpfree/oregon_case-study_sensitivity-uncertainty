@@ -195,7 +195,7 @@ east_west_4210 <- rbind(c("point",-125.8,42.1666667),
 #####################################
 
 # All scientific surveys
-scientific_survey_corridors <- east_west_4320 %>%
+nmfs_scientific_survey_corridors <- east_west_4320 %>%
   # additional Coos Bay call areas
   rbind(east_west_4330,
         east_west_4340,
@@ -204,7 +204,7 @@ scientific_survey_corridors <- east_west_4320 %>%
         east_west_4200,
         east_west_4210)
 
-oregon_scientific_survey_corridors <- scientific_survey_corridors %>%
+oregon_nmfs_scientific_survey_corridors <- nmfs_scientific_survey_corridors %>%
   # limit survey corridors to the call areas
   rmapshaper::ms_clip(target = .,
                       clip = oregon_call_areas)
@@ -245,8 +245,13 @@ additional_east_west_4230 <- rbind(c("point",-125.8,42.5),
 
 #####################################
 
-additional_scientific_survey_corridors <- additional_east_west_4220 %>%
+nmfs_additional_scientific_survey_corridors <- additional_east_west_4220 %>%
   rbind(additional_east_west_4230)
+
+oregon_nmfs_additional_scientific_survey_corridors <- nmfs_additional_scientific_survey_corridors %>%
+  # limit survey corridors to the call areas
+  rmapshaper::ms_clip(target = .,
+                      clip = oregon_call_areas)
 
 #####################################
 #####################################
@@ -286,7 +291,7 @@ nmfs_survey_stations <- sf::st_read(dsn = survey_gpkg, layer = "NMFS_SurveyStati
   # select only the two surveys of interest: Pre-Recruit Survey and Northern California Current Ecosystem Survey
   dplyr::filter(SurveyName %in% c("Pre-Recruit Survey", "Northern California Current Ecosystem Survey"))
 
-oregon_survey_transects <- nmfs_survey_stations %>%
+oregon_nmfs_survey_stations <- nmfs_survey_stations %>%
   # add 2 nautical mile buffer around transect line (1 nautical mile = 1852 meters)
   sf::st_buffer(dist = 3704) %>%
   # limit survey transects to the call areas
@@ -301,7 +306,7 @@ nmfs_survey_transects <- sf::st_read(dsn = survey_gpkg, layer = "NMFS_SurveyTran
   # select only the two surveys of interest: Pre-Recruit Survey and Northern California Current Ecosystem Survey
   dplyr::filter(SurveyName %in% c("Pre-Recruit Survey", "Northern California Current Ecosystem Survey"))
 
-oregon_survey_transects <- nmfs_survey_transects %>%
+oregon_nmfs_survey_transects <- nmfs_survey_transects %>%
   # add 1 nautical mile buffer around transect line (1 nautical mile = 1852 meters)
   sf::st_buffer(dist = 1852) %>%
   # limit survey transects to the call areas
@@ -311,3 +316,66 @@ oregon_survey_transects <- nmfs_survey_transects %>%
 #####################################
 #####################################
 
+# Oregon hex
+## East-West scientific survey corridors
+oregon_hex_eastwest_survey_corridors <- oregon_hex[oregon_nfms_scientific_survey_corridors, ] %>%
+  sf::st_join(x = .,
+              y = oregon_nmfs_scientific_survey_corridors,
+              join = st_intersects)
+
+## Additional east-west scientific survey corridors
+oregon_hex_additional_eastwest_survey_corridors <- oregon_hex[nmfs_additional_scientific_survey_corridors, ] %>%
+  sf::st_join(x = .,
+              y = nmfs_additional_scientific_survey_corridors,
+              join = st_intersects)
+
+## Survey stations
+oregon_hex_survey_stations <- oregon_hex[oregon_nmfs_survey_stations, ] %>%
+  sf::st_join(x = .,
+              y = oregon_nmfs_survey_stations,
+              join = st_intersects)
+
+## Survey transects
+oregon_hex_survey_transects <- oregon_hex[oregon_nmfs_survey_transects, ] %>%
+  sf::st_join(x = .,
+              y = oregon_nmfs_survey_transects,
+              join = st_intersects)
+
+#####################################
+#####################################
+
+# Export data
+## Submodel geopackage
+sf::st_write(obj = oregon_hex_eastwest_survey_corridors, dsn = industry_operations_submodel, layer = "oregon_hex_eastwest_survey_corridors", append = F)
+sf::st_write(obj = oregon_hex_additional_eastwest_survey_corridors, dsn = industry_operations_submodel, layer = "oregon_hex_additional_eastwest_survey_corridors", append = F)
+sf::st_write(obj = oregon_hex_survey_stations, dsn = industry_operations_submodel, layer = "oregon_hex_survey_stations", append = F)
+sf::st_write(obj = oregon_hex_survey_transects, dsn = industry_operations_submodel, layer = "oregon_hex_survey_transects", append = F)
+
+## Scientific survey geopackage
+### Coos Bay
+sf::st_write(obj = east_west_4320, dsn = nmfs_scientific_survey_gpkg, layer = "east_west_4320_corridor", append = F)
+sf::st_write(obj = east_west_4330, dsn = nmfs_scientific_survey_gpkg, layer = "east_west_4330_corridor", append = F)
+sf::st_write(obj = east_west_4340, dsn = nmfs_scientific_survey_gpkg, layer = "east_west_4340_corridor", append = F)
+sf::st_write(obj = east_west_4350, dsn = nmfs_scientific_survey_gpkg, layer = "east_west_4350_corridor", append = F)
+
+### Brookings
+sf::st_write(obj = east_west_4200, dsn = nmfs_scientific_survey_gpkg, layer = "east_west_4200_corridor", append = F)
+sf::st_write(obj = east_west_4210, dsn = nmfs_scientific_survey_gpkg, layer = "east_west_4210_corridor", append = F)
+
+### Additional Scientific Surveys
+sf::st_write(obj = additional_east_west_4220, dsn = nmfs_scientific_survey_gpkg, layer = "additional_east_west_4220_corridor", append = F)
+sf::st_write(obj = additional_east_west_4230, dsn = nmfs_scientific_survey_gpkg, layer = "additional_east_west_4230_corridor", append = F)
+
+### East-West corridors
+sf::st_write(obj = nmfs_scientific_survey_corridors, dsn = nmfs_scientific_survey_gpkg, layer = "nmfs_scientific_survey_corridorsr", append = F)
+sf::st_write(obj = oregon_nmfs_scientific_survey_corridors, dsn = nmfs_scientific_survey_gpkg, layer = "oregon_nmfs_scientific_survey_corridors", append = F)
+sf::st_write(obj = nmfs_additional_scientific_survey_corridors, dsn = nmfs_scientific_survey_gpkg, layer = "nmfs_additional_scientific_survey_corridors", append = F)
+sf::st_write(obj = oregon_nmfs_additional_scientific_survey_corridors, dsn = nmfs_scientific_survey_gpkg, layer = "oregon_nmfs_additional_scientific_survey_corridors", append = F)
+
+### Survey Stations
+sf::st_write(obj = nmfs_survey_stations, dsn = nmfs_scientific_survey_gpkg, layer = "nmfs_survey_stations", append = F)
+sf::st_write(obj = oregon_nmfs_survey_stations, dsn = nmfs_scientific_survey_gpkg, layer = "oregon_nmfs_survey_stations", append = F)
+
+### Survey Transects
+sf::st_write(obj = nmfs_survey_transects, dsn = nmfs_scientific_survey_gpkg, layer = "nmfs_survey_transects", append = F)
+sf::st_write(obj = oregon_nmfs_survey_transects, dsn = nmfs_scientific_survey_gpkg, layer = "oregon_nmfs_survey_transecs", append = F)
