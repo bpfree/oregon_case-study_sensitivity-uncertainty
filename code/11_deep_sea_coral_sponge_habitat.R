@@ -140,10 +140,22 @@ robust_habitat_polygon <- terra::as.polygons(x = robust_habitat) %>%
 
 # Deep-sea coral and sponge habitat in call area
 ## High habitat suitability
-oregon_hex_coral_sponge_high <- oregon_hex[high_habitat_polygon, ]
+oregon_hex_coral_sponge_high <- oregon_hex[high_habitat_polygon, ] %>%
+  # spatially join NMFS EFHCA values to Oregon hex cells
+  sf::st_join(x = .,
+              y = high_habitat_polygon,
+              join = st_intersects) %>%
+  # select fields of importance
+  dplyr::select(index, layer)
 
 ## Robust high habitat suitability
-oregon_hex_coral_sponge_robust <- oregon_hex[robust_habitat_polygon, ]
+oregon_hex_coral_sponge_robust <- oregon_hex[robust_habitat_polygon, ] %>%
+  # spatially join NMFS EFHCA values to Oregon hex cells
+  sf::st_join(x = .,
+              y = robust_habitat_polygon,
+              join = st_intersects) %>%
+  # select fields of importance
+  dplyr::select(index, layer)
 
 #####################################
 #####################################
