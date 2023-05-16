@@ -68,13 +68,19 @@ oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
 ### Alternative link on dataset: https://portal.westcoastoceans.org/geoportal/rest/metadata/item/45b6aa29abe7427a91d8f430eac0ab75/html
 ### InPort: https://www.fisheries.noaa.gov/inport/item/48875
 
-### Explanation of data
-#### Green = no mitigation necessary -- open areas
-#### Red = mitigation not feasible -- closed areas
-
 dod_opnav <- sf::st_read(dsn = dod_opnav_dir, layer = "OPNAV_CombinedAssesment_May2022") %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
-  sf::st_transform("EPSG:26910")  %>%
+  sf::st_transform("EPSG:26910")
+
+#####################################
+#####################################
+
+# Exclusion areas
+## Explanation of data
+### Green = no mitigation necessary -- open areas
+### Red = mitigation not feasible -- closed areas
+
+dod_opnav_exclusion <- dod_opnav %>%
   # limit areas to only ones that will be constraints (no mitigation feasible)
   dplyr::filter(Color == "Red") %>%
   # obtain only DoD exclusion areas in the study area
@@ -85,10 +91,10 @@ dod_opnav <- sf::st_read(dsn = dod_opnav_dir, layer = "OPNAV_CombinedAssesment_M
 
 #####################################
 
-oregon_hex_dod_opnav <- oregon_hex[dod_opnav, ] %>%
+oregon_hex_dod_opnav <- oregon_hex[dod_opnav_exclusion, ] %>%
   # spatially join DoD OPNAV data to Oregon hex cells
   sf::st_join(x = .,
-              y = dod_opnav,
+              y = dod_opnav_exclusion,
               join = st_intersects) %>%
   # select fields of interest
   dplyr::select(index, layer)
@@ -101,5 +107,7 @@ oregon_hex_dod_opnav <- oregon_hex[dod_opnav, ] %>%
 sf::st_write(obj = oregon_hex_dod_opnav, dsn = constraint_gpkg, layer = "oregon_hex_dod_opnav", append = T)
 
 ## DoD OPNAV geopackage
-sf::st_write(obj = oregon_hex_dod_opnav, dsn = dod_gpkg, layer = "oregon_hex_dod_opnav", append = T)
 sf::st_write(obj = dod_opnav, dsn = dod_gpkg, layer = "oregon_call_area_dod_opnav", append = T)
+sf::st_write(obj = dod_opnav_exclusion, dsn = dod_gpkg, layer = "oregon_call_area_dod_opnav_exclusion", append = T)
+sf::st_write(obj = oregon_hex_dod_opnav, dsn = dod_gpkg, layer = "oregon_hex_dod_opnav", append = T)
+
