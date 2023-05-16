@@ -24,8 +24,8 @@ pacman::p_load(dplyr,
 
 # Commentary on R and code formulation:
 ## ***Note: If not familiar with dplyr notation
-## dplyr is within the tidyverse and can use %>%
-## to "pipe" a process, allowing for fluidity
+##          dplyr is within the tidyverse and can use %>%
+##          to "pipe" a process, allowing for fluidity
 ## Can learn more here: https://style.tidyverse.org/pipes.html
 
 ## Another  common coding notation used is "::"
@@ -118,7 +118,7 @@ wind_area_hex <- wind_area_grid[wind_areas, ] %>%
 
 # Oregon call area hexes as single feature
 ## ***Note: This dataset will be used to extract any data from datasets
-##           within the model that will impact wind siting suitability
+##          within the model that will impact wind siting suitability
 oregon_call_area_hex_dissolve <- wind_area_hex %>%
   # create field called "call area"
   dplyr::mutate(call_area = "call_area") %>%
