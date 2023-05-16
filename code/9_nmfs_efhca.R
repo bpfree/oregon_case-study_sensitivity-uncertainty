@@ -34,7 +34,7 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
 #### Submodel directory
-natural_resources_geopackage <- "data/c_submodel_data/natural_resources.gpkg"
+natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.gpkg"
 
 #### Intermediate directories
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
@@ -86,7 +86,7 @@ oregon_hex_efhca <- oregon_hex[oregon_nmfs_efhca, ] %>%
 
 # Export data
 ## Analysis geopackage
-sf::st_write(oregon_hex_efhca, dsn = natural_resources_geopackage, layer = "oregon_hex_efhca", append = F)
+sf::st_write(oregon_hex_efhca, dsn = natural_resources_submodel, layer = "oregon_hex_efhca", append = F)
 
 ## EFHCA geopackage
 sf::st_write(nmfs_efhca_data, dsn = efhca_gpkg, layer = "nmfs_efhca", append = F)
