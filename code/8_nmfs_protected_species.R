@@ -108,19 +108,49 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg,
 
 #####################################
 
-### ***Note: Comments from NOAA (NMFS, NCCOS, & IOOS) seeks to close any areas between 0 and 200m and 250m of depth
-
-### NOAA (NMFS, NCCOS, & IOOS) Comments: https://www.regulations.gov/comment/BOEM-2022-0009-0178 
-
-#### NMFS Essential Fish Habitat Conservation Areas (source: https://media.fisheries.noaa.gov/2021-02/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020.zip)
-##### Text: https://www.ecfr.gov/current/title-50/chapter-VI/part-660/subpart-C/section-660.76
+## NMFS Essential Fish Habitat Conservation Areas (source: https://media.fisheries.noaa.gov/2021-02/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020.zip)
+### Text: https://www.ecfr.gov/current/title-50/chapter-VI/part-660/subpart-C/section-660.76
 nmfs_efhca_data <- sf::st_read(dsn = nmfs_efhca_dir, layer = "EFH_ConsArea_polygons_v20191107") %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
   sf::st_transform("EPSG:26910")
 
-#### NMFS requests that certain parts of EFHCAs be excluded from protected species areas (killer whales, humpback whale, blue whale)
-##### See point 6 on page 4 of NMFS's comments to BOEM: https://www.regulations.gov/comment/BOEM-2022-0009-0178
-##### EFHCAs of interest are: Heceta Bank, Deepwater off Coos Bay, and Rogue River Reef
+#####################################
+
+## Exclusion areas by bathymetric contour
+### Load bathymetric contour
+bathymetric_contour <- sf::st_read(dsn = bathymetry_gpkg, layer = "oregon_contours_50")
+
+#####################################
+
+## Species
+### Leatherback sea turtle (species specific data: https://www.fisheries.noaa.gov/resource/map/leatherback-turtle-critical-habitat-map-and-gis-data)
+#### Metadata: https://www.fisheries.noaa.gov/inport/item/65327)
+#### Code of regulations:  https://www.ecfr.gov/current/title-50/chapter-II/subchapter-C/part-226/section-226.207
+leatherback_areas <- sf::st_read(dsn = nmfs_esa_habitat_dir, layer = "SeaTurtleLeatherback_20120126")
+
+### Humpback whale (Central America DPS) (species specific data: https://noaa.maps.arcgis.com/home/item.html?id=9426731f9651463bac4eb9cfba6574bd)
+#### Metadata: https://www.fisheries.noaa.gov/inport/item/65375
+#### Code of regulations: https://www.ecfr.gov/current/title-50/chapter-II/subchapter-C/part-226/section-226.227
+humpback_central_america_dps_areas <- sf::st_read(dsn = nmfs_esa_habitat_dir, layer = "WhaleHumpback_MexicoDPS_20210421")
+
+### Humpback whale (Mexico DPS) (species specific data: https://noaa.maps.arcgis.com/home/item.html?id=9426731f9651463bac4eb9cfba6574bd)
+#### Metadata: https://www.fisheries.noaa.gov/inport/item/65377
+#### Code of regulations: https://www.ecfr.gov/current/title-50/chapter-II/subchapter-C/part-226/section-226.227
+humpback_mexico_dps_areas <- sf::st_read(dsn = nmfs_esa_habitat_dir, layer = "WhaleHumpback_CentralAmericaDPS_20210421")
+
+### Killer whale (Southern Resident) (species specific data: https://noaa.maps.arcgis.com/home/item.html?id=fe1e0f42587f437b93e6168929f03593)
+#### Metadata: https://www.fisheries.noaa.gov/inport/item/65409
+#### Code of regulations: https://www.ecfr.gov/current/title-50/chapter-II/subchapter-C/part-226/section-226.206
+killer_whale_areas <- sf::st_read(dsn = nmfs_esa_habitat_dir, layer = "WhaleKiller_SouthernResidentDPS_20210802")
+
+#####################################
+#####################################
+
+# Create exclusion
+## EFHCA
+### NMFS requests that certain parts of EFHCAs be excluded from protected species areas (killer whales, humpback whale, blue whale)
+#### See point 6 on page 4 of NMFS's comments to BOEM: https://www.regulations.gov/comment/BOEM-2022-0009-0178
+#### EFHCAs of interest are: Heceta Bank, Deepwater off Coos Bay, and Rogue River Reef
 efhca_exclusion <- nmfs_efhca_data %>%
   # obtain only EFHCAs of interest
   dplyr::filter(AREA_NAME %in% c("Heceta Bank", "Deepwater off Coos Bay", "Rogue River Reef")) %>%
@@ -132,8 +162,9 @@ efhca_exclusion <- nmfs_efhca_data %>%
   # select only needed fields
   dplyr::select(layer)
 
-#### NMFS requests that certain parts of EFHCAs be excluded from leatherback sea turtle areas
-##### See point 5 on page 4 of NMFS's comments to BOEM: https://www.regulations.gov/comment/BOEM-2022-0009-0178
+## Leatherback
+### NMFS requests that certain parts of EFHCAs be excluded from leatherback sea turtle areas
+#### See point 5 on page 4 of NMFS's comments to BOEM: https://www.regulations.gov/comment/BOEM-2022-0009-0178
 ##### EFHCA of interest is: Heceta Bank
 leatherback_exclusion <- nmfs_efhca_data %>%
   # obtain only EFHCAs of interest
@@ -148,23 +179,20 @@ leatherback_exclusion <- nmfs_efhca_data %>%
 
 #####################################
 
+## Bathymetry exclusion
 ### ***Note: Comments from NOAA (NMFS, NCCOS, & IOOS) seeks to close any areas between 0 and 200m and 250m of depth
-#### The 0-200m bathymetric contours were for the southern resident killer whale
-#### The 0-250m bathymetric contours were for the humpback whale (Central America and Mexico)
+####         The 0-200m bathymetric contours were for the southern resident killer whale
+####         The 0-250m bathymetric contours were for the humpback whale (Central America and Mexico)
 
 ##### ***WANRNING: In the initial analysis for offshore wind siting, the dataset reference was CAORWALL.
-##### However, the provenance of the dataset is unclear. It is possible that the original dataset came
-##### from this site: https://coastalmap.marine.usgs.gov/GISdata/regional/westcoast/bathymetry/caorwall.htm
-##### as it is referenced in this presentation: https://www.boem.gov/sites/default/files/documents/regions/pacific-ocs-region/environmental-science/west-coast-science-exchange-20191113.pdf
-##### Yet the mapping page is down for maintenance and no metadata exist for the page.
-##### For that dataset the -250m bathymetric contour was a 50-meter bathymetric buffer added to the -200m contour
+#####              However, the provenance of the dataset is unclear. It is possible that the original dataset came
+#####              from this site: https://coastalmap.marine.usgs.gov/GISdata/regional/westcoast/bathymetry/caorwall.htm
+#####              as it is referenced in this presentation: https://www.boem.gov/sites/default/files/documents/regions/pacific-ocs-region/environmental-science/west-coast-science-exchange-20191113.pdf
+#####              Yet the mapping page is down for maintenance and no metadata exist for the page.
+#####              For that dataset the -250m bathymetric contour was a 50-meter bathymetric buffer added to the -200m contour
 
 ### NOAA (NMFS, NCCOS, & IOOS) Comments: https://www.regulations.gov/comment/BOEM-2022-0009-0178 
 ### See points 1 and 2 at bottom of page 3
-
-### Exclusion areas by bathymetric contour
-#### Load bathymetric contour
-bathymetric_contour <- sf::st_read(dsn = bathymetry_gpkg, layer = "oregon_contours_50")
 
 ### -200m contour exclusion
 #### Filter for -200m contour line
@@ -232,11 +260,14 @@ call_areas250_polygons <- call_areas250 %>%
 
 #####################################
 
-### ***Note: Comments from NOAA (NMFS, NCCOS, & IOOS) seeks to close any areas between 42-degrees and 10 minutes and south to the Oregon-California border
-### These are closed as foraging grounds to the blue whale. The comments reference 9 areas for blue whales for the biologically
-### important areas. None of these areas (https://cetsound.noaa.gov/Assets/cetsound/data/CetMap_BIA_WGS84.zip) intersect the Oregon
-### call areas. Those data came from the 2015 dataset. In 2023, a new update was conducted (https://www.frontiersin.org/articles/10.3389/fmars.2023.1081893/full)
-### Presently (31 March 2023) the data are limited to Alaska, yet it is expected data for the west coast will be produced.
+## Brookings foraging exclusion
+### ***Note: Comments from NOAA (NMFS, NCCOS, & IOOS) seeks to close any areas between 42-degrees and 10 minutes
+###          and south to the Oregon-California border. These are closed as foraging grounds to the blue whale.
+###          The comments reference 9 areas for blue whales for the biologically important areas. None of these
+###          areas (https://cetsound.noaa.gov/Assets/cetsound/data/CetMap_BIA_WGS84.zip) intersect the Oregon
+###          call areas. Those data came from the 2015 dataset. In 2023, a new update was conducted
+###          (https://www.frontiersin.org/articles/10.3389/fmars.2023.1081893/full). Presently (31 March 2023)
+###          the data are limited to Alaska, yet it is expected data for the west coast will be produced.
 
 ### NOAA (NMFS, NCCOS, & IOOS) Comments: https://www.regulations.gov/comment/BOEM-2022-0009-0178
 
@@ -302,18 +333,18 @@ plot(brookings_foraging_area)
 
 #####################################
 
-### Species exclusions
-#### Killer whale exclusion areas (areas between 0-200m + EFHCAs)
+## Species exclusions
+### Killer whale exclusion areas (areas between 0-200m + EFHCAs)
 killer_whale_exclusion <- call_areas200_polygons %>%
   # EFHCAs
   rbind(efhca_exclusion)
 
-#### Humpback exclusion areas (Brookings foraging + areas between 0 - 250m + EFHCAs)
+### Humpback exclusion areas (Brookings foraging + areas between 0 - 250m + EFHCAs)
 humpback_exclusion <- brookings_foraging_area %>%
   rbind(call_areas250_polygons,
         efhca_exclusion)
 
-#### Blue whale exclusion areas (Brookings foraging + EFHCAs)
+### Blue whale exclusion areas (Brookings foraging + EFHCAs)
 blue_whale_exclusion <- brookings_foraging_area %>%
   rbind(efhca_exclusion)
 
@@ -326,74 +357,66 @@ blue_whale_exclusion <- brookings_foraging_area %>%
 ### For West Coast Specific the download is here: https://www.webapps.nwfsc.noaa.gov/portal7/home/item.html?id=40d9b14ae87e4023ae07361cf3067007
 ### West Coast Region Protected Resources App: https://www.webapps.nwfsc.noaa.gov/portal/apps/webappviewer/index.html?id=7514c715b8594944a6e468dd25aaacc9
 
-### Leatherback sea turtle (species specific data: https://www.fisheries.noaa.gov/resource/map/leatherback-turtle-critical-habitat-map-and-gis-data)
-#### Metadata: https://www.fisheries.noaa.gov/inport/item/65327)
-#### Code of regulations:  https://www.ecfr.gov/current/title-50/chapter-II/subchapter-C/part-226/section-226.207
-leatherback_areas <- sf::st_read(dsn = nmfs_esa_habitat_dir, layer = "SeaTurtleLeatherback_20120126") %>%
+### Leatherback
+oregon_leatherback_areas <- leatherback_areas %>%
   protected_species_function(species = .,
                              exclusion_areas = leatherback_exclusion,
                              call_areas = oregon_call_areas)
 
-### Humpback whale (Central America DPS) (species specific data: https://noaa.maps.arcgis.com/home/item.html?id=9426731f9651463bac4eb9cfba6574bd)
-#### Metadata: https://www.fisheries.noaa.gov/inport/item/65375
-#### Code of regulations: https://www.ecfr.gov/current/title-50/chapter-II/subchapter-C/part-226/section-226.227
-humpback_central_america_dps_areas <- sf::st_read(dsn = nmfs_esa_habitat_dir, layer = "WhaleHumpback_MexicoDPS_20210421") %>%
+### Humpback whale (Central America DPS)
+oregon_humpback_central_america_dps_areas <- humpback_central_america_dps_areas %>%
   protected_species_function(species = .,
                              exclusion_areas = humpback_exclusion,
                              call_areas = oregon_call_areas)
 
-### Humpback whale (Mexico DPS) (species specific data: https://noaa.maps.arcgis.com/home/item.html?id=9426731f9651463bac4eb9cfba6574bd)
-#### Metadata: https://www.fisheries.noaa.gov/inport/item/65377
-#### Code of regulations: https://www.ecfr.gov/current/title-50/chapter-II/subchapter-C/part-226/section-226.227
-humpback_mexico_dps_areas <- sf::st_read(dsn = nmfs_esa_habitat_dir, layer = "WhaleHumpback_CentralAmericaDPS_20210421") %>%
+### Humpback whale (Mexico DPS)
+oregon_humpback_mexico_dps_areas <- humpback_mexico_dps_areas %>%
   protected_species_function(species = .,
                              exclusion_areas = humpback_exclusion,
                              call_areas = oregon_call_areas)
 
-### Killer whale (Southern Resident) (species specific data: https://noaa.maps.arcgis.com/home/item.html?id=fe1e0f42587f437b93e6168929f03593)
-#### Metadata: https://www.fisheries.noaa.gov/inport/item/65409
-#### Code of regulations: https://www.ecfr.gov/current/title-50/chapter-II/subchapter-C/part-226/section-226.206
-killer_whale_areas <- sf::st_read(dsn = nmfs_esa_habitat_dir, layer = "WhaleKiller_SouthernResidentDPS_20210802") %>%
+### Killer whale
+oregon_killer_whale_areas <- killer_whale_areas %>%
   protected_species_function(species = .,
                              exclusion_areas = killer_whale_exclusion,
                              call_areas = oregon_call_areas)
 
 ### Blue whale
-blue_whale_areas <- oregon_call_areas %>%
+oregon_blue_whale_areas <- oregon_call_areas %>%
   rmapshaper::ms_erase(target = .,
                        erase = blue_whale_exclusion)
 
 #####################################
 
-# Oregon hex by species
-oregon_hex_leatherback <- oregon_hex[leatherback_areas, ] %>%
+# Oregon hex grid by species
+oregon_hex_leatherback <- oregon_hex[oregon_leatherback_areas, ] %>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
-              y = leatherback_areas,
+              y = oregon_leatherback_areas,
               join = st_intersects)
 
-oregon_hex_humpback_ca_dps <- oregon_hex[humpback_central_america_dps_areas, ]%>%
+oregon_hex_humpback_ca_dps <- oregon_hex[oregon_humpback_central_america_dps_areas, ]%>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
-              y = humpback_central_america_dps_areas,
+              y = oregon_humpback_central_america_dps_areas,
               join = st_intersects)
 
-oregon_hex_humpback_mexico_dps <- oregon_hex[humpback_mexico_dps_areas, ]%>%
+ oregon_hex_humpback_mexico_dps <- oregon_hex[oregon_humpback_mexico_dps_areas, ]%>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
-              y = humpback_mexico_dps_areas,
+              y = oregon_humpback_mexico_dps_areas,
               join = st_intersects)
 
-oregon_hex_killer_whale <- oregon_hex[killer_whale_areas, ]%>%
+oregon_hex_killer_whale <- oregon_hex[oregon_killer_whale_areas, ]%>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
-              y = killer_whale_areas,
+              y = oregon_killer_whale_areas,
               join = st_intersects)
 
-oregon_hex_blue_whale <- oregon_hex[blue_whale_areas, ]%>%
+oregon_hex_blue_whale <- oregon_hex[oregon_blue_whale_areas, ]%>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
-              y = blue_whale_areas,
+              y = oregon_blue_whale_areas,
               join = st_intersects)
 
 #####################################
@@ -431,8 +454,8 @@ sf::st_write(obj = bath200, dsn = protected_species_gpkg, layer = "bathymetric_c
 sf::st_write(obj = bath250, dsn = protected_species_gpkg, layer = "bathymetric_countor_250m", append = F)
 
 ### Protected species areas
-sf::st_write(obj = leatherback_areas, dsn = protected_species_gpkg, layer = "leatherback_areas", append = F)
-sf::st_write(obj = humpback_central_america_dps_areas, dsn = protected_species_gpkg, layer = "humpback_ca_dps_areas", append = F)
-sf::st_write(obj = humpback_mexico_dps_areas, dsn = protected_species_gpkg, layer = "humpback_mexico_dps_areas", append = F)
-sf::st_write(obj = killer_whale_areas, dsn = protected_species_gpkg, layer = "oregon_hex_killer_whale", append = F)
-sf::st_write(obj = blue_whale_areas, dsn = protected_species_gpkg, layer = "blue_whale_areas", append = F)
+sf::st_write(obj = oregon_leatherback_areas, dsn = protected_species_gpkg, layer = "oregon_leatherback_areas", append = F)
+sf::st_write(obj = oregon_humpback_central_america_dps_areas, dsn = protected_species_gpkg, layer = "oregon_humpback_ca_dps_areas", append = F)
+sf::st_write(obj = oregon_humpback_mexico_dps_areas, dsn = protected_species_gpkg, layer = "oregon_humpback_mexico_dps_areas", append = F)
+sf::st_write(obj = oregon_killer_whale_areas, dsn = protected_species_gpkg, layer = "oregon_killer_whale", append = F)
+sf::st_write(obj = oregon_blue_whale_areas, dsn = protected_species_gpkg, layer = "oregon_blue_whale_areas", append = F)
