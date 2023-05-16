@@ -40,6 +40,9 @@ data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWe
 data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/Seafloor_Topography.zip
 data/a_raw_data/deep_sea_coral_sponge_habitat/0276883/1.1/data/0-data/NCCOS_USWestCoast_DSC_Models_2016_2020/USWestCoast_DeepSeaCoralsSponges_Modeling_BrowseGraphic.jpg
 
+### Methane bubble stream data
+data/a_raw_data/NCCOS_OR_Modeling-Habitat_20220825/commondata
+
 ### Offshore mean annual wind speed
 data/a_raw_data/wind_prospector/Aliquots
 data/a_raw_data/wind_prospector/Bald_Eagle_Extent
