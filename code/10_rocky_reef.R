@@ -35,7 +35,7 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
 #### Submodel directory
-natural_resources_geopackage <- "data/c_submodel_data/natural_resources.gpkg"
+natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.gpkg"
 
 #### Intermediate directories
 rocky_reef_gpkg <- "data/b_intermediate_data/oregon_rocky_reef.gpkg"
@@ -113,7 +113,7 @@ oregon_hex_rocky_reef_mapped <- oregon_hex[rocky_reef_oregon_hard_mixed, ] %>%
 ## ***Note: Curt Whitmire (curt.whitmire@noaa.gov) generated the probable rocky reef habitat for groundfish using
 ## two datasets: (1) multibeam acoustic backscatter imagery from the NOAA Ship Fairweather (research cruise WOO474
 ## https://www.ngdc.noaa.gov/nos/W00001-W02000/W00474.html) and (2) unpublished SeaBED-class AUV image annotations
-## from two dives conducted during an EXPRESS cruise aboard the NOAA Ship Lasker in 2019 (RL-19-05).
+## from two dives conducted during an 2019 EXPRESS cruise aboard the NOAA Ship Lasker in 2019 (RL-19-05).
 ### These data were manually created
 rocky_reef_probable <- sf::st_read(dsn = rocky_reef_probable_gpkg, layer = "rockyreef_hapc_probable") %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
@@ -138,8 +138,8 @@ oregon_hex_rocky_reef_probable <- oregon_hex[rocky_reef_probable500, ] %>%
 
 # Export data
 ## Analysis geopackage
-sf::st_write(oregon_hex_rocky_reef_mapped, dsn = natural_resources_geopackage, layer = "oregon_hex_rocky_reef_mapped", append = F)
-sf::st_write(oregon_hex_rocky_reef_probable, dsn = natural_resources_geopackage, layer = "oregon_hex_rocky_reef_probable", append = F)
+sf::st_write(oregon_hex_rocky_reef_mapped, dsn = natural_resources_submodel, layer = "oregon_hex_rocky_reef_mapped", append = F)
+sf::st_write(oregon_hex_rocky_reef_probable, dsn = natural_resources_submodel, layer = "oregon_hex_rocky_reef_probable", append = F)
 
 ## Rocky Reef geopackage
 sf::st_write(rocky_reef_mapped, dsn = rocky_reef_gpkg, layer = "sgh_v4_rocky_reef_mapped", append = F)
