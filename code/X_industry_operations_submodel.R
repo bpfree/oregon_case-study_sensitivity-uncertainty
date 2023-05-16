@@ -31,4 +31,4 @@ pacman::p_load(dplyr,
 # Set directories
 ## Input directories
 ### Submodel
-industry_operations_gpkg <- "data/c_submodel_data/constraints.gpkg"
+industry_operations_submodel <- "data/c_submodel_data/industry_operations_submodel.gpkg"
