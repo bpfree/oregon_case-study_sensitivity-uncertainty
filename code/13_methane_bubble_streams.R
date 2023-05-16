@@ -89,6 +89,10 @@ methane_bubble_streams <- sf::st_read(dsn = methane_gdb, layer = "USGS_seeps_mer
   # drop M geometry (methane data has XYZM geometries)
   sf::st_zm()
 
+#####################################
+#####################################
+
+# Buffered (1km) methane bubble streams within Oregon call areas
 oregon_methane_bubbles <- methane_bubble_streams%>%
   # apply a 1-kilometer (1000m) buffer on all methane bubble streams
   sf::st_buffer(dist = 1000) %>%
@@ -101,6 +105,10 @@ oregon_methane_bubbles <- methane_bubble_streams%>%
   dplyr::group_by(layer) %>%
   dplyr::summarise()
 
+#####################################
+#####################################
+
+# Methane bubble stream hex grid
 oregon_hex_methane_bubbles <- oregon_hex[oregon_methane_bubbles, ] %>%
   # spatially join continental shelf values to Oregon hex cells
   sf::st_join(x = .,
@@ -119,13 +127,13 @@ oregon_hex_methane_bubbles <- oregon_hex[oregon_methane_bubbles, ] %>%
 ### Paper: https://www.frontiersin.org/articles/10.3389/feart.2021.531714/full
 #### These data also contain data from earlier research surveys
 #### They include:
-##### 1.) Reidel et al. 2018: https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-018-05736-x/MediaObjects/41467_2018_5736_MOESM4_ESM.xlsx
-##### ***Note: data come from the supplementary data 2
-##### Paper: https://www.nature.com/articles/s41467-018-05736-x
-##### 2.) Johnson et al. 2015: https://agupubs.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2F2015GC005955&file=ggge20859-sup-0001-2015GC005955-SupInfo.docx
-##### ***Note: data come from the supporting information document (see S2 and S3)
-##### ***Note: S3 does not contain any sites that fall within Oregon call areas
-##### Paper: https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2015GC005955
+#####   1.) Reidel et al. 2018: https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-018-05736-x/MediaObjects/41467_2018_5736_MOESM4_ESM.xlsx
+#####       ***Note: data come from the supplementary data 2
+#####       Paper: https://www.nature.com/articles/s41467-018-05736-x
+#####   2.) Johnson et al. 2015: https://agupubs.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2F2015GC005955&file=ggge20859-sup-0001-2015GC005955-SupInfo.docx
+#####       ***Note: data come from the supporting information document (see S2 and S3)
+#####       ***Note: S3 does not contain any sites that fall within Oregon call areas
+#####       Paper: https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2015GC005955
 methane_merle_all <- readxl::read_xlsx(path = paste(data_dir, "methane_bubble_streams_merle.xlsx", sep = "/"),
                                        # designate the sheet with the data
                                        sheet = 2) %>%
@@ -139,8 +147,8 @@ methane_merle_all <- readxl::read_xlsx(path = paste(data_dir, "methane_bubble_st
 #####################################
 
 ## Datasets included in the Merle et al. (2021)
-## ***Note: these data are separately downloaded during script 1 during the data acquistion phase
-## Thus, you will find the raw data in the a_raw_data subdirectory within the data directory
+## ***Note: These data are separately downloaded during script 1 during the data acquistion phase.
+##          Thus, you will find the raw data in the a_raw_data subdirectory within the data directory
 
 ## Methane bubble streams (Reidel et al. 2018)
 methane_reidel <- readxl::read_xlsx(path = paste(data_dir, "methane_bubble_streams_reidel.xlsx", sep = "/"),
@@ -164,6 +172,8 @@ methane_reidel <- methane_reidel %>%
                crs = 4326) %>% # EPSG 4326 (https://epsg.io/4326)
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
   sf::st_transform("EPSG:26910")
+
+#####################################
 
 ## Johnson et al. (2015)
 methane_johnson_doc <- docxtractr::read_docx(file.path(data_dir, "methane_bubble_streams_johnson.docx"))
