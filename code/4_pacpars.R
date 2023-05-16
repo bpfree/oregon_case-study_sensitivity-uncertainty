@@ -92,33 +92,49 @@ pacpars_dir <- "data/b_intermediate_data/pacpars"
 #####################################
 
 # Load data
-## Oregon call area hex
-oregon_hex <- sf::st_read(dsn = study_area_gpkg, "oregon_call_area_hex")
+## Oregon Call Areas
+oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
+                                 layer = paste(sf::st_layers(dsn = wind_area_gpkg,
+                                                             do_count = TRUE)))
 
-## Oregon wind study area
-oregon_wind_call_area <- sf::st_read(dsn = wind_area_gpkg, "oregon_wind_call_areas")
+## Oregon hex areas
+oregon_hex <- sf::st_read(dsn = study_area_gpkg,
+                          layer = paste(sf::st_layers(dsn = study_area_gpkg,
+                                                      do_count = TRUE)[[1]][2]))
 
 #####################################
 
 ## Oregon state boundary (source: http://navigator.state.or.us/sdl/data/shapefile/k24/or_state_boundary.zip)
 ### Oregon state boundary with 2-nautical mile buffer
 #### ***Note: The 2-nautical mile buffer is added so points can be generated to later generate a polygon to meet PACPARS documentation
-oregon_boundary_2nm <- st_read(dsn = oregon_dir, layer = "or_state_boundary") %>%
+oregon_boundary <- st_read(dsn = oregon_dir, layer = "or_state_boundary") %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
-  sf::st_transform("EPSG:26910") %>%
+  sf::st_transform("EPSG:26910")
+
+#####################################
+
+list.files(data_dir)
+
+# PACPARS PDF (source: https://navcen.uscg.gov/sites/default/files/pdf/PARS/PAC_PARS_22/Draft%20PAC-PARS.pdf)
+pdf <- paste(data_dir, "pacpars_draft_report.pdf", sep = "/")
+
+#####################################
+#####################################
+
+# Oregon boundary
+## 2-nautical mile boundary
+oregon_boundary_2nm <- oregon_boundary %>%
   # filter out coastal water areas (Feature = 0)
   dplyr::filter(FEATURE != 0) %>%
   # set a buffer of 2 nautical miles to match PACPARS documentation (see page 33) -- 1 nautical mile = 1852 meters
   sf::st_buffer(dist = 3704)
 
-### Oregon 3-nautical mile area (***Note: the data have areas between coast and 3-nautical mile boundary)
-oregon_coast_area <- st_read(dsn = oregon_dir, layer = "or_state_boundary") %>%
-  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
-  sf::st_transform("EPSG:26910") %>%
+## Oregon 3-nautical mile area (***Note: the data have areas between coast and 3-nautical mile boundary)
+oregon_coast_area <- oregon_boundary %>%
   # get coastal nautical boundary (3 nautical miles)
   dplyr::filter(FEATURE == 0 & ORBNDY24_ == 2)
 
-### Oregon nautical areas (linestring)
+## Oregon nautical areas (linestring)
 oregon_nautical_area <- oregon_coast_area %>%
   # remove area that is between coast and 2 nautical miles
   rmapshaper::ms_erase(oregon_boundary_2nm) %>%
@@ -154,11 +170,7 @@ oregon_2nm_east <- oregon_3nm_points %>%
 #####################################
 #####################################
 
-list.files(data_dir)
-
-# PACPARS PDF (source: https://navcen.uscg.gov/sites/default/files/pdf/PARS/PAC_PARS_22/Draft%20PAC-PARS.pdf)
-pdf <- paste(data_dir, "pacpars_draft_report.pdf", sep = "/")
-
+# PACPARS
 ## Extract the two tables to create the data
 ### D13 Offshore Fairway and D13 Coastal Fairway
 table <- tabulizer::extract_tables(pdf,
@@ -174,6 +186,7 @@ View(table[[2]])
 #####################################
 #####################################
 
+# Create offshore tables
 ## D13 Offshore Fairway table (page 33)
 d13_offshore_table <- data.frame(table[[1]]) %>%
   # delete the 1st row as it does not relevant information
@@ -229,10 +242,10 @@ d13_offshore <- dplyr::bind_rows(d13_offshore1,
 
 #####################################
 
-# Create polygons
-## D13 Offshore Fairway
-### Area 1
-#### Point locations
+## Create polygons
+### D13 Offshore Fairway
+#### Area 1
+##### Point locations
 d13_offshore_point1 <- d13_offshore %>%
   # filter the points to create fairway area affecting offshore call area
   dplyr::filter(point %in% c(10:11,
@@ -244,7 +257,7 @@ d13_offshore_point1 <- d13_offshore %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
   sf::st_transform("EPSG:26910")
 
-#### Polygon creation
+##### Polygon creation
 d13_offshore_polygon <- d13_offshore_point1 %>%
   # add new field called "polygon"
   dplyr::mutate(polygon = "polygon") %>%
@@ -262,6 +275,7 @@ d13_offshore_polygon <- d13_offshore_point1 %>%
 #####################################
 #####################################
 
+# Create coastal tables
 ## D13 Coastal Fairway table (page 33)
 d13_coastal_table <- data.frame(table[[2]]) %>%
   # clean table
@@ -330,10 +344,10 @@ d13_coastal <- dplyr::bind_rows(d13_coastal1,
 
 #####################################
 
-# Create polygons
-## D13 Coastal Fairway
-### Convert table to simple feature
-#### Point locations
+## Create polygons
+### D13 Coastal Fairway
+#### Convert table to simple feature
+##### Point locations
 d13_coastal_point <- d13_coastal %>%
   # convert to simple feature
   sf::st_as_sf(coords = c("lon", "lat"),
@@ -342,7 +356,7 @@ d13_coastal_point <- d13_coastal %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
   sf::st_transform("EPSG:26910")
 
-#### Polygon creation (D13 coast PACPARS polygon)
+##### Polygon creation (D13 coast PACPARS polygon)
 d13_coast_3nm <- d13_coastal_point %>%
   # combine with points marking the 2-nautical mile eastern boundary
   dplyr::bind_rows(oregon_2nm_east) %>%
@@ -416,7 +430,6 @@ write.csv(d13_offshore, paste(intermediate_dir, "d13_offshore_points.csv", sep =
 sf::st_write(d13_offshore_point1, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore_points", append = F)
 sf::st_write(d13_offshore_polygon, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore_polygon", append = F)
 
-
 ### D13 Coastal Fairway
 saveRDS(ds_coastal_table, paste(pacpars_dir, "oregon_pacpars_ds13_coastal_table", sep = "/"))
 saveRDS(d13_coastal1, paste(pacpars_dir, "oregon_pacpars_d13_coastal1", sep = "/"))
@@ -424,12 +437,10 @@ saveRDS(d13_coastal2, paste(pacpars_dir, "oregon_pacpars_d13_coastal2", sep = "/
 saveRDS(d13_coastal3, paste(pacpars_dir, "oregon_pacpars_d13_coastal3", sep = "/"))
 saveRDS(d13_coastal, paste(pacpars_dir, "oregon_pacpars_d13_coastal", sep = "/"))
 
-
 sf::st_write(d13_coastal_point, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coastal_point", append = F)
 sf::st_write(d13_coastal_polygon, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coastal_polygon", append = F)
 
 sf::st_write(d13_coast_3nm, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coast_3nm_polygon", append = F)
-
 
 ### D13 Fairway (combined) -- call area
 sf::st_write(d13_offshore_call_area, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore_call_area", append = F)
@@ -438,8 +449,7 @@ sf::st_write(d13_coastal_call_area, dsn = pacpars_gpkg, layer = "oregon_pacpars_
 sf::st_write(oregon_hex_d13_coastal, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_coastal_hex", append = F)
 sf::st_write(oregon_hex_d13_fairway, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_fairway_hex", append = F)
 
-
-# Oregon boundary
+## Oregon boundary
 sf::st_write(oregon_boundary_2nm, dsn = oregon_gpkg, layer = "oregon_state_boundary_2nm_buffer", append = F)
 sf::st_write(oregon_coast_area, dsn = oregon_gpkg, layer = "oregon_coastal_boundary", append = F)
 sf::st_write(oregon_nautical_area, dsn = oregon_gpkg, layer = "oregon_nautical_boundary", append = F)
