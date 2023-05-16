@@ -24,9 +24,9 @@ pacman::p_load(dplyr,
 
 # Commentary on R and code formulation:
 ## ***Note: If not familiar with dplyr notation
-## dplyr is within the tidyverse and can use %>%
-## to "pipe" a process, allowing for fluidity
-## Can learn more here: https://style.tidyverse.org/pipes.html
+##          dplyr is within the tidyverse and can use %>%
+##          to "pipe" a process, allowing for fluidity
+##          Can learn more here: https://style.tidyverse.org/pipes.html
 
 ## Another common coding notation used is "::"
 ## For instance, you may encounter it as dplyr::filter()
