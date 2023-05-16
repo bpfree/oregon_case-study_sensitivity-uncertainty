@@ -85,7 +85,13 @@ submarine_cables_noaa <- sf::st_read(dsn = submarine_cable_dir,
   # make sure all geometries are valid
   sf::st_make_valid() %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
-  sf::st_transform("EPSG:26910")  %>% # EPSG 26910 (https://epsg.io/26910)
+  sf::st_transform("EPSG:26910") # EPSG 26910 (https://epsg.io/26910)
+
+#####################################
+#####################################
+
+# Submarine cables in Oregon call areas
+oregon_submarine_cables <- submarine_cables_noaa
   # obtain only submarine cables in the study area
   rmapshaper::ms_clip(target = .,
                       clip = oregon_call_areas) %>%
@@ -137,13 +143,14 @@ oregon_hex_submarine_cable1000 <- oregon_hex[oregon_submarine_cable1000, ] %>%
 
 # Export data
 ## Submodel geopackage
-sf::st_write(obj = oregon_hex_submarine_cable500, dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable500", append = F)
-sf::st_write(obj = oregon_hex_submarine_cable1000, dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable1000", append = F)
+sf::st_write(obj = oregon_hex_submarine_cable500, dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable_500m", append = F)
+sf::st_write(obj = oregon_hex_submarine_cable1000, dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable1000m", append = F)
 
 ## Submarine Cable geopackage
-sf::st_write(obj = oregon_hex_submarine_cable500, dsn = submarine_cable_gpkg, layer = "oregon_hex_submarine_cable500", append = F)
-sf::st_write(obj = oregon_hex_submarine_cable1000, dsn = submarine_cable_gpkg, layer = "oregon_hex_submarine_cable1000", append = F)
+sf::st_write(obj = oregon_hex_submarine_cable500, dsn = submarine_cable_gpkg, layer = "oregon_hex_submarine_cable_500m", append = F)
+sf::st_write(obj = oregon_hex_submarine_cable1000, dsn = submarine_cable_gpkg, layer = "oregon_hex_submarine_cable1000m", append = F)
 
 sf::st_write(obj = submarine_cables_noaa, dsn = submarine_cable_gpkg, layer = "noaa_submarine_cable", append = F)
+sf::st_write(obj = oregon_submarine_cables, dsn = submarine_cable_gpkg, layer = "oregon_submarine_cables", append = F)
 sf::st_write(obj = oregon_submarine_cable500, dsn = submarine_cable_gpkg, layer = "oregon_submarine_cable500", append = F)
 sf::st_write(obj = oregon_submarine_cable1000, dsn = submarine_cable_gpkg, layer = "oregon_submarine_cable1000", append = F)
