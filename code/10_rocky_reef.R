@@ -65,6 +65,21 @@ rocky_reef_mapped <- sf::st_read(dsn = rocky_reef_mapped_dir, layer = "V4_0_SGH_
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
   sf::st_transform("EPSG:26910")
 
+## ***Note: Curt Whitmire (curt.whitmire@noaa.gov) generated the probable rocky reef habitat for groundfish using
+##          two datasets:
+##              (1) multibeam acoustic backscatter imagery from the NOAA Ship Fairweather (research cruise WOO474
+##                  https://www.ngdc.noaa.gov/nos/W00001-W02000/W00474.html), and
+##              (2) unpublished SeaBED-class AUV image annotations from two dives conducted during an 2019 EXPRESS
+##                  cruise aboard the NOAA Ship Lasker in 2019 (RL-19-05).
+### These data were manually created
+rocky_reef_probable <- sf::st_read(dsn = rocky_reef_probable_gpkg, layer = "rockyreef_hapc_probable") %>%
+  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
+  sf::st_transform("EPSG:26910")
+
+#####################################
+#####################################
+
+# Hard and mixed rocky reef habitats
 rocky_reef_mapped_hard_mixed <- rocky_reef_mapped %>%
   sf::st_make_valid() %>%
   # subset to hard and mixed induration (IND)
@@ -76,15 +91,17 @@ rocky_reef_mapped_hard_mixed <- rocky_reef_mapped %>%
   # summarise all features by "layer" field to get single object
   dplyr::summarise()
 
-### ***Note: The analysis calls for a 500-meter buffer around the mapped rocky reef habitats.
-### Normally, the buffer would distance would be added to the areas and then clipped to the call areas.
-### However, the processing for that took too long.
-### Instead a buffer of a similar distance was added to the call area to get all possible habitat areas,
-### then those areas had a 500-meter buffer added before focused on areas that would venture into the
-### call areas.
+#####################################
 
-### ***Note: this is important as habitats fall just beyond the Oregon call areas but when distances are
-### applied, they then cross into the call areas.
+## ***Note: The analysis calls for a 500-meter buffer around the mapped rocky reef habitats.
+##          Normally, the buffer would distance would be added to the areas and then clipped to the call areas.
+##          However, the processing for that took too long.
+##          Instead a buffer of a similar distance was added to the call area to get all possible habitat areas,
+##          then those areas had a 500-meter buffer added before focused on areas that would venture into the
+##          call areas.
+
+## ***Note: this is important as habitats fall just beyond the Oregon call areas but when distances are
+##          applied, they then cross into the call areas.
 
 call_area_500m <- oregon_call_areas %>%
   # add the 500-meter buffer to the call areas
@@ -110,15 +127,7 @@ oregon_hex_rocky_reef_mapped <- oregon_hex[rocky_reef_oregon_hard_mixed, ] %>%
 
 #####################################
 
-## ***Note: Curt Whitmire (curt.whitmire@noaa.gov) generated the probable rocky reef habitat for groundfish using
-## two datasets: (1) multibeam acoustic backscatter imagery from the NOAA Ship Fairweather (research cruise WOO474
-## https://www.ngdc.noaa.gov/nos/W00001-W02000/W00474.html) and (2) unpublished SeaBED-class AUV image annotations
-## from two dives conducted during an 2019 EXPRESS cruise aboard the NOAA Ship Lasker in 2019 (RL-19-05).
-### These data were manually created
-rocky_reef_probable <- sf::st_read(dsn = rocky_reef_probable_gpkg, layer = "rockyreef_hapc_probable") %>%
-  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
-  sf::st_transform("EPSG:26910")
-
+# Probable rocky reef habitat
 rocky_reef_probable500 <- rocky_reef_probable %>%
   # apply 500-meter buffer onto probable area
   sf::st_buffer(dist = 500)
