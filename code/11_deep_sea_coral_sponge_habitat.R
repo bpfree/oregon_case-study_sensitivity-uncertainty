@@ -35,7 +35,7 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
 #### Submodel directory
-natural_resources_geopackage <- "data/c_submodel_data/natural_resources.gpkg"
+natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.gpkg"
 
 #### Intermediate directories
 coral_sponge_habitat_gpkg <- "data/b_intermediate_data/coral_sponge_habitat.gpkg"
@@ -162,8 +162,8 @@ oregon_hex_coral_sponge_robust <- oregon_hex[robust_habitat_polygon, ] %>%
 
 # Export data
 ## Natural resources submodel
-sf::st_write(obj = oregon_hex_coral_sponge_high, dsn = natural_resources_geopackage, layer = "oregon_hex_high_habitat_coral_sponge", append = F)
-sf::st_write(obj = oregon_hex_coral_sponge_robust, dsn = natural_resources_geopackage, layer = "oregon_hex_robust_habitat_coral_sponge", append = F)
+sf::st_write(obj = oregon_hex_coral_sponge_high, dsn = natural_resources_submodel, layer = "oregon_hex_high_habitat_coral_sponge", append = F)
+sf::st_write(obj = oregon_hex_coral_sponge_robust, dsn = natural_resources_submodel, layer = "oregon_hex_robust_habitat_coral_sponge", append = F)
 
 ## Deep-sea coral and sponge habitat
 sf::st_write(obj = high_habitat_polygon, dsn = coral_sponge_habitat_gpkg, layer = "coral_sponge_high_habitat_polygon", append = F)
