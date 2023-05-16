@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ESRI_ItemInformation Culture='en-US'>
+<name>NCCOS_OR_Modeling-Habitat_20220825</name>
+<guid>C008C08C-87EB-40AB-BB5B-44387DB8D123</guid>
+<catalogpath></catalogpath>
+<snippet>NCCOS Oregon Modeling - Habitat layers</snippet>
+<description>Includes habitat-related layers to be used in NCCOS&apos; modeling of wind energy area suitability for two wind energy call areas off Oregon, designated by BOEM</description>
+<summary>NCCOS Oregon Modeling - Habitat layers</summary>
+<title>NCCOS_OR_Modeling-Habitat_20220825</title>
+<tags>offshore wind energy, scientific surveys, fisheries-independent surveys</tags>
+<type>Map Package</type>
+<typekeywords>
+<typekeyword>File Geodatabase Feature Class</typekeyword>
+<typekeyword>Shapefile Feature Class</typekeyword>
+<typekeyword>Fgdb Raster Dataset</typekeyword>
+<typekeyword>Map Package</typekeyword>
+<typekeyword>Map</typekeyword>
+<typekeyword>2D</typekeyword>
+<typekeyword>ArcMap</typekeyword>
+<typekeyword>mpk</typekeyword>
+</typekeywords>
+<thumbnail>thumbnail/thumbnail.png</thumbnail>
+<documentation></documentation>
+<url></url>
+<datalastmodifiedtime></datalastmodifiedtime>
+<extent>
+<xmin>-179.999988540844</xmin>
+<ymin>-88.9999999216112</ymin>
+<xmax>179.999988540844</xmax>
+<ymax>88.9999999216112</ymax>
+</extent>
+<spatialreference>None</spatialreference>
+<accessinformation>NOAA Fisheries, National Centers for Coastal and Ocean Science, Bureau of Ocean Energy Management</accessinformation>
+<licenseinfo></licenseinfo>
+</ESRI_ItemInformation>
