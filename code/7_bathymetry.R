@@ -40,8 +40,6 @@ study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
 wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
-#### Constraint directories
-
 #### Intermediate directories
 intermediate_dir <- "data/b_intermediate_data"
 
@@ -78,14 +76,14 @@ port_orford <- terra::rast(paste(data_dir, "port_orford_13_mhw_2008.nc", sep = "
 ## Crescent City (source: https://www.ngdc.noaa.gov/thredds/fileServer/regional/crescent_city_13_navd88_2010.nc)
 ### Metadata: https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ngdc.mgg.dem:693/html
 ### ***Note: NAVD88 (https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ngdc.mgg.dem:724/html)
-### and mean high water data both exist; the mean high water data are downloaded in case the MHW data
-### for Central Oregon become available
+###          and mean high water data both exist; the mean high water data are downloaded in case the MHW data
+###          for Central Oregon become available
 crescent_city <- terra::rast(paste(data_dir, "crescent_city_13_mhw_2010.nc", sep = "/"))
 
 ## Coastal Relief Model volume 7 (source: https://www.ngdc.noaa.gov/thredds/fileServer/crm/crm_vol7.nc))
 ### Metadata: https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ngdc.mgg.dem:348
-### ***Note: the northern portion of the Brookings call area fall outside of smaller, higher resolution areas
-### These data cover that area, but also cover the smaller, higher resolution areas
+### ***Note: the northern portion of the Brookings call area fall outside of smaller, higher resolution areas.
+###          These data cover that area, but also cover the smaller, higher resolution areas.
 crm_v7 <- terra::rast(paste(data_dir, "crm_vol7.nc", sep = "/"))
 
 #####################################
@@ -146,8 +144,8 @@ cat(crs(crm_v7_disagg))
 
 # Crop coastal relief model data to Oregon call areas
 ## ***Note: the coastal relief model is large, thus to make
-## the data more manageable, it can be cropped and masked to
-## the area of interest (Oregon call areas)
+##          the data more manageable, it can be cropped and
+##           masked to the area of interest (Oregon call areas)
 crm_v7_call_area <- crm_v7_disagg %>%
   # crop the CRM volume 7 data to the Oregon call areas
   terra::crop(oregon_call_areas,
@@ -159,9 +157,9 @@ crm_v7_call_area <- crm_v7_disagg %>%
 
 # Combine the bathymetry datasets together
 ## ***Note: due to the high resolutions and large areas,
-## to minimize crashing R, the datasets are combined piecemeal.
+##          to minimize crashing R, the datasets are combined piecemeal.
 ## ***Warning: This will affect the mean calculations for new datasets
-## get added to the previous mean before a new mean is calculated.
+##             get added to the previous mean before a new mean is calculated.
 
 ### Oregon bathymetry using 1/3-arc second datasets
 oregon_bath <- terra::mosaic(central_oregon,
