@@ -85,7 +85,7 @@ protected_species_function <- function(species, exclusion_areas, call_areas){
     rmapshaper::ms_clip(target = .,
                         # clip area is the Oregon call areas
                         clip = call_areas) %>%
-    # create field called "layer" and fill with "submarine cables" for summary
+    # create field called "layer" and fill with "protected species"
     dplyr::mutate(layer = "protected species") %>%
     # select the fields of interest
     dplyr::select(layer)
@@ -147,7 +147,7 @@ killer_whale_areas <- sf::st_read(dsn = nmfs_esa_habitat_dir, layer = "WhaleKill
 #####################################
 
 # Create exclusion
-## EFHCA
+## EFHCA exclusions
 ### NMFS requests that certain parts of EFHCAs be excluded from protected species areas (killer whales, humpback whale, blue whale)
 #### See point 6 on page 4 of NMFS's comments to BOEM: https://www.regulations.gov/comment/BOEM-2022-0009-0178
 #### EFHCAs of interest are: Heceta Bank, Deepwater off Coos Bay, and Rogue River Reef
@@ -172,7 +172,7 @@ leatherback_exclusion <- nmfs_efhca_data %>%
   # only areas within call areas
   rmapshaper::ms_clip(target = .,
                       clip = oregon_call_areas) %>%
-  # have dataframes match each other
+  # have data frames match each other
   dplyr::mutate(layer = "protected species") %>%
   # select only needed fields
   dplyr::select(layer)
@@ -395,25 +395,25 @@ oregon_hex_leatherback <- oregon_hex[oregon_leatherback_areas, ] %>%
               y = oregon_leatherback_areas,
               join = st_intersects)
 
-oregon_hex_humpback_ca_dps <- oregon_hex[oregon_humpback_central_america_dps_areas, ]%>%
+oregon_hex_humpback_ca_dps <- oregon_hex[oregon_humpback_central_america_dps_areas, ] %>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
               y = oregon_humpback_central_america_dps_areas,
               join = st_intersects)
 
- oregon_hex_humpback_mexico_dps <- oregon_hex[oregon_humpback_mexico_dps_areas, ]%>%
+oregon_hex_humpback_mexico_dps <- oregon_hex[oregon_humpback_mexico_dps_areas, ] %>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
               y = oregon_humpback_mexico_dps_areas,
               join = st_intersects)
 
-oregon_hex_killer_whale <- oregon_hex[oregon_killer_whale_areas, ]%>%
+oregon_hex_killer_whale <- oregon_hex[oregon_killer_whale_areas, ] %>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
               y = oregon_killer_whale_areas,
               join = st_intersects)
 
-oregon_hex_blue_whale <- oregon_hex[oregon_blue_whale_areas, ]%>%
+oregon_hex_blue_whale <- oregon_hex[oregon_blue_whale_areas, ] %>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
               y = oregon_blue_whale_areas,
