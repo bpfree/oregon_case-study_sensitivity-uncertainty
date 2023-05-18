@@ -30,12 +30,12 @@ pacman::p_load(dplyr,
 
 # Set directories
 ## Input directories
-constraints_submodel <- "data/c_submodel_data/constraints.gpkg"
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
+constraints_submodel <- "data/c_submodel_data/constraints.gpkg"
 
 ## Output directories
 oregon_constraints_gpkg <- "data/c_submodel_data/oregon_constraints.gpkg"
-suitability_gpkg <- "data/d_suitability_data/suitability_model.gpkg"
+oregon_suitability_gpkg <- "data/d_suitability_data/suitability_model.gpkg"
 
 #####################################
 
@@ -82,7 +82,7 @@ oregon_constraints <- oregon_hex %>%
 
 # Export data
 ## Suitability
-sf::st_write(obj = oregon_constraints, dsn = suitability_gpkg, layer = "oregon_constraints", append = F)
+sf::st_write(obj = oregon_constraints, dsn = oregon_suitability_gpkg, layer = "oregon_constraints", append = F)
 
 ## Constraints
 sf::st_write(obj = oregon_hex_dod_opnav, dsn = oregon_constraints_gpkg, layer = "oregon_hex_dod_opnav", append = F)
