@@ -308,10 +308,15 @@ nmfs_prc_ncces_survey_stations <- nmfs_survey_stations
 oregon_nmfs_survey_stations <- nmfs_prc_ncces_survey_stations %>%
   # add 2-nautical mile buffer around transect line (1 nautical mile = 1852 meters)
   sf::st_buffer(dist = 3704) %>%
+  # create field called "layer" and fill with "survey stations" for summary
+  dplyr::mutate(layer = "survey stations") %>%
+  # group all features by the "layer" to reduce double counting between the survey stations
+  dplyr::group_by(layer) %>%
+  # summarise data to obtain single feature
+  dplyr::summarise() %>%
   # limit survey transects to the call areas
   rmapshaper::ms_clip(target = .,
                       clip = oregon_call_areas)
-
 
 # Survey transects
 ## Pre-Recruit Survey and Northern California Current Ecosystem Survey
@@ -323,6 +328,12 @@ nmfs_prc_ncces_survey_transects <- nmfs_survey_transects %>%
 oregon_nmfs_survey_transects <- nmfs_prc_ncces_survey_transects %>%
   # add 1 nautical mile buffer around transect line (1 nautical mile = 1852 meters)
   sf::st_buffer(dist = 1852) %>%
+  # create field called "layer" and fill with "survey transects" for summary
+  dplyr::mutate(layer = "survey transects") %>%
+  # group all features by the "layer" to reduce double counting between the survey transects
+  dplyr::group_by(layer) %>%
+  # summarise data to obtain single feature
+  dplyr::summarise() %>%
   # limit survey transects to the call areas
   rmapshaper::ms_clip(target = .,
                       clip = oregon_call_areas)
