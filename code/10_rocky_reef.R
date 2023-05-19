@@ -147,8 +147,8 @@ oregon_hex_rocky_reef_probable <- oregon_hex[rocky_reef_probable500, ] %>%
 
 # Export data
 ## Analysis geopackage
-sf::st_write(oregon_hex_rocky_reef_mapped, dsn = natural_resources_submodel, layer = "oregon_hex_rocky_reef_mapped", append = F)
-sf::st_write(oregon_hex_rocky_reef_probable, dsn = natural_resources_submodel, layer = "oregon_hex_rocky_reef_probable", append = F)
+sf::st_write(oregon_hex_rocky_reef_mapped, dsn = natural_resources_submodel, layer = "oregon_hex_rocky_reef_mapped_500m", append = F)
+sf::st_write(oregon_hex_rocky_reef_probable, dsn = natural_resources_submodel, layer = "oregon_hex_rocky_reef_probable_500m", append = F)
 
 ## Rocky Reef geopackage
 sf::st_write(rocky_reef_mapped, dsn = rocky_reef_gpkg, layer = "sgh_v4_rocky_reef_mapped", append = F)
