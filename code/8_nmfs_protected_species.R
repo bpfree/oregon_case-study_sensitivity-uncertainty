@@ -41,7 +41,7 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
 #### Analysis directories
-fisheries_submodel <- "data/c_submodel_data/fisheries_submodel.gpkg"
+natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.gpkg"
 
 #### Protected species directory
 intermediate_dir <- "data/b_intermediate_data"
@@ -98,8 +98,7 @@ protected_species_function <- function(species, exclusion_areas, call_areas){
 # Load data
 ## Oregon Call Areas
 oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
-                                 layer = paste(sf::st_layers(dsn = wind_area_gpkg,
-                                                             do_count = TRUE)))
+                                 layer = paste(sf::st_layers(dsn = wind_area_gpkg,                                                             do_count = TRUE)))
 
 ## Oregon hex areas
 oregon_hex <- sf::st_read(dsn = study_area_gpkg,
@@ -424,11 +423,11 @@ oregon_hex_blue_whale <- oregon_hex[oregon_blue_whale_areas, ] %>%
 
 # Export data
 ## Fisheries submodel
-sf::st_write(obj = oregon_hex_leatherback, dsn = fisheries_submodel, layer = "oregon_hex_leatherback", append = F)
-sf::st_write(obj = oregon_hex_humpback_ca_dps, dsn = fisheries_submodel, layer = "oregon_hex_humpback_ca_dps", append = F)
-sf::st_write(obj = oregon_hex_humpback_mexico_dps, dsn = fisheries_submodel, layer = "oregon_hex_humpback_mexico_dps", append = F)
-sf::st_write(obj = oregon_hex_killer_whale, dsn = fisheries_submodel, layer = "oregon_hex_killer_whale", append = F)
-sf::st_write(obj = oregon_hex_blue_whale, dsn = fisheries_submodel, layer = "oregon_hex_blue_whale", append = F)
+sf::st_write(obj = oregon_hex_leatherback, dsn = natural_resources_submodel, layer = "oregon_hex_leatherback", append = F)
+sf::st_write(obj = oregon_hex_humpback_ca_dps, dsn = natural_resources_submodel, layer = "oregon_hex_humpback_ca_dps", append = F)
+sf::st_write(obj = oregon_hex_humpback_mexico_dps, dsn = natural_resources_submodel, layer = "oregon_hex_humpback_mexico_dps", append = F)
+sf::st_write(obj = oregon_hex_killer_whale, dsn = natural_resources_submodel, layer = "oregon_hex_killer_whale", append = F)
+sf::st_write(obj = oregon_hex_blue_whale, dsn = natural_resources_submodel, layer = "oregon_hex_blue_whale", append = F)
 
 ## Geopackages
 ### Conservation areas
