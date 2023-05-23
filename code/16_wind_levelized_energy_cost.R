@@ -73,8 +73,12 @@ lcoe_2027 <- sf::st_read(dsn = lcoe_dir, "LCOE_2027") %>%
 
 # Energy cost in Oregon call areas
 oregon_lcoe_2027 <- lcoe_2027 %>%
+  # limit to only Oregon call areas
   rmapshaper::ms_clip(target = .,
-                      clip = oregon_call_areas)
+                      clip = oregon_call_areas) %>%
+  # make sure all features are polygons
+  sf::st_cast("MULTIPOLYGON")
+  
 
 #####################################
 
@@ -101,6 +105,47 @@ max <- max(oregon_lcoe_2027$lcoe_mid)
 ## Oregon levelized cost of energy normalized
 oregon_lcoe_2027_norm <- oregon_lcoe_2027 %>%
   # normalize data between 0.8 and 1
-  dplyr::mutate(value1 = ((lcoe_mid - min) /
-                            (max - min)) * (tmax - tmin) + tmin)
+  dplyr::mutate(lcoe_norm = 
+                  # flip the normalization so high costs get low
+                  # scores (0.8) and low costs get higher scores (1.0)
+                  (tmax + tmin) - 
+                  # normalize the data (will become between 0.8 and 1.0)
+                  (((lcoe_mid - min) / (max - min)) *
+                  # and then rescale to be between 0.8 and 1.0
+                    (tmax - tmin) + tmin)) %>%
+  # create field called "layer" and fill with "levelized cost of energy (2027)" for summary
+  dplyr::mutate(layer = "levelized cost of energy (2027)") %>%
+  # select fields of interest
+  dplyr::select(Id,
+                layer,
+                lcoe_mid,
+                lcoe_norm)
 
+#####################################
+#####################################
+
+# Levelized cost of energy (2027) hex grid
+oregon_hex_lcoe_2027 <- oregon_hex[oregon_lcoe_2027_norm, ] %>%
+  # spatially join continental shelf values to Oregon hex cells
+  sf::st_join(x = .,
+              y = oregon_lcoe_2027_norm,
+              join = st_intersects) %>%
+  # select fields of importance
+  dplyr::select(index, layer,
+                lcoe_norm) %>%
+  # group by the index values as there are duplicates
+  dplyr::group_by(index) %>%
+  # summarise the normalized values for the levelized cost of energy in 2027
+  ## take the minimum value of the index
+  dplyr::summarise(lcoe_norm_index = min(lcoe_norm))
+
+#####################################
+#####################################
+
+# Export data
+## Wind submodel
+sf::st_write(obj = oregon_hex_lcoe_2027, dsn = wind_submodel, layer = "oregon_hex_lcoe_2027", append = F)
+
+## Wind geopackage
+sf::st_write(obj = oregon_lcoe_2027, dsn = wind_gpkg, layer = "oregon_lcoe_2027", append = F)
+sf::st_write(obj = oregon_lcoe_2027_norm, dsn = wind_gpkg, layer = "oregon_lcoe_2027_norm", append = F)
