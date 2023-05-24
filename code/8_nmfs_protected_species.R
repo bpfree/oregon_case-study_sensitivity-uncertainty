@@ -98,7 +98,8 @@ protected_species_function <- function(species, exclusion_areas, call_areas){
 # Load data
 ## Oregon Call Areas
 oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
-                                 layer = paste(sf::st_layers(dsn = wind_area_gpkg,                                                             do_count = TRUE)))
+                                 layer = paste(sf::st_layers(dsn = wind_area_gpkg,
+                                                             do_count = TRUE)))
 
 ## Oregon hex areas
 oregon_hex <- sf::st_read(dsn = study_area_gpkg,
@@ -172,9 +173,7 @@ leatherback_exclusion <- nmfs_efhca_data %>%
   rmapshaper::ms_clip(target = .,
                       clip = oregon_call_areas) %>%
   # have data frames match each other
-  dplyr::mutate(layer = "protected species") %>%
-  # select only needed fields
-  dplyr::select(layer)
+  dplyr::mutate(layer = "protected species")
 
 #####################################
 
@@ -340,11 +339,14 @@ killer_whale_exclusion <- call_areas200_polygons %>%
 
 ### Humpback exclusion areas (Brookings foraging + areas between 0 - 250m + EFHCAs)
 humpback_exclusion <- brookings_foraging_area %>%
+  # areas between 0 and 250m
   rbind(call_areas250_polygons,
+        # EFHCAs
         efhca_exclusion)
 
 ### Blue whale exclusion areas (Brookings foraging + EFHCAs)
 blue_whale_exclusion <- brookings_foraging_area %>%
+  # EFHCAs
   rbind(efhca_exclusion)
 
 #####################################
@@ -398,19 +400,34 @@ oregon_hex_humpback_ca_dps <- oregon_hex[oregon_humpback_central_america_dps_are
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
               y = oregon_humpback_central_america_dps_areas,
-              join = st_intersects)
+              join = st_intersects) %>%
+  # due to overlapping exclusion areas there are a few duplicated indexes
+  ## group by unique indexes
+  dplyr::group_by(index) %>%
+  ## summarise to remove duplicates
+  dplyr::summarise()
 
 oregon_hex_humpback_mexico_dps <- oregon_hex[oregon_humpback_mexico_dps_areas, ] %>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
               y = oregon_humpback_mexico_dps_areas,
-              join = st_intersects)
+              join = st_intersects) %>%
+  # due to overlapping exclusion areas there are a few duplicated indexes
+  ## group by unique indexes
+  dplyr::group_by(index) %>%
+  ## summarise to remove duplicates
+  dplyr::summarise()
 
 oregon_hex_killer_whale <- oregon_hex[oregon_killer_whale_areas, ] %>%
   # spatially join protected species values to Oregon hex cells 
   sf::st_join(x = .,
               y = oregon_killer_whale_areas,
-              join = st_intersects)
+              join = st_intersects) %>%
+  # due to overlapping exclusion areas there are a few duplicated indexes
+  ## group by unique indexes
+  dplyr::group_by(index) %>%
+  ## summarise to remove duplicates
+  dplyr::summarise()
 
 oregon_hex_blue_whale <- oregon_hex[oregon_blue_whale_areas, ] %>%
   # spatially join protected species values to Oregon hex cells 
@@ -422,7 +439,7 @@ oregon_hex_blue_whale <- oregon_hex[oregon_blue_whale_areas, ] %>%
 #####################################
 
 # Export data
-## Fisheries submodel
+## Natural resources submodel
 sf::st_write(obj = oregon_hex_leatherback, dsn = natural_resources_submodel, layer = "oregon_hex_leatherback", append = F)
 sf::st_write(obj = oregon_hex_humpback_ca_dps, dsn = natural_resources_submodel, layer = "oregon_hex_humpback_ca_dps", append = F)
 sf::st_write(obj = oregon_hex_humpback_mexico_dps, dsn = natural_resources_submodel, layer = "oregon_hex_humpback_mexico_dps", append = F)
