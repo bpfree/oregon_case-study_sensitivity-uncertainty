@@ -100,3 +100,41 @@ call_areas250_polygons <- call_areas250 %>%
   dplyr::rename(geometry = geom) %>%
   # select only needed fields
   dplyr::select(layer)
+
+#####################################
+
+### Code 11
+
+## High habitat suitability
+high_habitat_polygon <- terra::as.polygons(x = high_habitat) %>%
+  # change to simple feature (sf)
+  sf::st_as_sf() %>%
+  # cast to polygon
+  sf::st_cast("POLYGON") %>%
+  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
+  sf::st_transform("EPSG:26910") %>%
+  # simplify column name to "richness" (this is the first column of the object, thus the colnames(.)[1] means take the first column name from the high_habitat object)
+  dplyr::rename(richness = colnames(.)[1]) %>%
+  # obtain areas with species (richness >= 1)
+  dplyr::filter(richness >= 1) %>%
+  # add 500-meter setback
+  sf::st_buffer(dist = 500) %>%
+  # obtain data within Oregon call areas
+  rmapshaper::ms_clip(clip = oregon_call_areas)
+
+
+## extend the call area by 500m then clip points, then add 500m setback to then reclip to orignal call areas
+
+high_habitat_point <- terra::as.points(x = high_habitat) %>%
+  # change to simple feature (sf)
+  sf::st_as_sf() %>%
+  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
+  sf::st_transform("EPSG:26910") %>%
+  # simplify column name to "richness" (this is the first column of the object, thus the colnames(.)[1] means take the first column name from the high_habitat object)
+  dplyr::rename(richness = colnames(.)[1]) %>%
+  # obtain areas with species (richness >= 1)
+  dplyr::filter(richness >= 1) %>%
+  # add 500-meter setback
+  sf::st_buffer(dist = 500) %>%
+  # cast to polygon
+  sf::st_cast("MULTIPOLYGON")
