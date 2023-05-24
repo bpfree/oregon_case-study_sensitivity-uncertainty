@@ -34,8 +34,16 @@ study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
 industry_operations_submodel <- "data/c_submodel_data/industry_operations_submodel.gpkg"
 
 ## Output directories
-oregon_industry_operations_suitability <- "data/c_submodel_data/industry_operations_suitability.gpkg"
+### Oregon suitability geopackage
 oregon_suitability_gpkg <- "data/d_suitability_data/suitability_model.gpkg"
+
+### Industry and operations directory
+suitability_dir <- "data/d_suitability_data"
+dir.create(paste0(suitability_dir, "/",
+                  "industry_operations_suitability"))
+
+oregon_industry_operations_dir <- "data/d_suitability_data/industry_operations_suitability"
+oregon_industry_operations_suitability <- "data/d_suitability_data/industry_operations_suitability/industry_operations_suitability.gpkg"
 
 #####################################
 
@@ -55,35 +63,41 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg,
 ### Submarine cables
 oregon_hex_submarine_cable500 <- sf::st_read(dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable500") %>%
   dplyr::mutate(sc500_value = 0.6) %>%
-  as.data.frame()
+  as.data.frame() %>%
+  dplyr::select(-geom)
 
 oregon_hex_submarine_cable1000 <- sf::st_read(dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable1000") %>%
   dplyr::mutate(sc1000_value = 0.8) %>%
-  as.data.frame()
+  as.data.frame() %>%
+  dplyr::select(-geom)
 
 ### Scientific surveys
 oregon_hex_eastwest_survey_corridors <- sf::st_read(dsn = industry_operations_submodel,
                                                     layer = "oregon_hex_eastwest_survey_corridors") %>%
   dplyr::mutate(eastwest_value = 0.01) %>%
-  as.data.frame()
+  as.data.frame() %>%
+  dplyr::select(-geom)
 
 oregon_hex_additional_eastwest_survey_corridors <- sf::st_read(dsn = industry_operations_submodel,
                                                                layer = "oregon_hex_additional_eastwest_survey_corridors") %>%
   dplyr::mutate(eastwest_add_value = 0.5) %>%
-  as.data.frame()
+  as.data.frame() %>%
+  dplyr::select(-geom)
 
 oregon_hex_survey_stations <- sf::st_read(dsn = industry_operations_submodel, layer = "oregon_hex_survey_stations_2nm") %>%
   dplyr::mutate(sstat_value = 0.5) %>%
-  as.data.frame()
+  as.data.frame() %>%
+  dplyr::select(-geom)
 
 oregon_hex_survey_transects <- sf::st_read(dsn = industry_operations_submodel, layer = "oregon_hex_survey_transects_1nm") %>%
   dplyr::mutate(stransect_value = 0.5) %>%
-  as.data.frame()
-
+  as.data.frame() %>%
+  dplyr::select(-geom)
 
 #####################################
 #####################################
 
+# Calculate geometric mean for industry and operations submodel
 oregon_industry_operations <- oregon_hex %>%
   # join the submarine cable (0 - 500m) values by index field to full Oregon call area hex grid
   dplyr::left_join(x = .,
@@ -136,9 +150,7 @@ oregon_industry_operations <- oregon_hex %>%
                 eastwest_add_value,
                 sstat_value,
                 stransect_value,
-                io_geom_mean) %>%
-  # rename the geometry field
-  dplyr::rename(geom = geom.x)
+                io_geom_mean)
 
 #####################################
 #####################################
@@ -148,12 +160,12 @@ oregon_industry_operations <- oregon_hex %>%
 sf::st_write(obj = oregon_industry_operations, dsn = oregon_suitability_gpkg, layer = "oregon_industry_operations_suitability", append = F)
   
 ## Submodel
-sf::st_write(obj = oregon_hex_submarine_cable500, dsn = oregon_industry_operations_suitability, layer = "oregon_hex_submarine_cable_500m", append = F)
-sf::st_write(obj = oregon_hex_submarine_cable1000, dsn = oregon_industry_operations_suitability, layer = "oregon_hex_submarine_cable_1000m", append = F)
+saveRDS(obj = oregon_hex_submarine_cable500, file = paste(oregon_industry_operations_dir, "oregon_hex_submarine_cable_500m.rds", sep = "/"))
+saveRDS(obj = oregon_hex_submarine_cable1000, file = paste(oregon_industry_operations_dir, "oregon_hex_submarine_cable_1000m.rds", sep = "/"))
 
-sf::st_write(obj = oregon_hex_eastwest_survey_corridors, dsn = oregon_industry_operations_suitability, layer = "oregon_hex_eastwest_survey_corridors", append = F)
-sf::st_write(obj = oregon_hex_additional_eastwest_survey_corridors, dsn = oregon_industry_operations_suitability, layer = "oregon_hex_additional_eastwest_survey_corridors", append = F)
-sf::st_write(obj = oregon_hex_survey_stations, dsn = oregon_industry_operations_suitability, layer = "oregon_hex_survey_stations_2nm", append = F)
-sf::st_write(obj = oregon_hex_survey_transects, dsn = oregon_industry_operations_suitability, layer = "oregon_hex_submarine_cable_1nm", append = F)
+saveRDS(obj = oregon_hex_eastwest_survey_corridors, file = paste(oregon_industry_operations_dir, "oregon_hex_eastwest_survey_corridors.rds", sep = "/"))
+saveRDS(obj = oregon_hex_additional_eastwest_survey_corridors, file = paste(oregon_industry_operations_dir, "oregon_hex_additional_eastwest_survey_corridors.rds", sep = "/"))
+saveRDS(obj = oregon_hex_survey_stations, file = paste(oregon_industry_operations_dir, "oregon_hex_survey_stations_2nm.rds", sep = "/"))
+saveRDS(obj = oregon_hex_survey_transects, file = paste(oregon_industry_operations_dir, "oregon_hex_submarine_cable_1nm.rds", sep = "/"))
 
 sf::st_write(obj = oregon_industry_operations, dsn = oregon_industry_operations_suitability, layer = "oregon_industry_operations_suitability", append = F)
