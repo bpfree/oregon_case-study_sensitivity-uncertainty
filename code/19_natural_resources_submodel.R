@@ -63,7 +63,7 @@ blue_whale <- sf::st_read(dsn = natural_resources_submodel, layer = "oregon_hex_
 efhca <- sf::st_read(dsn = natural_resources_submodel, layer = "oregon_hex_efhca_500m")
 rocky_reef_mapped <- sf::st_read(dsn = natural_resources_submodel, layer = "oregon_hex_rocky_reef_mapped_500m")
 rocky_reef_probable <- sf::st_read(dsn = natural_resources_submodel, layer = "oregon_hex_rocky_reef_probable_500m")
-deep_sea_coral_sponge <- sf::st_read(dsn = natural_resources_submodel, layer = )
+deep_sea_coral_sponge <- sf::st_read(dsn = natural_resources_submodel, layer = "oregon_hex_coral_sponge_high")
 continental_shelf <- sf::st_read(dsn = natural_resources_submodel, layer = "oregon_hex_continental_shelf_10km")
 methane_bubble <- sf::st_read(dsn = natural_resources_submodel, layer = "oregon_hex_methane_bubble_streams_1km")
 
