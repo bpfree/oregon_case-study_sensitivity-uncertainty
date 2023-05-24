@@ -54,23 +54,33 @@ deep_coral_sponge_dir <- "data/b_intermediate_data/deep_sea_coral_sponge_habitat
 ## Create z-shape membership function
 ### Adapted from https://www.mathworks.com/help/fuzzy/zmf.html
 zmf_function <- function(richness){
+  
   # calculate minimum value
-  min <- min(richness$richness)
+  min <- min(richness$richness_index)
   
   # calculate maximum value
-  max <- max(richness$richness)
+  max <- max(richness$richness_index)
   
+  # create a field and populate with the value determined by the z-shape membership scalar
   richness <- richness %>%
-    dplyr::mutate(z_value = ifelse(richness$richness == min, 1,
-                                   ifelse(richness$richness >= min & richness$richness <= (min + max), 1 - 2 * ((richness$richness - min) / (max - min)) ** 2,
-                                          ifelse(richness$richness >= (min + max) /2 & richness$richness <= max, 2*((richness$richness - max) / (max - min))**2,
-                                                 ifelse(richness$richness == max, 1, NA)))))
+    # calculate the z-shape membership value (more desired values get a score of 1 and less desired values will decrease till 0.01)
+    ## ***Note: in other words, habitats with higher richness values will be closer to 0
+    dplyr::mutate(z_value = ifelse(richness_index == min, 1, # if value is equal to minimum, score as 1
+                                   # if value is larger than minimum but lower than mid-value, calculate based on scalar equation
+                                   ifelse(richness_index > min & richness_index < (min + max) / 2, 1 - 2 * ((richness_index - min) / (max - min)) ** 2,
+                                          # if value is lower than maximum but larger than than mid-value, calculate based on scalar equation
+                                          ifelse(richness_index >= (min + max) / 2 & richness_index < max, 2 * ((richness_index - max) / (max - min)) ** 2,
+                                                 # if value is equal to maximum, value is equal to 0.01 [all other values should get an NA]
+                                                 ifelse(richness_index == max, 0.01, NA)))))
   
   # return the layer
   return(richness)
 }
 
+### ***Note: see NOAA's comments for why the maximum species richness value receives a z-value of 0.01 instead of 0.0
 
+#####################################
+#####################################
 
 # Unzip the data for the coral richness (source: https://www.ncei.noaa.gov/archive/archive-management-system/OAS/bin/prd/jquery/download/276883.1.1.tar.gz)
 ### NCEI: https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0276883
@@ -162,7 +172,7 @@ oregon_high_habitat_point <- high_habitat_point %>%
 #####################################
 
 ## Robust high habitat suitability
-robust_habitat_polygon <- terra::as.polygons(x = robust_habitat) %>%
+robust_habitat_point <- terra::as.points(x = robust_habitat) %>%
   sf::st_as_sf() %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
   sf::st_transform("EPSG:26910") %>%
@@ -170,7 +180,14 @@ robust_habitat_polygon <- terra::as.polygons(x = robust_habitat) %>%
   dplyr::rename(richness = colnames(.)[1]) %>%
   # obtain areas with species (richness >= 1)
   dplyr::filter(richness >= 1) %>%
-  # add 500-meter setback
+  # add field "layer" and populate with "deep-sea coral and sponge (robust high habitat)"
+  dplyr::mutate(layer = "deep-sea coral and sponge (robust high habitat)") %>%
+  # limit to the extended call areas (with 500m setback)
+  rmapshaper::ms_clip(clip = oregon_call_areas_500)
+
+## Create point setbacks and limit to original call areas
+oregon_robust_habitat_point <- robust_habitat_point %>%
+  # create setback
   sf::st_buffer(dist = 500) %>%
   # obtain data within Oregon call areas
   rmapshaper::ms_clip(clip = oregon_call_areas)
@@ -193,19 +210,27 @@ oregon_hex_coral_sponge_high <- oregon_hex[oregon_high_habitat_point, ] %>%
   # summarise the richness values
   ## take the maximum value of the richness for any that overlap
   dplyr::summarise(richness_index = max(richness)) %>%
-  dplyr::mutate(z_value = ifelse(richness_index == min, 1, 
-                                 ifelse(richness_index > min & richness_index < (min + max) / 2, 1 - 2 * ((richness_index - min) / (max - min)) ** 2,
-                                        ifelse(richness_index >= (min + max) / 2 & richness_index < max, 2 * ((richness_index - max) / (max - min)) ** 2,
-                                               ifelse(richness_index == max, 0, NA)))))
+  # z-membership function to add the z-value based on the richness values
+  zmf_function(.)
+  
+#####################################
 
 ## Robust high habitat suitability
-oregon_hex_coral_sponge_robust <- oregon_hex[robust_habitat_polygon, ] %>%
+oregon_hex_coral_sponge_robust <- oregon_hex[oregon_robust_habitat_point, ] %>%
   # spatially join NMFS EFHCA values to Oregon hex cells
   sf::st_join(x = .,
-              y = robust_habitat_polygon,
+              y = oregon_robust_habitat_point,
               join = st_intersects) %>%
   # select fields of importance
-  dplyr::select(index, layer)
+  dplyr::select(index, layer,
+                richness) %>%
+  # group by the index values as there are duplicates
+  dplyr::group_by(index) %>%
+  # summarise the richness values
+  ## take the maximum value of the richness for any that overlap
+  dplyr::summarise(richness_index = max(richness)) %>%
+  # z-membership function to add the z-value based on the richness values
+  zmf_function(.)
 
 #####################################
 #####################################
@@ -216,11 +241,17 @@ sf::st_write(obj = oregon_hex_coral_sponge_high, dsn = natural_resources_submode
 sf::st_write(obj = oregon_hex_coral_sponge_robust, dsn = natural_resources_submodel, layer = "oregon_hex_robust_habitat_coral_sponge", append = F)
 
 ## Deep-sea coral and sponge habitat
-sf::st_write(obj = high_habitat_polygon, dsn = coral_sponge_habitat_gpkg, layer = "coral_sponge_high_habitat_polygon", append = F)
-sf::st_write(obj = robust_habitat_polygon, dsn = coral_sponge_habitat_gpkg, layer = "coral_sponge_robust_habitat_polygon", append = F)
+### Richness point
+sf::st_write(obj = high_habitat_point, dsn = coral_sponge_habitat_gpkg, layer = "coral_sponge_high_habitat_point", append = F)
+sf::st_write(obj = robust_habitat_point, dsn = coral_sponge_habitat_gpkg, layer = "coral_sponge_robust_habitat_point", append = F)
 
+### Oregon
+sf::st_write(obj = oregon_high_habitat_point, dsn = coral_sponge_habitat_gpkg, layer = "coral_sponge_high_habitat_point", append = F)
+sf::st_write(obj = oregon_robust_habitat_point, dsn = coral_sponge_habitat_gpkg, layer = "coral_sponge_robust_habitat_point", append = F)
+
+## Oregon call area hex grid
 sf::st_write(obj = oregon_hex_coral_sponge_high, dsn = coral_sponge_habitat_gpkg, layer = "oregon_hex_high_habitat_coral_sponge", append = F)
-sf::st_write(obj = oregon_hex_coral_sponge_robust, dsn = coral_sponge_habitat_gpkg, layer = "oregon_hex_robust_habitat_coral_sponge", append = F)
+sf::st_write(obj = oregon_hex_coral_sponge_robust, dsn = coral_sponge_habitat_gpkg, layer = "oregon_hex_robust_high_habitat_coral_sponge", append = F)
 
 terra::writeRaster(high_habitat, filename = file.path(deep_coral_sponge_dir, "coral_sponge_high_habitat.grd"), overwrite = T)
-terra::writeRaster(robust_habitat, filename = file.path(deep_coral_sponge_dir, "coral_sponge_robust_habitat.grd"), overwrite = T)
+terra::writeRaster(robust_habitat, filename = file.path(deep_coral_sponge_dir, "coral_sponge_robust_high_habitat.grd"), overwrite = T)
