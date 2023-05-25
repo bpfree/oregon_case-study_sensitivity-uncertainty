@@ -45,7 +45,7 @@ data/a_raw_data/NCCOS_OR_Modeling-Habitat_20220825/commondata
 
 ### Marine bird
 data/a_raw_data/marine_bird/0242882/1.1/data/0-data/model_input_predictors.zip
-data/a_raw_data/marine_bird/0242882/1.1/data/0-data/model_output_predictors.zip
+data/a_raw_data/marine_bird/0242882/1.1/data/0-data/model_output_predictions.zip
 
 ### Offshore mean annual wind speed
 data/a_raw_data/wind_prospector/Aliquots
