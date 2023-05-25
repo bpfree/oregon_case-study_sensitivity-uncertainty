@@ -250,6 +250,24 @@ methane_bubble_johnson <- "https://agupubs.onlinelibrary.wiley.com/action/downlo
 
 #####################################
 
+## Marine bird species (Leirness et al. 2021) (source: https://www.ncei.noaa.gov/archive/archive-management-system/OAS/bin/prd/jquery/download/242882.1.1.tar.gz)
+### FTP download: ftp://ftp-oceans.ncei.noaa.gov/nodc/archive/arc0193/0242882/
+### HTTPS (individual dataset download): https://www.nodc.noaa.gov/archive/arc0193/0242882/
+#### HTTPS (all species output maps): https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions.zip
+#### HTTPS (individual species output maps): https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/
+### NCEI: https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0242882
+### Metadata (full text): https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0242882;view=iso
+### Metadata (XML): https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0242882;view=xml;responseType=text/xml
+marine_bird <- "https://www.ncei.noaa.gov/archive/archive-management-system/OAS/bin/prd/jquery/download/242882.1.1.tar.gz"
+
+#####################################
+
+## Marine bird species (Adams et al. 2017) (source: https://pubs.usgs.gov/of/2016/1154/ofr20161154.pdf)
+### Publication page: https://pubs.er.usgs.gov/publication/ofr20161154
+adams_birds <- "https://pubs.usgs.gov/of/2016/1154/ofr20161154.pdf"
+
+#####################################
+
 ## Load AIS data (2019)
 ### Transit counts: https://marinecadastre.gov/downloads/data/ais/ais2019/AISVesselTransitCounts2019.zip
 ### Metadata: https://www.fisheries.noaa.gov/inport/item/61037
@@ -299,52 +317,55 @@ offshore_mean_wind <- "https://marinecadastre.gov/downloads/data/mc/OffshoreMean
 download_list <- c(
   # BOEM wind energy areas
   boem_wind_area_data,
-  
+
   # bathymetry
   crm_v7_data,
   bathymetric_contours_data,
   central_oregon_data,
   port_orford_data,
   crescent_city_data,
-  
+
   # Oregon state boundary
   oregon_boundary_data,
-  
+
   # military operating areas
   military_operating_data,
-  
+
   # PACPARS
   pacpars_data,
-  
+
   # submarine cable
   submarine_cable_areas_data,
   submarine_cable_noaa_data,
-  
+
   # BIAs
   bia_data,
-  
+
   # essential fish habitat conservation areas
   efhca_data,
-  
+
   # deep-sea coral and sponge habitat
   coral_sponge_habitat,
-  
+
   # methane bubble streams
   methane_bubble_merle,
   methane_bubble_reidel,
   methane_bubble_johnson,
-  
+
+  # marine bird
+  marine_bird,
+  adams_birds,
+
   # vessel traffic
   ais_transit2019_data,
   ais_tracks2019_data,
 
-  
   # aids to navigation
   aids_navigation_data,
-  
+
   # NREL net value
   nrel_net_value_data,
-  
+
   # offshore mean annual wind speed
   offshore_mean_wind_90m,
   offshore_mean_wind
@@ -390,6 +411,22 @@ file.rename(from = file.path(data_dir,
                                         # search for pattern that matches dataset
                                         pattern = "SupInfo.docx")),
             to = file.path(data_dir, "methane_bubble_streams_johnson.docx"))
+
+## Marine bird
+file.rename(from = file.path(data_dir,
+                             # find original name
+                             list.files(data_dir,
+                                        # search for pattern that matches dataset
+                                        pattern = "242882.1.1.")),
+            to = file.path(data_dir, "marine_bird"))
+
+## Marine bird vulnerability
+file.rename(from = file.path(data_dir,
+                             # find original name
+                             list.files(data_dir,
+                                        # search for pattern that matches dataset
+                                        pattern = "ofr20161154")),
+            to = file.path(data_dir, "adams_etal_2017.pdf"))
 
 ## NREL (2015) net value data
 file.rename(from = file.path(data_dir,
