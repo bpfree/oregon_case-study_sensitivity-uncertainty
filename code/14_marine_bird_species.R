@@ -28,7 +28,7 @@ pacman::p_load(dplyr,
 # Set directories
 ## Define data directory (as this is an R Project, pathnames are simplified)
 ### Input directories
-marine_bird_dir <- "data/a_raw_data/marine_bird/0242882/1.1/data/0-data/model_output_predictions"
+marine_bird_dir <- "data/a_raw_data/marine_bird/0242882/1.1/data/0-data/model_output_predictions/"
 intermediate_dir <- "data/b_intermediate_data"
 
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
@@ -52,6 +52,15 @@ marine_bird_species_dir <- "data/b_intermediate_data/marine_bird_species"
 #####################################
 
 list.files(marine_bird_dir)
+
+#####################################
+#####################################
+
+# Create shorthands for seasonal data
+spring <- "_spring_predicted_density.tif"
+summer <- "_summer_predicted_density.tif"
+fall <- "_fall_predicted_density.tif"
+winter <- "_winter_predicted_density.tif"
 
 #####################################
 #####################################
@@ -195,6 +204,9 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg,
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BRPE_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BRPE_winter_predicted_density.tif
 
+spsk_fall <- terra::rast(x = paste0(marine_bird_dir, "SPSK", fall))
+
+#####################################
 
 #### Taxonomic Groups:
 ####   1.) Scoter species (surf scoter, white-winged scoter, black scoter):
@@ -242,55 +254,23 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg,
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/ROYT-ELTE_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/ROYT-ELTE_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/ROYT-ELTE_fall_predicted_density.tif
-####   10.) Loon species (Gavia spp.): 
+####   10.) Loon species (Gavia spp.)
+####      ***Note: paper references 4 species: red throated, Pacific, common, and yellow-billed)
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LOON_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LOON_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LOON_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LOON_winter_predicted_density.tif
-#####     Pomarine jaeger
-####      Spring: 
-####      Summer: 
-####      Fall: 
-####      Winter: 
+####   11.) Short-tailed (Ardenna tenuirostris) / sooty (Ardenna grisea) / flesh-footed shearwater (Ardenna carneipes): 
+####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/STTS-SOSH-FFSH_spring_predicted_density.tif
+####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/STTS-SOSH-FFSH_summer_predicted_density.tif
+####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/STTS-SOSH-FFSH_fall_predicted_density.tif
+####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/STTS-SOSH-FFSH_winter_predicted_density.tif
+####   12.) Cormorant (Phalacrocorax spp.): 
+####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CORM_fall_predicted_density.tif
+####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CORM_winter_predicted_density.tif
 
-#####     Parasitic jaeger & long-tailed jaeger
-####      Spring: 
-####      Summer: 
-####      Fall: 
-####      Winter: 
-####   5.) Scripps's () / Guadeloupe () / Craveri's murrelet (): 
-####      Spring: 
-####   6.) Herring () / Iceland gull (): 
-####      Spring: 
-####      Summer: 
-####      Fall: 
-####      Winter: 
-####   7.) Westerm () / glauguous-winged gull (): 
-####      Spring: 
-####      Summer: 
-####      Fall: 
-####      Winter: 
-####   8.) Common () / Arctic tern (): 
-####      Spring: 
-####      Summer: 
-####      Fall: 
-####   9.) Royal () / elegant tern (): 
-####      Spring: 
-####      Summer: 
-####      Fall: 
-####   10.) Loon species: 
-####      Spring: 
-####      Summer: 
-####      Fall: 
-####      Winter: 
-####   11.) Short-tailed () / sooty () / flesh-footed shearwater (): 
-####      Spring: 
-####      Summer: 
-####      Fall: 
-####      Winter: 
-####   12.) Cormorant (): 
-####      Fall: 
-####      Winter: 
+
+
 
 #####################################
 #####################################
