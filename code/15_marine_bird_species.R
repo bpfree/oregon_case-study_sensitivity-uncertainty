@@ -29,7 +29,7 @@ pacman::p_load(dplyr,
 ## Define data directory (as this is an R Project, pathnames are simplified)
 ### Input directories
 marine_bird_dir <- "data/a_raw_data/marine_bird/0242882/1.1/data/0-data/model_output_predictions/"
-intermediate_dir <- "data/b_intermediate_data"
+marine_bird_species_dir <- "data/b_intermediate_data/marine_bird_species"
 
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
 wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
@@ -41,9 +41,6 @@ natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.g
 #### Intermediate directories
 ##### Marine bird species geopackage (vector data)
 marine_bird_gpkg <- "data/b_intermediate_data/marine_bird_species.gpkg"
-
-##### Marine bird species directory (raster data)
-marine_bird_species_dir <- "data/b_intermediate_data/marine_bird_species"
 
 #####################################
 #####################################
@@ -74,6 +71,10 @@ oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
 oregon_hex <- sf::st_read(dsn = study_area_gpkg,
                           layer = paste(sf::st_layers(dsn = study_area_gpkg,
                                                       do_count = TRUE)[[1]][2]))
+
+#####################################
+
+marine_bird_vulnerability <- base::readRDS(file = paste(marine_bird_species_dir, "marine_bird_species_vulnerability.rds", sep = "/"))
 
 #####################################
 
@@ -455,7 +456,29 @@ comu_annual_sum <- comu_annual_total$sum
 #### Normalize densities
 ##### Divide the annual density data by the total summed data
 comu_annual_norm <- comu_annual[] / comu_annual_sum
-##### Set the normalized data back to the original anual density dataset
+##### Set the normalized data back to the original annual density dataset
 comu_normalize <- terra::setValues(comu_annual, comu_annual_norm)
+
+##### Convert normalized data to polygon data with 2km cell size
+comu_polygon <- terra::as.polygons(x = comu_normalize,
+                                   dissolve = F,
+                                   # NA values are not removed
+                                   na.rm = F) %>%
+  # change to simple feature (sf)
+  sf::st_as_sf() %>%
+  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
+  sf::st_transform("EPSG:26910") %>%
+  # simplify column name to "density" (this is the first column of the object, thus the colnames(.)[1] means take the first column name from the comu_normalize object)
+  dplyr::rename(density = colnames(.)[1]) %>%
+  # create field for species
+  dplyr::mutate(species_code = "COMU") %>%
+  dplyr::relocate(species_code,
+                  .before = density) %>%
+  # join the vulnerability species data
+  dplyr::left_join(x = .,
+                   y = marine_bird_vulnerability,
+                   by = "species_code") %>%
+  dplyr::relocate(density,
+                  .after = dis_be_value)
 
 
