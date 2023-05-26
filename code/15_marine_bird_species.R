@@ -450,7 +450,7 @@ comu_annual <- c(comu_spring,
   
 #### Calculate annual total density
 comu_annual_total <- terra::global(x = comu_annual, fun = "sum", na.rm = T)
-comu_annual_sum <- test$sum
+comu_annual_sum <- comu_annual_total$sum
 
 #### Normalize densities
 ##### Divide the annual density data by the total summed data
