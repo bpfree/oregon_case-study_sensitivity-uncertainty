@@ -1,5 +1,5 @@
 ####################################
-### 17. Levelized cost of energy ###
+### 17. Levelized Cost of Energy ###
 ####################################
 
 # Clear environment
