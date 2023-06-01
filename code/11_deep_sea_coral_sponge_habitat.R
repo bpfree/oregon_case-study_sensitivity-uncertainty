@@ -40,7 +40,7 @@ natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.g
 
 #### Intermediate directories
 ##### Deep sea coral and sponge habitat geopackage (vector data)
-coral_sponge_habitat_gpkg <- "data/b_intermediate_data/coral_sponge_habitat.gpkg"
+coral_sponge_habitat_gpkg <- "data/b_intermediate_data/oregon_coral_sponge_habitat.gpkg"
 
 ##### Deep sea coral and sponge habitat directory (raster data)
 dir.create(paste0(intermediate_dir, "/",
@@ -208,8 +208,10 @@ oregon_hex_coral_sponge_high <- oregon_hex[oregon_high_habitat_point, ] %>%
   # group by the index values as there are duplicates
   dplyr::group_by(index) %>%
   # summarise the richness values
-  ## take the maximum value of the richness for any that overlap
-  dplyr::summarise(richness_index = max(richness)) %>%
+  ## take the minimum value of the richness for any that overlap
+  ## ***Note: this will provide the most conservation given that low
+  ##          values are less desirable
+  dplyr::summarise(richness_index = min(richness)) %>%
   # z-membership function to add the z-value based on the richness values
   zmf_function(.)
   
@@ -227,8 +229,10 @@ oregon_hex_coral_sponge_robust <- oregon_hex[oregon_robust_habitat_point, ] %>%
   # group by the index values as there are duplicates
   dplyr::group_by(index) %>%
   # summarise the richness values
-  ## take the maximum value of the richness for any that overlap
-  dplyr::summarise(richness_index = max(richness)) %>%
+  ## take the minimum value of the richness for any that overlap
+  ## ***Note: this will provide the most conservation given that low
+  ##          values are less desirable
+  dplyr::summarise(richness_index = min(richness)) %>%
   # z-membership function to add the z-value based on the richness values
   zmf_function(.)
 
