@@ -53,6 +53,18 @@ sf::st_layers(dsn = industry_operations_submodel,
 #####################################
 #####################################
 
+clean_function <- function(data){
+  
+  data <- data %>%
+    as.data.frame() %>%
+    dplyr::select(-geom)
+  
+  return(data)
+}
+
+#####################################
+#####################################
+
 # Load data
 ## Oregon hex
 oregon_hex <- sf::st_read(dsn = study_area_gpkg,
@@ -144,13 +156,24 @@ oregon_industry_operations <- oregon_hex %>%
                                 # remove any values that are NA when calculating the mean
                                 na.rm = T))) %>%
   # select the fields of interest
-  dplyr::select(sc500_value,
+  dplyr::select(index,
+                sc500_value,
                 sc1000_value,
                 eastwest_value,
                 eastwest_add_value,
                 sstat_value,
                 stransect_value,
                 io_geom_mean)
+
+### Check to see if there are any duplicates of the indices
+### There are none
+io_duplicates <- oregon_industry_operations %>%
+  # create frequency field based on index
+  dplyr::add_count(index) %>%
+  # see which ones are duplicates
+  dplyr::filter(n>1) %>%
+  # show distinct options
+  dplyr::distinct()
 
 #####################################
 #####################################
