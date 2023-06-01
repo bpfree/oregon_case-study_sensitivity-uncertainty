@@ -102,8 +102,9 @@ oregon_constraints <- oregon_hex_constraints %>%
 
 # Export data
 ## Suitability
-sf::st_write(obj = oregon_hex_constraints, dsn = oregon_suitability_gpkg, layer = "oregon_constraints", append = F)
+sf::st_write(obj = oregon_constraints, dsn = oregon_suitability_gpkg, layer = "oregon_constraints", append = F)
 
 ## Constraints
 sf::st_write(obj = oregon_hex_dod_opnav, dsn = oregon_constraints_gpkg, layer = "oregon_hex_dod_opnav", append = F)
 sf::st_write(obj = oregon_hex_pacpars, dsn = oregon_constraints_gpkg, layer = "oregon_hex_pacpars", append = F)
+sf::st_write(obj = oregon_hex_constraints, dsn = oregon_suitability_gpkg, layer = "oregon_hex_constraints", append = F)
