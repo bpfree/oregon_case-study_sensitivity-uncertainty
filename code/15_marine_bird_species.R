@@ -1,5 +1,5 @@
 ############################################
-### 15. Marine bird species density maps ###
+### 15. Marine Bird Species Density Maps ###
 ############################################
 
 # Clear environment
