@@ -48,7 +48,7 @@ dir.create(paste0(intermediate_dir, "/",
                   "bathymetry"))
 
 bathymetry_dir <- "data/b_intermediate_data/bathymetry"
-bathymetry_gpkg <- "data/b_intermediate_data/bathymetry/bathymetry.gpkg"
+bathymetry_gpkg <- "data/b_intermediate_data/bathymetry/oregon_bathymetry.gpkg"
 
 #####################################
 #####################################
