@@ -65,7 +65,8 @@ oregon_hex_pacpars <- sf::st_read(dsn = constraints_submodel, layer = "oregon_he
 #####################################
 #####################################
 
-oregon_constraints <- oregon_hex %>%
+# Create Oregon constraints submodel
+oregon_hex_constraints <- oregon_hex %>%
   dplyr::left_join(x = .,
                    y = oregon_hex_dod_opnav,
                    by = "index") %>%
@@ -76,13 +77,32 @@ oregon_constraints <- oregon_hex %>%
                 dod_value,
                 pacpars_value)
 
+### ***Warning: there are duplicates of the index
+duplicates_verify <- oregon_hex_constraints %>%
+  # create frequency field based on index
+  dplyr::add_count(index) %>%
+  # see which ones are duplicates and verify that values for DoD and PACPARS are equal
+  dplyr::filter(n>1) %>%
+  # show distinct options (otherwise will get 128 results [duplicated cells x frequency of duplication])
+  dplyr::distinct()
+
+# Keep only one result per cell
+oregon_constraints <- oregon_hex_constraints %>%
+  # group by key fields to reduce duplicates
+  dplyr::group_by(index, dod_value, pacpars_value) %>%
+  # return only distinct rows (remove duplicates)
+  dplyr::distinct() %>%
+  # create a field called "constraints" that populates with 0 if either DoD or PACPARS values are 0
+  dplyr::mutate(constraints = ifelse(dod_value == 0, 0,
+                                     # now check for PACPARS
+                                     ifelse(pacpars_value == 0, 0, NA)))
 
 #####################################
 #####################################
 
 # Export data
 ## Suitability
-sf::st_write(obj = oregon_constraints, dsn = oregon_suitability_gpkg, layer = "oregon_constraints", append = F)
+sf::st_write(obj = oregon_hex_constraints, dsn = oregon_suitability_gpkg, layer = "oregon_constraints", append = F)
 
 ## Constraints
 sf::st_write(obj = oregon_hex_dod_opnav, dsn = oregon_constraints_gpkg, layer = "oregon_hex_dod_opnav", append = F)
