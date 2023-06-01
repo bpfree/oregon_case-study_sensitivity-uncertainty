@@ -38,7 +38,7 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.gpkg"
 
 ### Intermediate directory
-continental_shelf_geopackage <- "data/b_intermediate_data/continental_shelf_geopackage"
+continental_shelf_geopackage <- "data/b_intermediate_data/oregon_continental_shelf.gpkg"
 
 #####################################
 
