@@ -301,6 +301,16 @@ oregon_natural_resources <- oregon_hex %>%
   # rename the geometry field
   dplyr::rename(geom = geom.x)
 
+### Check to see if there are any duplicates of the indices
+### There are none
+nr_duplicates <- oregon_natural_resources %>%
+  # create frequency field based on index
+  dplyr::add_count(index) %>%
+  # see which ones are duplicates
+  dplyr::filter(n>1) %>%
+  # show distinct options
+  dplyr::distinct()
+
 #####################################
 #####################################
 
