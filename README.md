@@ -77,6 +77,10 @@ Datasets explored but not included in analyses due to not located geographically
 - [Unexploded ordnances](https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnance.zip) (Points and areas, [metadata](https://www.fisheries.noaa.gov/inport/item/66208))
 - [BOEM Drilling Platforms](https://www.data.boem.gov/Mapping/Files/Platforms.gdb.zip) ([Metadata](https://www.data.boem.gov/Mapping/Files/platform_meta.html), [Mapping Page](https://www.data.boem.gov/Main/Mapping.aspx#ascii), [Alternative Platform Structure dataset](https://www.data.boem.gov/Platform/PlatformStructures/Default.aspx))
 
+
+#### Methodologies
+While most data used in the model received a single value, some ranged between 0 and 1. This caused at times a hex cells across the call areas to have more than a single value due to data not sharing the exact same shape and size as the call are hex cells. When this occurred, the analysis chose the minimum value occurring in the hex cell. The minimum value prioritized conservation.
+
 #### *Known issues*
 The hexagonal grid in R is slightly different than a tessellation grid that ArcGIS Pro generates in its [data management toolbox](https://pro.arcgis.com/en/pro-app/latest/tool-reference/data-management/generatetesellation.htm). This is likely due to differences in the number of significant digits used for the calculations and converting acres into meters.
 
