@@ -71,6 +71,7 @@ rocky_reef_mapped <- sf::st_read(dsn = rocky_reef_mapped_dir, layer = "V4_0_SGH_
 ##                  https://www.ngdc.noaa.gov/nos/W00001-W02000/W00474.html), and
 ##              (2) unpublished SeaBED-class AUV image annotations from two dives conducted during an 2019 EXPRESS
 ##                  cruise aboard the NOAA Ship Lasker in 2019 (RL-19-05).
+
 ### These data were manually created
 rocky_reef_probable <- sf::st_read(dsn = rocky_reef_probable_gpkg, layer = "rockyreef_hapc_probable") %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
