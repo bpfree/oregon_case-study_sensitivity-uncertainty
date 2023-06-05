@@ -197,7 +197,7 @@ cate_summer <- terra::rast(x = paste0(marine_bird_dir, "cate", summer))
 laal_spring <- terra::rast(x = paste0(marine_bird_dir, "laal", spring))
 laal_winter <- terra::rast(x = paste0(marine_bird_dir, "laal", winter))
 
-####   16.) Black-footed ablatross (Phoebastria nigripes) -- BFAL:
+####   16.) Black-footed alaatross (Phoebastria nigripes) -- BFAL:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BFAL_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BFAL_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BFAL_fall_predicted_density.tif
