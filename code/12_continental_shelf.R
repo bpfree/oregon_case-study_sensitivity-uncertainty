@@ -63,7 +63,7 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg,
 
 ## ***Note: Curt Whitmire (curt.whitmire@noaa.gov) generated the continental shelf break data by selecting the
 ##          shelf polygon from the surficial geological habitat version 4 data, converting to polyline features
-##          and then cut by the northern and sourthern extents.
+##          and then cut by the northern and southern extents.
 ### These data were manually created
 
 continental_shelf <- sf::st_read(dsn = shelf_gpkg, layer = "V4_0_SGH_WA_OR_NCA_Shelf_line_diss") %>%
