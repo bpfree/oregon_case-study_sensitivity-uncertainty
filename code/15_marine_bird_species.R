@@ -381,7 +381,7 @@ herg_icgu_summer <- terra::rast(x = paste0(marine_bird_dir, "herg-icgu", summer)
 herg_icgu_fall <- terra::rast(x = paste0(marine_bird_dir, "herg-icgu", fall))
 herg_icgu_winter <- terra::rast(x = paste0(marine_bird_dir, "herg-icgu", winter))
 
-####   7.) Western (Larus occidentalis) / glauguous-winged gull (Larus glaucescens) -- WEGU, GWGU: 
+####   7.) Western (Larus occidentalis) / glaucous-winged gull (Larus glaucescens) -- WEGU, GWGU: 
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/WEGU-WGWH-GWGU_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/WEGU-WGWH-GWGU_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/WEGU-WGWH-GWGU_fall_predicted_density.tif
@@ -408,7 +408,7 @@ royt_elte_summer <- terra::rast(x = paste0(marine_bird_dir, "royt-elte", summer)
 royt_elte_fall <- terra::rast(x = paste0(marine_bird_dir, "royt-elte", fall))
 
 ####   10.) Loon species (Gavia spp.) -- RTLO, PALO, COLO, YBLO:
-####      ***NOTE: paper references 4 species: red throated (Gavia stellata), Pacific (Gavia pacifica), common (Gavia immer), and yellow-billed (Gavia adamsii)
+####      ***NOTE: paper references 4 species: red-throated (Gavia stellata), Pacific (Gavia pacifica), common (Gavia immer), and yellow-billed (Gavia adamsii)
 ####      ***WARNING: Cornell does not record the yellow-billed loon as part of the Gaviidae family: https://www.allaboutbirds.org/guide/browse/taxonomy/Gaviidae
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LOON_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LOON_summer_predicted_density.tif
