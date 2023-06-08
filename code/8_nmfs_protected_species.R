@@ -473,5 +473,5 @@ sf::st_write(obj = bath250, dsn = protected_species_gpkg, layer = "bathymetric_c
 sf::st_write(obj = oregon_leatherback_areas, dsn = protected_species_gpkg, layer = "oregon_leatherback_areas", append = F)
 sf::st_write(obj = oregon_humpback_central_america_dps_areas, dsn = protected_species_gpkg, layer = "oregon_humpback_ca_dps_areas", append = F)
 sf::st_write(obj = oregon_humpback_mexico_dps_areas, dsn = protected_species_gpkg, layer = "oregon_humpback_mexico_dps_areas", append = F)
-sf::st_write(obj = oregon_killer_whale_areas, dsn = protected_species_gpkg, layer = "oregon_killer_whale", append = F)
+sf::st_write(obj = oregon_killer_whale_areas, dsn = protected_species_gpkg, layer = "oregon_killer_whale_areas", append = F)
 sf::st_write(obj = oregon_blue_whale_areas, dsn = protected_species_gpkg, layer = "oregon_blue_whale_areas", append = F)
