@@ -138,3 +138,67 @@ high_habitat_point <- terra::as.points(x = high_habitat) %>%
   sf::st_buffer(dist = 500) %>%
   # cast to polygon
   sf::st_cast("MULTIPOLYGON")
+
+#####################################
+
+### Code 24 -- LISA
+
+# ELSA
+## LISA ()
+oregon_lisa <- elsa::lisa(x = oregon_model_areas,
+                          # minimum distance
+                          d1 = 0,
+                          # search distance went to 8400m
+                          d2 = 8400,
+                          # statistic is "local Moran's"
+                          statistic = "i",
+                          # tell which field to use for calculation ("model_geom_mean")
+                          zcol = "model_geom_mean")
+
+oregon_hex_lisa <- oregon_lisa %>%
+  sf::st_as_sf() %>%
+  cbind(., oregon_model_areas) %>%
+  dplyr::select(index,
+                # Ii = Moran's I statistic, Z.Ii = z-score of Moran's I
+                Ii, Z.Ii)
+
+# rgeoda
+## calculate important fields
+test <- oregon_model_areas_sf %>%
+  cbind(rgeoda::lisa_pvalues(gda_lisa = lisa),
+        rgeoda::lisa_clusters(gda_lisa = lisa, cutoff = 0.05),
+        rgeoda::lisa_values(gda_lisa = lisa),
+        rgeoda::lisa_num_nbrs(gda_lisa = lisa)) %>%
+  dplyr::rename("p_vals" = "rgeoda..lisa_pvalues.gda_lisa...lisa.",
+                "c_vals" = "rgeoda..lisa_clusters.gda_lisa...lisa..cutoff...0.05.",
+                "lisa_values" = "rgeoda..lisa_values.gda_lisa...lisa.",
+                "num_neigh" = "rgeoda..lisa_num_nbrs.gda_lisa...lisa." )
+
+lisa_labels <- rgeoda::lisa_labels(gda_lisa = lisa) %>%
+  as.data.frame() %>%
+  dplyr::rename("labels" = ".") %>%
+  # Predefined values
+  ## 0 Not significant
+  ## 1 High-High
+  ## 2 Low-Low
+  ## 3 Low-High
+  ## 4 High-Low
+  ## 5 Undefined
+  ## 6 Isolated
+  dplyr::mutate(c_vals = c(0, 1, 2, 3, 4, 5, 6))
+
+lisa_colors <- rgeoda::lisa_colors(gda_lisa = lisa) %>%
+  as.data.frame() %>%
+  dplyr::rename("colors" = ".") %>%
+  # Predefined values
+  ## 0 #eeeeee (not significant)
+  ## 1 #FF0000 (high-high)
+  ## 2 #0000FF (low-low)
+  ## 3 #a7adf9 (low-high)
+  ## 4 #f4ada8 (high-low)
+  ## 5 #464646 (undefined)
+  ## 6 #999999 (isolated)
+  dplyr::mutate(c_vals = c(0, 1, 2, 3, 4, 5, 6))
+
+#####################################
+
