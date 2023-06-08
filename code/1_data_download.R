@@ -311,6 +311,12 @@ offshore_mean_wind_90m <- "https://gds-files.nrelcloud.org/archive/wind-prospect
 offshore_mean_wind <- "https://marinecadastre.gov/downloads/data/mc/OffshoreMeanAnnualWindSpeed.zip"
 
 #####################################
+
+## Pacific BOEM lease aliquot blocks (source: https://www.boem.gov/sites/default/files/uploadedFiles/BOEM/Oil_and_Gas_Energy_Program/Mapping_and_Data/Pacific_files/PC_ALIQUOTS.zip)
+### ***WARNING: No download function, but overall lease aliquot blocks are here: https://marinecadastre-noaa.hub.arcgis.com/maps/2c9c651c500043d88b471de46b5e89b5/about
+pacific_aliquot_data <- "https://www.boem.gov/sites/default/files/uploadedFiles/BOEM/Oil_and_Gas_Energy_Program/Mapping_and_Data/Pacific_files/PC_ALIQUOTS.zip"
+
+#####################################
 #####################################
 
 # Download list
@@ -368,7 +374,10 @@ download_list <- c(
 
   # offshore mean annual wind speed
   offshore_mean_wind_90m,
-  offshore_mean_wind
+  offshore_mean_wind,
+  
+  # Pacific region aliquot lease
+  pacific_aliquot_data
 )
 
 data_download_function(download_list, data_dir)
