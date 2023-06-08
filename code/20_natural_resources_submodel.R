@@ -320,6 +320,7 @@ sf::st_write(obj = oregon_natural_resources, dsn = oregon_suitability_gpkg, laye
 
 ## Submodel
 ### Protected species
+sf::st_write(obj = protected_species, dsn = oregon_natural_resources_suitability, layer = "oregon_protected_species_suitability", append = F)
 
 ### Habitat layers
 
