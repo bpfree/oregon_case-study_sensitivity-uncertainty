@@ -107,7 +107,7 @@ killer_whale_value <- killer_whale %>%
 
 #### Humpback whale (Central America DPS)
 humpback_ca_value <- humpback_ca_dps %>%
-  dplyr::mutate(humpback_ca_value = 0.5) %>%
+  dplyr::mutate(humpback_ca_value = 0.3) %>%
   clean_function()
 
 #### Humpback whale (Mexico DPS)
