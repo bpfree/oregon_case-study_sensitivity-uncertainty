@@ -5,6 +5,10 @@
 .Ruserdata
 .DS_Store
 
+# Ignore code based on methodology developed by others till there is approval to
+code/14_marine_bird_vulnerability.R
+code/15_marine_bird_species.R
+
 # Ignore confidential data
 
 # Ignore data too large to add (over 100MB)
