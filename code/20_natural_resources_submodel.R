@@ -79,6 +79,8 @@ humpback_ca_dps <- sf::st_read(dsn = natural_resources_submodel, layer = "oregon
 humpback_mexico_dps <- sf::st_read(dsn = natural_resources_submodel, layer = "oregon_hex_humpback_mexico_dps")
 blue_whale <- sf::st_read(dsn = natural_resources_submodel, layer = "oregon_hex_blue_whale")
 
+non_protected_species_areas <- sf::st_read(dsn = natural_resources_submodel, layer = "oregon_hex_non_protected_species")
+
 ## Habitat layers
 efhca <- sf::st_read(dsn = natural_resources_submodel, layer = "oregon_hex_efhca_500m")
 rocky_reef_mapped <- sf::st_read(dsn = natural_resources_submodel, layer = "oregon_hex_rocky_reef_mapped_500m")
@@ -120,6 +122,11 @@ bluewhale_value <- blue_whale %>%
   dplyr::mutate(bluewhale_value = 0.2) %>%
   clean_function()
 
+#### Non-protected species areas
+non_protected_species_value <- non_protected_species_areas %>%
+  dplyr::mutate(non_protected_value = 1) %>%
+  clean_function
+
 ### Summary value
 protected_species <- oregon_hex %>%
   # join the leatherback sea turtle values by index field to full Oregon call area hex grid
@@ -142,13 +149,18 @@ protected_species <- oregon_hex %>%
   dplyr::left_join(x = .,
                    y = bluewhale_value,
                    by = "index") %>%
+  # join the blue whale values by index field to full Oregon call area hex grid
+  dplyr::left_join(x = .,
+                   y = non_protected_species_value,
+                   by = "index") %>%
   # select only fields of interest
   dplyr::select(index,
                 leatherback_value,
                 killerwhale_value,
                 humpback_ca_value,
                 humpback_mx_value,
-                bluewhale_value) %>%
+                bluewhale_value,
+                non_protected_value) %>%
   # calculate across rows
   dplyr::rowwise() %>%
   # calculate the product of all protected species values
@@ -157,10 +169,9 @@ protected_species <- oregon_hex %>%
                                         humpback_ca_value,
                                         humpback_mx_value,
                                         bluewhale_value,
+                                        non_protected_value,
                                         # remove NA values for product 
                                         na.rm = T)) %>%
-  # since when all values are NA the product given is 1, set all values equal to 1.0 as NA
-  dplyr::mutate(species_product = na_if(species_product, 1.0)) %>%
   # select all the key fields
   dplyr::select(index,
                 leatherback_value,
@@ -168,6 +179,7 @@ protected_species <- oregon_hex %>%
                 humpback_ca_value,
                 humpback_mx_value,
                 bluewhale_value,
+                non_protected_value,
                 species_product) %>%
   as.data.frame()
 
