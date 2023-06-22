@@ -50,17 +50,63 @@ list.files(marine_bird_dir)
 #####################################
 #####################################
 
-# Create shorthands for seasonal data
-spring <- "_spring_predicted_density.tif"
-summer <- "_summer_predicted_density.tif"
-fall <- "_fall_predicted_density.tif"
-winter <- "_winter_predicted_density.tif"
+# Functions
+## Prepping annual datasets
+annual_species_density_function <- function(directory, spp_code){
+  species_season_files <- list.files(directory,
+                                     pattern = "_density.tif")
+  
+  species_list <- unique(sapply(strsplit(species_season_files, "_"), function(x) x[1]))
+  
+  species_code <- spp_code
+  
+  target_species_seasons <- list.files(directory, pattern = paste0(spp_code, "_"))
+  
+  annual_species_list <- target_species_seasons[sapply(strsplit(target_species_seasons, "_"), function(x) x[4] == "density.tif")]
+  
+  #####################################
+  
+  # create a summed raster across the seasons
+  species_annual_raster <- sum(terra::rast(file.path(directory, annual_species_list)),
+                               na.rm = T)
+  
+  #####################################
+  
+  # calculate annual total density
+  species_annual_total <- terra::global(x = species_annual_raster, fun = "sum", na.rm = T)
+  species_annual_sum <- species_annual_total$sum
+  
+  # Normalize densities
+  ## Divide the annual density data by the total summed data
+  species_annual_norm <- species_annual_raster[] / species_annual_sum
+  ## Set the normalized data back to the original annual density dataset
+  species_normalize <- terra::setValues(species_annual_raster, species_annual_norm)
+}
+
+## Prepping annual datasets
+cormorant_species_function <- function(directory, spp_code){
+  species_season_files <- list.files(directory,
+                                     pattern = "_density.tif")
+  
+  species_list <- unique(sapply(strsplit(species_season_files, "_"), function(x) x[1]))
+  
+  species_code <- spp_code
+  
+  target_species_seasons <- list.files(directory, pattern = paste0(spp_code, "_"))
+  
+  annual_species_list <- target_species_seasons[sapply(strsplit(target_species_seasons, "_"), function(x) x[4] == "density.tif")]
+
+  #####################################
+  
+  # create a summed raster across the seasons
+  species_annual_raster <- sum(terra::rast(file.path(directory, annual_species_list)),
+                               na.rm = T)
+}
 
 #####################################
 #####################################
 
 # Load data
-
 ## Oregon
 ### Oregon Call Areas
 oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
@@ -74,7 +120,23 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg,
 
 #####################################
 
-marine_bird_vulnerability <- base::readRDS(file = paste(marine_bird_species_dir, "marine_bird_species_vulnerability.rds", sep = "/"))
+## Marine bird vulnerability indices
+marine_bird_vulnerability <- base::readRDS(file = paste(marine_bird_species_dir, "species_vulnerabilities_normalized.rds", sep = "/"))
+
+files_list <- list.files(marine_bird_dir, pattern = "_density.tif")
+species_list <- unique(sapply(strsplit(files_list, "_"), function(x) x[1]))
+
+modeled_species <- species_list[!(species_list %in% c("POJA", "PAJA-LTJA", "RTLO", "COLO", "BRAC", "PECO", "DCCO"))]
+
+weights <- marine_bird_vulnerability %>%
+  dplyr::filter(species_code %in% modeled_species) %>%
+  dplyr::select(species_code,
+                overall_vul) %>%
+  # arrange alphabetically by species code
+  dplyr::arrange(species_code)
+
+# convert weights to list
+species_weights <- weights[[2]]
 
 #####################################
 
@@ -89,233 +151,162 @@ marine_bird_vulnerability <- base::readRDS(file = paste(marine_bird_species_dir,
 #### Species
 ####   1.) South polar skua (Stercorarius maccormicki) -- SPSK:
 ####      Fall (https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/SPSK_fall_predicted_density.tif)
-spsk_fall <- terra::rast(x = paste0(marine_bird_dir, "SPSK", fall))
+spsk <- annual_species_density_function(directory = marine_bird_dir, spp_code = "SPSK")
 
 ####   2.) Common murre (Uria aalge) -- COMU: 
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/COMU_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/COMU_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/COMU_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/COMU_winter_predicted_density.tif
-comu_spring <- terra::rast(x = paste0(marine_bird_dir, "comu", spring))
-comu_summer <- terra::rast(x = paste0(marine_bird_dir, "comu", summer))
-comu_fall <- terra::rast(x = paste0(marine_bird_dir, "comu", fall))
-comu_winter <- terra::rast(x = paste0(marine_bird_dir, "comu", winter))
+comu <- annual_species_density_function(directory = marine_bird_dir, spp_code = "COMU")
 
 ####   3.) Pigeon guillemot (Cepphus columba) -- PIGU:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PIGU_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PIGU_summer_predicted_density.tif
-pigu_spring <- terra::rast(x = paste0(marine_bird_dir, "pigu", spring))
-pigu_summer <- terra::rast(x = paste0(marine_bird_dir, "pigu", summer))
+pigu <- annual_species_density_function(directory = marine_bird_dir, spp_code = "PIGU")
 
 ####   4.) Marbled murrelet (Brachyramphus marmoratus) -- MAMU:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/MAMU_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/MAMU_summer_predicted_density.tif
-mamu_spring <- terra::rast(x = paste0(marine_bird_dir, "mamu", spring))
-mamu_summer <- terra::rast(x = paste0(marine_bird_dir, "mamu", summer))
+mamu <- annual_species_density_function(directory = marine_bird_dir, spp_code = "MAMU")
 
 ####   5.) Ancient murrelet (Synthliboramphus antiquus) -- ANMU:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/ANMU_spring_predicted_density.tif
-anmu_spring <- terra::rast(x = paste0(marine_bird_dir, "anmu", spring))
+anmu <- annual_species_density_function(directory = marine_bird_dir, spp_code = "ANMU")
 
 ####   6.) Cassin's auklet (Ptychoramphus aleuticus) -- CAAU:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CAAU_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CAAU_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CAAU_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CAAU_winter_predicted_density.tif
-caau_spring <- terra::rast(x = paste0(marine_bird_dir, "caau", spring))
-caau_summer <- terra::rast(x = paste0(marine_bird_dir, "caau", summer))
-caau_fall <- terra::rast(x = paste0(marine_bird_dir, "caau", fall))
-caau_winter <- terra::rast(x = paste0(marine_bird_dir, "caau", winter))
+caau <- annual_species_density_function(directory = marine_bird_dir, spp_code = "CAAU")
 
 ####   7.) Rhinoceros auklet (Cerorhinca monocerata) -- RHAU:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/RHAU_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/RHAU_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/RHAU_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/RHAU_winter_predicted_density.tif
-rhau_spring <- terra::rast(x = paste0(marine_bird_dir, "rhau", spring))
-rhau_summer <- terra::rast(x = paste0(marine_bird_dir, "rhau", summer))
-rhau_fall <- terra::rast(x = paste0(marine_bird_dir, "rhau", fall))
-rhau_winter <- terra::rast(x = paste0(marine_bird_dir, "rhau", winter))
+rhau <- annual_species_density_function(directory = marine_bird_dir, spp_code = "RHAU")
 
 ####   8.) Tufted puffin (Fratercula cirrhata) -- TUPU:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/TUPU_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/TUPU_summer_predicted_density.tif
-tupu_spring <- terra::rast(x = paste0(marine_bird_dir, "tupu", spring))
-tupu_summer <- terra::rast(x = paste0(marine_bird_dir, "tupu", summer))
+tupu <- annual_species_density_function(directory = marine_bird_dir, spp_code = "TUPU")
 
 ####   9.) Black-legged kittiwake (Rissa tridactyla) -- BLKI:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BLKI_spring_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BLKI_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BLKI_winter_predicted_density.tif
-blki_spring <- terra::rast(x = paste0(marine_bird_dir, "blki", spring))
-blki_fall <- terra::rast(x = paste0(marine_bird_dir, "blki", fall))
-blki_winter <- terra::rast(x = paste0(marine_bird_dir, "blki", winter))
+blki <- annual_species_density_function(directory = marine_bird_dir, spp_code = "BLKI")
 
 ####   10.) Sabine's gull (Xema sabini) -- SAGU:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/SAGU_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/SAGU_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/SAGU_fall_predicted_density.tif
-sagu_spring <- terra::rast(x = paste0(marine_bird_dir, "sagu", spring))
-sagu_summer <- terra::rast(x = paste0(marine_bird_dir, "sagu", summer))
-sagu_fall <- terra::rast(x = paste0(marine_bird_dir, "sagu", fall))
+sagu <- annual_species_density_function(directory = marine_bird_dir, spp_code = "SAGU")
 
 ####   11.) Bonaparte's gull (Chroicocephalus philadelphia) -- BOGU:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BOGU_spring_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BOGU_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BOGU_winter_predicted_density.tif
-bogu_spring <- terra::rast(x = paste0(marine_bird_dir, "bogu", spring))
-bogu_fall <- terra::rast(x = paste0(marine_bird_dir, "bogu", fall))
-bogu_winter <- terra::rast(x = paste0(marine_bird_dir, "bogu", winter))
+bogu <- annual_species_density_function(directory = marine_bird_dir, spp_code = "BOGU")
 
 ####   12.) Heermann's gull (Larus heermanni) -- HEEG:
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/HEEG_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/HEEG_fall_predicted_density.tif  
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/HEEG_winter_predicted_density.tif
-heeg_summer <- terra::rast(x = paste0(marine_bird_dir, "heeg", summer))
-heeg_fall <- terra::rast(x = paste0(marine_bird_dir, "heeg", fall))
-heeg_winter <- terra::rast(x = paste0(marine_bird_dir, "heeg", winter))
+heeg <- annual_species_density_function(directory = marine_bird_dir, spp_code = "HEEG")
 
 ####   13.) California gull (Larus californicus) -- CAGU:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CAGU_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CAGU_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CAGU_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CAGU_winter_predicted_density.tif
-cagu_spring <- terra::rast(x = paste0(marine_bird_dir, "cagu", spring))
-cagu_summer <- terra::rast(x = paste0(marine_bird_dir, "cagu", summer))
-cagu_fall <- terra::rast(x = paste0(marine_bird_dir, "cagu", fall))
-cagu_winter <- terra::rast(x = paste0(marine_bird_dir, "cagu", winter))
+cagu <- annual_species_density_function(directory = marine_bird_dir, spp_code = "CAGU")
 
 ####   14.) Caspian tern (Hydroprogne caspia) -- CATE:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CATE_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CATE_summer_predicted_density.tif
-cate_spring <- terra::rast(x = paste0(marine_bird_dir, "cate", spring))
-cate_summer <- terra::rast(x = paste0(marine_bird_dir, "cate", summer))
+cate <- annual_species_density_function(directory = marine_bird_dir, spp_code = "CATE")
 
 ####   15.) Laysan albratross (Phoebastria immutabilis) -- LAAL:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LAAL_spring_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LAAL_winter_predicted_density.tif
-laal_spring <- terra::rast(x = paste0(marine_bird_dir, "laal", spring))
-laal_winter <- terra::rast(x = paste0(marine_bird_dir, "laal", winter))
+laal <- annual_species_density_function(directory = marine_bird_dir, spp_code = "LAAL")
 
 ####   16.) Black-footed alaatross (Phoebastria nigripes) -- BFAL:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BFAL_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BFAL_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BFAL_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BFAL_winter_predicted_density.tif
-bfal_spring <- terra::rast(x = paste0(marine_bird_dir, "bfal", spring))
-bfal_summer <- terra::rast(x = paste0(marine_bird_dir, "bfal", summer))
-bfal_fall <- terra::rast(x = paste0(marine_bird_dir, "bfal", fall))
-bfal_winter <- terra::rast(x = paste0(marine_bird_dir, "bfal", winter))
+bfal <- annual_species_density_function(directory = marine_bird_dir, spp_code = "BFAL")
 
 ####   17.) Fork-tailed storm-petrel (Hydrobates furcatus) -- FTSP:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/FTSP_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/FTSP_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/FTSP_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/FTSP_winter_predicted_density.tif
-ftsp_spring <- terra::rast(x = paste0(marine_bird_dir, "ftsp", spring))
-ftsp_summer <- terra::rast(x = paste0(marine_bird_dir, "ftsp", summer))
-ftsp_fall <- terra::rast(x = paste0(marine_bird_dir, "ftsp", fall))
-ftsp_winter <- terra::rast(x = paste0(marine_bird_dir, "ftsp", winter))
+ftsp <- annual_species_density_function(directory = marine_bird_dir, spp_code = "FTSP")
 
 ####   18.) Leach's storm-petrel (Hydrobates leucorhous) -- LESP:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LESP_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LESP_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LESP_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LESP_winter_predicted_density.tif
-lesp_spring <- terra::rast(x = paste0(marine_bird_dir, "lesp", spring))
-lesp_summer <- terra::rast(x = paste0(marine_bird_dir, "lesp", summer))
-lesp_fall <- terra::rast(x = paste0(marine_bird_dir, "lesp", fall))
-lesp_winter <- terra::rast(x = paste0(marine_bird_dir, "lesp", winter))
+lesp <- annual_species_density_function(directory = marine_bird_dir, spp_code = "LESP")
 
 ####   19.) Ashy storm-petrel (Hydrobates homochroa) -- ASSP:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/ASSP_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/ASSP_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/ASSP_fall_predicted_density.tif
-assp_spring <- terra::rast(x = paste0(marine_bird_dir, "assp", spring))
-assp_summer <- terra::rast(x = paste0(marine_bird_dir, "assp", summer))
-assp_fall <- terra::rast(x = paste0(marine_bird_dir, "assp", fall))
+assp <- annual_species_density_function(directory = marine_bird_dir, spp_code = "ASSP")
 
 ####   20.) Black storm-petrel (Hydrobates melania) -- BLSP:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BLSP_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BLSP_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BLSP_fall_predicted_density.tif
-blsp_spring <- terra::rast(x = paste0(marine_bird_dir, "blsp", spring))
-blsp_summer <- terra::rast(x = paste0(marine_bird_dir, "blsp", summer))
-blsp_fall <- terra::rast(x = paste0(marine_bird_dir, "blsp", fall))
+blsp <- annual_species_density_function(directory = marine_bird_dir, spp_code = "BLSP")
 
 ####   21.) Northern fulmar (Fulmarus glacialis) -- NOFU:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/NOFU_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/NOFU_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/NOFU_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/NOFU_winter_predicted_density.tif
-nofu_spring <- terra::rast(x = paste0(marine_bird_dir, "nofu", spring))
-nofu_summer <- terra::rast(x = paste0(marine_bird_dir, "nofu", summer))
-nofu_fall <- terra::rast(x = paste0(marine_bird_dir, "nofu", fall))
-nofu_winter <- terra::rast(x = paste0(marine_bird_dir, "nofu", winter))
+nofu <- annual_species_density_function(directory = marine_bird_dir, spp_code = "NOFU")
 
 ####   22.) Murphy's petrel (Pterodroma ultima) -- MUPE:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/MUPE_spring_predicted_density.tif
-mupe_spring <- terra::rast(x = paste0(marine_bird_dir, "mupe", spring))
+mupe <- annual_species_density_function(directory = marine_bird_dir, spp_code = "MUPE")
 
 ####   23.) Cook's petrel (Pterodroma cookii) -- COPE:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/COPE_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/COPE_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/COPE_fall_predicted_density.tif
-cope_spring <- terra::rast(x = paste0(marine_bird_dir, "cope", spring))
-cope_summer <- terra::rast(x = paste0(marine_bird_dir, "cope", summer))
-cope_fall <- terra::rast(x = paste0(marine_bird_dir, "cope", fall))
+cope <- annual_species_density_function(directory = marine_bird_dir, spp_code = "COPE")
 
 ####   24.) Buller's shearwater (Ardenna bulleri) -- BULS:
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BULS_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BULS_fall_predicted_density.tif
-buls_summer <- terra::rast(x = paste0(marine_bird_dir, "buls", summer))
-buls_fall <- terra::rast(x = paste0(marine_bird_dir, "buls", fall))
+buls <- annual_species_density_function(directory = marine_bird_dir, spp_code = "BULS")
 
 ####   25.) Pink-footed shearwater (Ardenna creatopus) -- PFSH:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PFSH_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PFSH_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PFSH_fall_predicted_density.tif
-pfsh_spring <- terra::rast(x = paste0(marine_bird_dir, "pfsh", spring))
-pfsh_summer <- terra::rast(x = paste0(marine_bird_dir, "pfsh", summer))
-pfsh_fall <- terra::rast(x = paste0(marine_bird_dir, "pfsh", fall))
+pfsh <- annual_species_density_function(directory = marine_bird_dir, spp_code = "PFSH")
 
 ####   26.) Black-vented shearwater (Puffinus opisthomelas) -- BVSH:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BVSH_spring_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BVSH_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BVSH_winter_predicted_density.tif
-bvsh_spring <- terra::rast(x = paste0(marine_bird_dir, "bvsh", spring))
-bvsh_fall <- terra::rast(x = paste0(marine_bird_dir, "bvsh", fall))
-bvsh_winter <- terra::rast(x = paste0(marine_bird_dir, "bvsh", winter))
-
-####   27.) Brandt's cormorant (Phalacrocorax penicillatus) -- BRAC:
-####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BRAC_spring_predicted_density.tif
-####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BRAC_summer_predicted_density.tif
-brac_spring <- terra::rast(x = paste0(marine_bird_dir, "brac", spring))
-brac_summer <- terra::rast(x = paste0(marine_bird_dir, "brac", summer))
-
-####   28.) Pelagic cormorant (Phalacrocorax pelagicus) -- PECO:
-####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PECO_spring_predicted_density.tif
-####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PECO_summer_predicted_density.tif
-peco_spring <- terra::rast(x = paste0(marine_bird_dir, "peco", spring))
-peco_summer <- terra::rast(x = paste0(marine_bird_dir, "peco", summer))
-
-####   29.) Double-crested cormorant (Phalacrocorax auritus) -- DCCO:
-####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/DCCO_spring_predicted_density.tif
-####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/DCCO_summer_predicted_density.tif
-dcco_spring <- terra::rast(x = paste0(marine_bird_dir, "dcco", spring))
-dcco_summer <- terra::rast(x = paste0(marine_bird_dir, "dcco", summer))
+bvsh <- annual_species_density_function(directory = marine_bird_dir, spp_code = "BVSH")
 
 ####   30.) Brown pelican (Pelecanus occidentalis) -- BRPE:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BRPE_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BRPE_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BRPE_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BRPE_winter_predicted_density.tif
-brpe_spring <- terra::rast(x = paste0(marine_bird_dir, "brpe", spring))
-brpe_summer <- terra::rast(x = paste0(marine_bird_dir, "brpe", summer))
-brpe_fall <- terra::rast(x = paste0(marine_bird_dir, "brpe", fall))
-brpe_winter <- terra::rast(x = paste0(marine_bird_dir, "brpe", winter))
-
-
+brpe <- annual_species_density_function(directory = marine_bird_dir, spp_code = "BRPE")
 
 #####################################
 
@@ -325,87 +316,69 @@ brpe_winter <- terra::rast(x = paste0(marine_bird_dir, "brpe", winter))
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/SCOT_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/SCOT_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/SCOT_winter_predicted_density.tif
-scot_spring <- terra::rast(x = paste0(marine_bird_dir, "scot", spring))
-scot_summer <- terra::rast(x = paste0(marine_bird_dir, "scot", summer))
-scot_fall <- terra::rast(x = paste0(marine_bird_dir, "scot", fall))
-scot_winter <- terra::rast(x = paste0(marine_bird_dir, "scot", winter))
+scot <- annual_species_density_function(directory = marine_bird_dir, spp_code = "SCOT")
 
 ####   2.) Western (Aechmophorus occidentalis) / Clark's Grebe (Aechmophorus clarkii) -- WEGR, CLGR: 
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/WEGR-CLGR_spring_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/WEGR-CLGR_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/WEGR-CLGR_winter_predicted_density.tif
-wegr_clgr_spring <- terra::rast(x = paste0(marine_bird_dir, "wegr-clgr", spring))
-wegr_clgr_fall <- terra::rast(x = paste0(marine_bird_dir, "wegr-clgr", fall))
-wegr_clgr_winter <- terra::rast(x = paste0(marine_bird_dir, "wegr-clgr", winter))
+wegr_clgr <- annual_species_density_function(directory = marine_bird_dir, spp_code = "WEGR-CLGR")
 
 ####   3.) Phalarope species (red-necked phalarope, red phalarope) -- RNPH, REPH: 
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PHAL_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PHAL_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PHAL_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PHAL_winter_predicted_density.tif
-phal_spring <- terra::rast(x = paste0(marine_bird_dir, "phal", spring))
-phal_summer <- terra::rast(x = paste0(marine_bird_dir, "phal", summer))
-phal_fall <- terra::rast(x = paste0(marine_bird_dir, "phal", fall))
-phal_winter <- terra::rast(x = paste0(marine_bird_dir, "phal", winter))
+phal <- annual_species_density_function(directory = marine_bird_dir, spp_code = "PHAL")
 
-####   4.) Jaeger species (pomarine jaeger, parasitic jaeger, long-tailed jaeger) -- POJA, PAJA, LTJA:
+####   4.) Jaeger species:
+####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/JAEG_spring_predicted_density.tif
+####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/JAEG_summer_predicted_density.tif
+####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/JAEG_fall_predicted_density.tif
+####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/JAEG_winter_predicted_density.tif
+jaeg <- annual_species_density_function(directory = marine_bird_dir, spp_code = "JAEG")
+
+###### ***NOTE: There are other jaeger data based on species
 #####     Pomarine jaeger (Stercorarius pomarinus) -- POJA:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/POJA_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/POJA_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/POJA_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/POJA_winter_predicted_density.tif
-poja_spring <- terra::rast(x = paste0(marine_bird_dir, "poja", spring))
-poja_summer <- terra::rast(x = paste0(marine_bird_dir, "poja", summer))
-poja_fall <- terra::rast(x = paste0(marine_bird_dir, "poja", fall))
-poja_winter <- terra::rast(x = paste0(marine_bird_dir, "poja", winter))
 
 #####     Parasitic jaeger (Stercorarius parasiticus) & long-tailed jaeger (Stercorarius longicaudus) -- PAJA, LTJA:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PAJA-LTJA_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PAJA-LTJA_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PAJA-LTJA_fall_predicted_density.tif
-paja_ltja_spring <- terra::rast(x = paste0(marine_bird_dir, "paja-ltja", spring))
-paja_ltja_summer <- terra::rast(x = paste0(marine_bird_dir, "paja-ltja", summer))
-paja_ltja_fall <- terra::rast(x = paste0(marine_bird_dir, "paja-ltja", fall))
 
 ####   5.) Scripps's (Synthliboramphus scrippsi) / Guadeloupe (Synthliboramphus hypoleucus) / Craveri's murrelet (Synthliboramphus craveri) -- SCMU, GUMU, CRMU: 
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/SCMU-GUMU-CRMU_spring_predicted_density.tif
-scmu_gumu_crmu_spring <- terra::rast(x = paste0(marine_bird_dir, "scmu-gumu-crmu", spring))
+scmu_gumu_crmu <- annual_species_density_function(directory = marine_bird_dir, spp_code = "SCMU-GUMU-CRMU")
 
 ####   6.) Herring (Larus smithsonianus) / Iceland gull (Larus glaucoides) -- HERG, ICGU: 
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/HERG-ICGU_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/HERG-ICGU_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/HERG-ICGU_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/HERG-ICGU_winter_predicted_density.tif
-herg_icgu_spring <- terra::rast(x = paste0(marine_bird_dir, "herg-icgu", spring))
-herg_icgu_summer <- terra::rast(x = paste0(marine_bird_dir, "herg-icgu", summer))
-herg_icgu_fall <- terra::rast(x = paste0(marine_bird_dir, "herg-icgu", fall))
-herg_icgu_winter <- terra::rast(x = paste0(marine_bird_dir, "herg-icgu", winter))
+herg_icgu <- annual_species_density_function(directory = marine_bird_dir, spp_code = "HERG-ICGU")
 
-####   7.) Western (Larus occidentalis) / glaucous-winged gull (Larus glaucescens) -- WEGU, GWGU: 
+####   7.) Western (Larus occidentalis) / glaucous-winged gull (Larus glaucescens) -- WEGU, GWGU:
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/WEGU-WGWH-GWGU_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/WEGU-WGWH-GWGU_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/WEGU-WGWH-GWGU_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/WEGU-WGWH-GWGU_winter_predicted_density.tif
-wegu_wgwh_gwgu_spring <- terra::rast(x = paste0(marine_bird_dir, "wegu-wgwh-gwgu", spring))
-wegu_wgwh_gwgu_summer <- terra::rast(x = paste0(marine_bird_dir, "wegu-wgwh-gwgu", summer))
-wegu_wgwh_gwgu_fall <- terra::rast(x = paste0(marine_bird_dir, "wegu-wgwh-gwgu", fall))
-wegu_wgwh_gwgu_winter <- terra::rast(x = paste0(marine_bird_dir, "wegu-wgwh-gwgu", winter))
+wegu_wgwh_gwgu <- annual_species_density_function(directory = marine_bird_dir, spp_code = "WEGU-WGWH-GWGU")
 
 ####   8.) Common (Sterna hirundo) / Arctic tern (Sterna paradisaea) -- COTE, ARTE: 
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/COTE-ARTE_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/COTE-ARTE_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/COTE-ARTE_fall_predicted_density.tif
-cote_arte_spring <- terra::rast(x = paste0(marine_bird_dir, "cote-arte", spring))
-cote_arte_summer <- terra::rast(x = paste0(marine_bird_dir, "cote-arte", summer))
-cote_arte_fall <- terra::rast(x = paste0(marine_bird_dir, "cote-arte", fall))
+cote_arte <- annual_species_density_function(directory = marine_bird_dir, spp_code = "COTE-ARTE")
 
 ####   9.) Royal (Thalasseus maximus) / elegant tern (Thalasseus elegans) -- ROYT, ELTE: 
 ####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/ROYT-ELTE_spring_predicted_density.tif
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/ROYT-ELTE_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/ROYT-ELTE_fall_predicted_density.tif
-royt_elte_spring <- terra::rast(x = paste0(marine_bird_dir, "royt-elte", spring))
-royt_elte_summer <- terra::rast(x = paste0(marine_bird_dir, "royt-elte", summer))
-royt_elte_fall <- terra::rast(x = paste0(marine_bird_dir, "royt-elte", fall))
+royt_elte <- annual_species_density_function(directory = marine_bird_dir, spp_code = "ROYT-ELTE")
 
 ####   10.) Loon species (Gavia spp.) -- RTLO, PALO, COLO, YBLO:
 ####      ***NOTE: paper references 4 species: red-throated (Gavia stellata), Pacific (Gavia pacifica), common (Gavia immer), and yellow-billed (Gavia adamsii)
@@ -414,10 +387,7 @@ royt_elte_fall <- terra::rast(x = paste0(marine_bird_dir, "royt-elte", fall))
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LOON_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LOON_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/LOON_winter_predicted_density.tif
-loon_spring <- terra::rast(x = paste0(marine_bird_dir, "loon", spring))
-loon_summer <- terra::rast(x = paste0(marine_bird_dir, "loon", summer))
-loon_fall <- terra::rast(x = paste0(marine_bird_dir, "loon", fall))
-loon_winter <- terra::rast(x = paste0(marine_bird_dir, "loon", winter))
+loon <- annual_species_density_function(directory = marine_bird_dir, spp_code = "LOON")
 
 ####   11.) Short-tailed (Ardenna tenuirostris) / sooty (Ardenna grisea) / flesh-footed shearwater (Ardenna carneipes) -- STTS, SOSH, FFSH:
 ####      ***WARNING: the short-tailed shearwater has different codes between the data download (STTS) and the paper (SRTS)
@@ -425,60 +395,111 @@ loon_winter <- terra::rast(x = paste0(marine_bird_dir, "loon", winter))
 ####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/STTS-SOSH-FFSH_summer_predicted_density.tif
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/STTS-SOSH-FFSH_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/STTS-SOSH-FFSH_winter_predicted_density.tif
-stts_sosh_ffsh_spring <- terra::rast(x = paste0(marine_bird_dir, "stts-sosh-ffsh", spring))
-stts_sosh_ffsh_summer <- terra::rast(x = paste0(marine_bird_dir, "stts-sosh-ffsh", summer))
-stts_sosh_ffsh_fall <- terra::rast(x = paste0(marine_bird_dir, "stts-sosh-ffsh", fall))
-stts_sosh_ffsh_winter <- terra::rast(x = paste0(marine_bird_dir, "stts-sosh-ffsh", winter))
+stts_sosh_ffsh <- annual_species_density_function(directory = marine_bird_dir, spp_code = "STTS-SOSH-FFSH")
+
+#####################################
+
+## Cormorants
+####   27.) Brandt's cormorant (Phalacrocorax penicillatus) -- BRAC:
+####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BRAC_spring_predicted_density.tif
+####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/BRAC_summer_predicted_density.tif
+brac <- cormorant_species_function(directory = marine_bird_dir, spp_code = "BRAC")
+
+####   28.) Pelagic cormorant (Phalacrocorax pelagicus) -- PECO:
+####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PECO_spring_predicted_density.tif
+####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/PECO_summer_predicted_density.tif
+peco <- cormorant_species_function(directory = marine_bird_dir, spp_code = "PECO")
+
+####   29.) Double-crested cormorant (Phalacrocorax auritus) -- DCCO:
+####      Spring: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/DCCO_spring_predicted_density.tif
+####      Summer: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/DCCO_summer_predicted_density.tif
+dcco <- cormorant_species_function(directory = marine_bird_dir, spp_code = "DCCO")
 
 ####   12.) Cormorant (Phalacrocorax spp.):
 ####      Fall: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CORM_fall_predicted_density.tif
 ####      Winter: https://www.nodc.noaa.gov/archive/arc0193/0242882/1.1/data/0-data/model_output_predictions/CORM_winter_predicted_density.tif
-corm_fall <- terra::rast(x = paste0(marine_bird_dir, "corm", fall))
-corm_winter <- terra::rast(x = paste0(marine_bird_dir, "corm", winter))
+corm <- cormorant_species_function(directory = marine_bird_dir, spp_code = "CORM")
 
-#####################################
-#####################################
 
-# Sum seasonal data to create annual density dataset
-## Species
-### Common murre (Uria aalge) -- COMU
-#### Combine annual density
-comu_annual <- c(comu_spring,
-                 comu_summer,
-                 comu_fall,
-                 comu_winter) %>%
+corm_annual_raster <- c(brac,
+                        peco,
+                        dcco,
+                        corm) %>%
   terra::app(sum, na.rm = T)
-  
-#### Calculate annual total density
-comu_annual_total <- terra::global(x = comu_annual, fun = "sum", na.rm = T)
-comu_annual_sum <- comu_annual_total$sum
 
-#### Normalize densities
-##### Divide the annual density data by the total summed data
-comu_annual_norm <- comu_annual[] / comu_annual_sum
-##### Set the normalized data back to the original annual density dataset
-comu_normalize <- terra::setValues(comu_annual, comu_annual_norm)
+# calculate annual total density
+corm_annual_total <- terra::global(x = corm_annual_raster, fun = "sum", na.rm = T)
+corm_annual_sum <- corm_annual_total$sum
 
-##### Convert normalized data to polygon data with 2km cell size
-comu_polygon <- terra::as.polygons(x = comu_normalize,
-                                   dissolve = F,
-                                   # NA values are not removed
-                                   na.rm = F) %>%
-  # change to simple feature (sf)
-  sf::st_as_sf() %>%
-  # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
-  sf::st_transform("EPSG:26910") %>%
-  # simplify column name to "density" (this is the first column of the object, thus the colnames(.)[1] means take the first column name from the comu_normalize object)
-  dplyr::rename(density = colnames(.)[1]) %>%
-  # create field for species
-  dplyr::mutate(species_code = "COMU") %>%
-  dplyr::relocate(species_code,
-                  .before = density) %>%
-  # join the vulnerability species data
-  dplyr::left_join(x = .,
-                   y = marine_bird_vulnerability,
-                   by = "species_code") %>%
-  dplyr::relocate(density,
-                  .after = dis_be_value)
+# Normalize densities
+## Divide the annual density data by the total summed data
+corm_annual_norm <- corm_annual_raster[] / corm_annual_sum
+## Set the normalized data back to the original annual density dataset
+corm_normalize <- terra::setValues(corm_annual_raster, corm_annual_norm)
+
+#####################################
+#####################################
+
+pacific_species <- terra::rast(list(anmu,
+                                    assp,
+                                    bfal,
+                                    blki,
+                                    blsp,
+                                    bogu,
+                                    brpe,
+                                    buls,
+                                    bvsh,
+                                    caau,
+                                    cagu,
+                                    cate,
+                                    comu,
+                                    cope,
+                                    corm_normalize,
+                                    cote_arte,
+                                    ftsp,
+                                    heeg,
+                                    herg_icgu,
+                                    jaeg,
+                                    laal,
+                                    lesp,
+                                    loon,
+                                    mamu,
+                                    mupe,
+                                    nofu,
+                                    pfsh,
+                                    phal,
+                                    pigu,
+                                    rhau,
+                                    royt_elte,
+                                    sagu,
+                                    scmu_gumu_crmu,
+                                    scot,
+                                    spsk,
+                                    stts_sosh_ffsh,
+                                    tupu,
+                                    wegr_clgr,
+                                    wegu_wgwh_gwgu))
+
+#####################################
+#####################################
+
+marine_bird_wt_mean <- terra::weighted.mean(pacific_species, w = species_weights)
+
+terra::minmax(marine_bird_wt_mean)
 
 
+
+
+
+
+# buffer call areas by 5 km
+wpa <- sf::st_transform(oregon_call_areas, sf::st_crs(marine_bird_wt_mean))
+wpa <- sf::st_buffer(wpa, 5000)
+
+# crop and mask to call areas
+wpa <- terra::project(terra::vect(wpa), marine_bird_wt_mean)
+rsv_o <- terra::crop(marine_bird_wt_mean, wpa)
+rsv_o <- terra::mask(rsv_o, wpa)
+
+# check plot
+terra::plot(rsv_o, col = colorRampPalette(c("#2C7BB6", "#ABD9E9", "#FFFFBF", "#FDAE61", "#D7191C"))(256), colNA = "gray50", main = "All species")
