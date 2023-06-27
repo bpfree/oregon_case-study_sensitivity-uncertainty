@@ -5,7 +5,7 @@
 .Ruserdata
 .DS_Store
 
-# Ignore code based on methodology developed by others till there is approval to
+# Ignore code based on methodology developed by others till there is approval to share adapted methodologies
 code/14_marine_bird_vulnerability.R
 code/15_marine_bird_species.R
 
