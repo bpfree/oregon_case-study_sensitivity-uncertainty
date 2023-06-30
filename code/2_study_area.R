@@ -57,6 +57,12 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 #####################################
 #####################################
 
+# Create template region name
+region <- "oregon"
+
+#####################################
+#####################################
+
 # Inspect available layers and names within BOEM geodatabase
 sf::st_layers(dsn = wind_area_dir,
               do_count = TRUE)
