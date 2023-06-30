@@ -42,7 +42,7 @@ natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.g
 ##### Deep sea coral and sponge habitat geopackage (vector data)
 coral_sponge_habitat_gpkg <- "data/b_intermediate_data/oregon_coral_sponge_habitat.gpkg"
 
-##### Deep sea coral and sponge habitat directory (raster data)
+##### Deep sea coral and sponge habitat subdirectory (raster data)
 dir.create(paste0(intermediate_dir, "/",
                   "deep_sea_coral_sponge_habitat"))
 
