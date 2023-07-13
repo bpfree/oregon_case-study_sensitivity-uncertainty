@@ -6,21 +6,25 @@
 rm(list = ls())
 
 # Load packages
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
                janitor,
+               ncf,
                pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
@@ -300,7 +304,7 @@ oregon_nmfs_additional_scientific_survey_corridors <- nmfs_additional_scientific
 
 # Survey stations
 ## Pre-Recruit Survey and Northern California Current Ecosystem Survey
-nmfs_prc_ncces_survey_stations <- nmfs_survey_stations
+nmfs_prc_ncces_survey_stations <- nmfs_survey_stations %>%
   # select only the two surveys of interest: Pre-Recruit Survey and Northern California Current Ecosystem Survey
   dplyr::filter(SurveyName %in% c("Pre-Recruit Survey", "Northern California Current Ecosystem Survey"))
 
@@ -343,17 +347,17 @@ oregon_nmfs_survey_transects <- nmfs_prc_ncces_survey_transects %>%
 
 # Oregon hex
 ## East-West scientific survey corridors
-oregon_hex_eastwest_survey_corridors <- oregon_hex[oregon_nfms_scientific_survey_corridors, ] %>%
+oregon_hex_eastwest_survey_corridors <- oregon_hex[oregon_nmfs_scientific_survey_corridors, ] %>%
   # spatially join east-west corridor values to Oregon hex cells
   sf::st_join(x = .,
               y = oregon_nmfs_scientific_survey_corridors,
               join = st_intersects)
 
 ## Additional east-west scientific survey corridors
-oregon_hex_additional_eastwest_survey_corridors <- oregon_hex[nmfs_additional_scientific_survey_corridors, ] %>%
+oregon_hex_additional_eastwest_survey_corridors <- oregon_hex[oregon_nmfs_additional_scientific_survey_corridors, ] %>%
   # spatially join additional east-west corridor values to Oregon hex cells
   sf::st_join(x = .,
-              y = nmfs_additional_scientific_survey_corridors,
+              y = oregon_nmfs_additional_scientific_survey_corridors,
               join = st_intersects)
 
 ## Survey stations
