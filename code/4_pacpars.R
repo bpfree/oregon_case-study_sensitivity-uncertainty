@@ -7,20 +7,25 @@ rm(list = ls())
 
 # Load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
                janitor,
+               ncf,
                pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
@@ -380,7 +385,7 @@ d13_coast_3nm <- d13_coastal_point %>%
 ## D13 Offshore fairway
 d13_offshore_call_area <- d13_offshore_polygon %>%
   rmapshaper::ms_clip(target = .,
-                      clip = oregon_wind_call_area)
+                      clip = oregon_call_areas)
 
 oregon_hex_d13_offshore <- oregon_hex[d13_offshore_call_area, ] %>%
   # spatially join D13 offshore fairway values to Oregon hex cells
@@ -391,7 +396,7 @@ oregon_hex_d13_offshore <- oregon_hex[d13_offshore_call_area, ] %>%
 ## D13 Coastal fairway
 d13_coastal_call_area <- d13_coast_3nm %>%
   rmapshaper::ms_clip(target = .,
-                      clip = oregon_wind_call_area)
+                      clip = oregon_call_areas)
 
 oregon_hex_d13_coastal <- oregon_hex[d13_coastal_call_area, ] %>%
   # spatially join D13 coastal fairway values to Oregon hex cells
