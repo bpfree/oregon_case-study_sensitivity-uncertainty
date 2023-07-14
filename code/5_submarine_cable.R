@@ -6,23 +6,29 @@
 rm(list = ls())
 
 # Load packages
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
                janitor,
+               ncf,
                pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
+
+sessionInfo()
 
 #####################################
 #####################################
@@ -79,9 +85,15 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg,
 ### Metadata: https://www.fisheries.noaa.gov/inport/item/57238
 submarine_cables_noaa <- sf::st_read(dsn = submarine_cable_dir,
                                      layer = paste(sf::st_layers(dsn = submarine_cable_dir,
-                                                                 do_count = TRUE))) %>%
-  # change to multilinestring (for 1 features is multicurve: 1171)
-  sf::st_cast(to = "MULTILINESTRING") %>%
+                                                                 do_count = TRUE)))
+
+### ***Note: due to a change in how sf casts data, instead of being able to cast the entire dataset, the
+###          multicurve is no longer supported by GEOS, and breaks the st_is_empty() [as of 14 July 2023]
+class(st_geometry(submarine_cables_noaa[1171,]))
+submarine_cables_noaa$Shape[1171] <- st_cast(submarine_cables_noaa$Shape[1171], "MULTILINESTRING")
+class(st_geometry(submarine_cables_noaa[1171,]))
+
+submarine_cables_noaa <- submarine_cables_noaa %>%
   # make sure all geometries are valid
   sf::st_make_valid() %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
@@ -91,7 +103,7 @@ submarine_cables_noaa <- sf::st_read(dsn = submarine_cable_dir,
 #####################################
 
 # Submarine cables in Oregon call areas
-oregon_submarine_cables <- submarine_cables_noaa
+oregon_submarine_cables <- submarine_cables_noaa %>%
   # obtain only submarine cables in the study area
   rmapshaper::ms_clip(target = .,
                       clip = oregon_call_areas) %>%
@@ -102,7 +114,7 @@ oregon_submarine_cables <- submarine_cables_noaa
 
 # Add setback distances
 ## 500-meter setback
-oregon_submarine_cable500 <- submarine_cables_noaa %>%
+oregon_submarine_cable500 <- oregon_submarine_cables %>%
   #  add a setback (buffer) distance of 500 meters
   sf::st_buffer(dist = 500) %>%
   # group all features by the "layer"
@@ -111,7 +123,7 @@ oregon_submarine_cable500 <- submarine_cables_noaa %>%
   dplyr::summarise()
 
 ## 1000-meter setback (501 - 1000m setback)
-oregon_submarine_cable1000 <- submarine_cables_noaa %>%
+oregon_submarine_cable1000 <- oregon_submarine_cables %>%
   #  add a setback (buffer) distance of 1000 meters
   sf::st_buffer(dist = 1000) %>%
   # remove areas between 0 - 500 meters
