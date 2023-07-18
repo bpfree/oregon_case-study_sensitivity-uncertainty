@@ -5,6 +5,12 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(docxtractr,
@@ -31,6 +37,9 @@ pacman::p_load(docxtractr,
 
 ### ***Note: running install below will provide message that it skipped install if the package has not changed since last install
 remotes::install_github(c("ropensci/tabulizerjars", "ropensci/tabulizer"), INSTALL_opts = "--no-multiarch")
+
+# Inspect packages and system
+sessionInfo()
 
 #####################################
 #####################################
@@ -59,6 +68,18 @@ dir.create(paste0(intermediate_dir, "/",
                   "pacpars"))
 
 pacpars_dir <- "data/b_intermediate_data/pacpars"
+
+#####################################
+#####################################
+
+## designate region name
+region <- "oregon"
+
+# layer name
+layer <- "d13_fairway"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -420,7 +441,7 @@ oregon_hex_d13_fairway <- oregon_hex_d13_offshore %>%
 
 # Export data
 ## Constraints geopackage
-sf::st_write(oregon_hex_d13_fairway, dsn = constraint_gpkg, layer = "oregon_hex_pacpars", append = F)
+sf::st_write(oregon_hex_d13_fairway, dsn = constraint_gpkg, layer = paste0(region, "_hex_", layer), append = F)
 
 ## PACPARS
 ### D13 Offshore Fairway
@@ -462,3 +483,9 @@ sf::st_write(oregon_3nm, dsn = oregon_gpkg, layer = "oregon_3nm", append = F)
 sf::st_write(oregon_3nm_points, dsn = oregon_gpkg, layer = "oregon_3nm_points", append = F)
 
 sf::st_write(oregon_2nm_east, dsn = oregon_gpkg, layer = "oregon_2nm_east_points", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
