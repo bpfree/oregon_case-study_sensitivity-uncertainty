@@ -5,24 +5,38 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
                janitor,
+               ncf,
                pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
+
+# Inspect packages and system
+sessionInfo()
 
 #####################################
 #####################################
@@ -42,6 +56,18 @@ constraint_gpkg <- "data/c_submodel_data/constraints.gpkg"
 #### Intermediate directories
 intermediate_dir <- "data/b_intermediate_data"
 dod_gpkg <- "data/b_intermediate_data/oregon_dod_opnav.gpkg"
+
+#####################################
+#####################################
+
+## designate region name
+region <- "oregon"
+
+## layer name
+layer <- "dod_opnav"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -104,10 +130,15 @@ oregon_hex_dod_opnav <- oregon_hex[dod_opnav_exclusion, ] %>%
 
 # Export data
 ## Constraints
-sf::st_write(obj = oregon_hex_dod_opnav, dsn = constraint_gpkg, layer = "oregon_hex_dod_opnav", append = T)
+sf::st_write(obj = oregon_hex_dod_opnav, dsn = constraint_gpkg, layer = paste0(region, "_hex_", layer), append = F)
 
 ## DoD OPNAV geopackage
-sf::st_write(obj = dod_opnav, dsn = dod_gpkg, layer = "oregon_call_area_dod_opnav", append = T)
-sf::st_write(obj = dod_opnav_exclusion, dsn = dod_gpkg, layer = "oregon_call_area_dod_opnav_exclusion", append = T)
-sf::st_write(obj = oregon_hex_dod_opnav, dsn = dod_gpkg, layer = "oregon_hex_dod_opnav", append = T)
+sf::st_write(obj = dod_opnav, dsn = dod_gpkg, layer = "oregon_call_area_dod_opnav", append = F)
+sf::st_write(obj = dod_opnav_exclusion, dsn = dod_gpkg, layer = "oregon_call_area_dod_opnav_exclusion", append = F)
+sf::st_write(obj = oregon_hex_dod_opnav, dsn = dod_gpkg, layer = "oregon_hex_dod_opnav", append = F)
 
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
