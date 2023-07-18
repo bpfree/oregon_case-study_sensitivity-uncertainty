@@ -5,22 +5,33 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
                janitor,
+               ncf,
                pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
@@ -44,6 +55,22 @@ natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.g
 
 sf::st_layers(dsn = prd_species,
               do_count = TRUE)
+
+#####################################
+#####################################
+
+## designate region name
+region <- "oregon"
+
+## layer names
+export_leatherback <- "leatherback"
+export_humpback_ca <- "humpback_ca_dps"
+export_humpack_mx <- "humpback_mexico_dps"
+export_killer_whale <- "killer_whale"
+export_blue_whale <- "blue_whale"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -156,11 +183,17 @@ oregon_hex_non_protected <- oregon_hex %>%
 # Export data
 ## Natural resources submodel
 ### Species
-sf::st_write(obj = oregon_hex_leatherback, dsn = natural_resources_submodel, layer = "oregon_hex_leatherback", append = F)
-sf::st_write(obj = oregon_hex_humpback_ca_dps, dsn = natural_resources_submodel, layer = "oregon_hex_humpback_ca_dps", append = F)
-sf::st_write(obj = oregon_hex_humpback_mexico_dps, dsn = natural_resources_submodel, layer = "oregon_hex_humpback_mexico_dps", append = F)
-sf::st_write(obj = oregon_hex_killer_whale, dsn = natural_resources_submodel, layer = "oregon_hex_killer_whale", append = F)
-sf::st_write(obj = oregon_hex_blue_whale, dsn = natural_resources_submodel, layer = "oregon_hex_blue_whale", append = F)
+sf::st_write(obj = oregon_hex_leatherback, dsn = natural_resources_submodel, layer = paste0(region, "_hex_", export_leatherback), append = F)
+sf::st_write(obj = oregon_hex_humpback_ca_dps, dsn = natural_resources_submodel, layer = paste0(region, "_hex_", export_humpback_ca), append = F)
+sf::st_write(obj = oregon_hex_humpback_mexico_dps, dsn = natural_resources_submodel, layer = paste0(region, "_hex_", export_humpack_mx), append = F)
+sf::st_write(obj = oregon_hex_killer_whale, dsn = natural_resources_submodel, layer = paste0(region, "_hex_", export_killer_whale), append = F)
+sf::st_write(obj = oregon_hex_blue_whale, dsn = natural_resources_submodel, layer = paste0(region, "_hex_", export_blue_whale), append = F)
 
 ### Non-protected species areas
 sf::st_write(obj = oregon_hex_non_protected, dsn = natural_resources_submodel, layer = "oregon_hex_non_protected_species", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
