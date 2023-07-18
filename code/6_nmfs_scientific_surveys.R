@@ -5,6 +5,12 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 pacman::p_load(docxtractr,
                dplyr,
@@ -50,6 +56,21 @@ nmfs_scientific_survey_gpkg <- "data/b_intermediate_data/oregon_nmfs_scientific_
 
 sf::st_layers(dsn = survey_gpkg,
               do_count = T)
+
+#####################################
+#####################################
+
+## designate region name
+region <- "oregon"
+
+## layer names
+eastwest_survey <- "eastwest_survey_4nm_corridors"
+additional_eastwest <- "additional_eastwest_survey_4m_corridors"
+survey_stations <- "survey_stations_2nm"
+survey_transects <- "survey_transects_1nm"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -377,12 +398,25 @@ oregon_hex_survey_transects <- oregon_hex[oregon_nmfs_survey_transects, ] %>%
 #####################################
 #####################################
 
+# get layer names
+layer_eastwest <- unique(stringr::str_split_fixed(string = deparse(substitute(oregon_hex_eastwest_survey_corridors)),
+                                             # pattern to designate splits
+                                             pattern = "_",
+                                             # number of pieces (two splits)
+                                             n = 3))[3]
+
+layer_eastwest <- unique(stringr::str_split_fixed(string = deparse(oregon_hex_eastwest_survey_corridors),
+                                                  # pattern to designate splits
+                                                  pattern = "_",
+                                                  # number of pieces (two splits)
+                                                  n = 3))[3]
+
 # Export data
 ## Submodel geopackage
-sf::st_write(obj = oregon_hex_eastwest_survey_corridors, dsn = industry_operations_submodel, layer = "oregon_hex_eastwest_survey_4nm_corridors", append = F)
-sf::st_write(obj = oregon_hex_additional_eastwest_survey_corridors, dsn = industry_operations_submodel, layer = "oregon_hex_additional_eastwest_survey_4m_corridors", append = F)
-sf::st_write(obj = oregon_hex_survey_stations, dsn = industry_operations_submodel, layer = "oregon_hex_survey_stations_2nm", append = F)
-sf::st_write(obj = oregon_hex_survey_transects, dsn = industry_operations_submodel, layer = "oregon_hex_survey_transects_1nm", append = F)
+sf::st_write(obj = oregon_hex_eastwest_survey_corridors, dsn = industry_operations_submodel, layer = paste0(oregon, "_hex_", eastwest_survey), append = F)
+sf::st_write(obj = oregon_hex_additional_eastwest_survey_corridors, dsn = industry_operations_submodel, layer = paste0(oregon, "_hex_", additional_eastwest), append = F)
+sf::st_write(obj = oregon_hex_survey_stations, dsn = industry_operations_submodel, layer = paste0(oregon, "_hex_", survey_stations), append = F)
+sf::st_write(obj = oregon_hex_survey_transects, dsn = industry_operations_submodel, layer = paste0(oregon, "_hex_", survey_transects), append = F)
 
 ## Scientific survey geopackage
 ### Coos Bay
@@ -414,3 +448,9 @@ sf::st_write(obj = oregon_nmfs_survey_stations, dsn = nmfs_scientific_survey_gpk
 sf::st_write(obj = nmfs_survey_transects, dsn = nmfs_scientific_survey_gpkg, layer = "nmfs_survey_transects", append = F)
 sf::st_write(obj = nmfs_prc_ncces_survey_transects, dsn = nmfs_scientific_survey_gpkg, layer = "nmfs_prc_ncces_survey_transects", append = F)
 sf::st_write(obj = oregon_nmfs_survey_transects, dsn = nmfs_scientific_survey_gpkg, layer = "oregon_nmfs_survey_transecs_1nm", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
