@@ -5,6 +5,12 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 pacman::p_load(docxtractr,
                dplyr,
@@ -28,6 +34,7 @@ pacman::p_load(docxtractr,
                terra, # is replacing the raster package
                tidyr)
 
+# Inspect packages and system
 sessionInfo()
 
 #####################################
@@ -64,6 +71,19 @@ sf::st_layers(dsn = submarine_cable_area_dir,
 ## Study Area
 sf::st_layers(dsn = study_area_gpkg,
               do_count = TRUE)
+
+#####################################
+#####################################
+
+## designate region name
+region <- "oregon"
+
+## layer names
+layer_500 <- "submarine_cable500m"
+layer_1000 <- "submarine_cable1000m"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -155,14 +175,20 @@ oregon_hex_submarine_cable1000 <- oregon_hex[oregon_submarine_cable1000, ] %>%
 
 # Export data
 ## Submodel geopackage
-sf::st_write(obj = oregon_hex_submarine_cable500, dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable_500m", append = F)
-sf::st_write(obj = oregon_hex_submarine_cable1000, dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable1000m", append = F)
+sf::st_write(obj = oregon_hex_submarine_cable500, dsn = industry_operations_submodel, layer = paste0(region, "_hex_", layer_500), append = F)
+sf::st_write(obj = oregon_hex_submarine_cable1000, dsn = industry_operations_submodel, layer = paste0(region, "_hex_", layer_1000), append = F)
 
 ## Submarine Cable geopackage
-sf::st_write(obj = oregon_hex_submarine_cable500, dsn = submarine_cable_gpkg, layer = "oregon_hex_submarine_cable_500m", append = F)
-sf::st_write(obj = oregon_hex_submarine_cable1000, dsn = submarine_cable_gpkg, layer = "oregon_hex_submarine_cable1000m", append = F)
+sf::st_write(obj = oregon_hex_submarine_cable500, dsn = submarine_cable_gpkg, layer = paste0(region, "_hex_", layer500), append = F)
+sf::st_write(obj = oregon_hex_submarine_cable1000, dsn = submarine_cable_gpkg, layer = paste0(region, "_hex_", layer1000), append = F)
 
 sf::st_write(obj = submarine_cables_noaa, dsn = submarine_cable_gpkg, layer = "noaa_submarine_cable", append = F)
 sf::st_write(obj = oregon_submarine_cables, dsn = submarine_cable_gpkg, layer = "oregon_submarine_cables", append = F)
 sf::st_write(obj = oregon_submarine_cable500, dsn = submarine_cable_gpkg, layer = "oregon_submarine_cable500", append = F)
 sf::st_write(obj = oregon_submarine_cable1000, dsn = submarine_cable_gpkg, layer = "oregon_submarine_cable1000", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
