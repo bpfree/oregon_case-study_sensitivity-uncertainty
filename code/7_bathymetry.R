@@ -5,26 +5,37 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 ## Need to install a development version of terra to open the netCDF
 ### ***Note: May need restart R upon installing (stop running after first installation)
 install.packages('terra', repos='https://rspatial.r-universe.dev')
 
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
                janitor,
+               ncf,
                pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
@@ -49,6 +60,21 @@ dir.create(paste0(intermediate_dir, "/",
 
 bathymetry_dir <- "data/b_intermediate_data/bathymetry"
 bathymetry_gpkg <- "data/b_intermediate_data/bathymetry/oregon_bathymetry.gpkg"
+
+#####################################
+#####################################
+
+## designate region name
+region <- "oregon"
+
+## layer names
+layer <- "contours"
+
+## contour distance
+contour <- 50
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -189,9 +215,9 @@ oregon_bath <- terra::mosaic(oregon_bath,
 # Create bathymetry contours
 oregon_contours <- terra::as.contour(x = oregon_bath,
                                      maxcells = 100500000,
-                                     # have contours be every 50 meters
+                                     # have contours match desired distance (likely to be 50 meters) 
                                      ## minimum is multiplied by -1 so number of levels can be calculated
-                                     nlevels = ((-1 * terra::minmax(oregon_bath)[1] + terra::minmax(oregon_bath)[2]) / 50)) %>%
+                                     nlevels = ((-1 * terra::minmax(oregon_bath)[1] + terra::minmax(oregon_bath)[2]) / contour)) %>%
   # set as a simple feature
   sf::st_as_sf() %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
@@ -204,7 +230,7 @@ oregon_contours <- terra::as.contour(x = oregon_bath,
 
 # Export data
 ## Bathymetry data
-sf::st_write(obj = oregon_contours, dsn = bathymetry_gpkg, layer = "oregon_contours_50", append = F)
+sf::st_write(obj = oregon_contours, dsn = bathymetry_gpkg, layer = paste0(region, "_", layer, "_", contour, "m"), append = F)
 
 ## Intermediate data
 ### ***WARNING: These files are large (e.g., oregon_bath = 2.3 GB, crm_v7_disagg = 33.5 GB)
@@ -212,3 +238,9 @@ sf::st_write(obj = oregon_contours, dsn = bathymetry_gpkg, layer = "oregon_conto
 # terra::writeRaster(oregon_bath, filename = file.path(bathymetry_dir, "oregon_study_area_bath.grd"), overwrite = T)
 # terra::writeRaster(crm_v7_disagg, filename = file.path(bathymetry_dir, "noaa_crm_v7_disagg_bath.grd"), overwrite = T)
 # terra::writeRaster(crm_v7_call_area, filename = file.path(bathymetry_dir, "oregon_call_area_crm_v7.grd"), overwrite = T)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
