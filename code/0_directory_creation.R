@@ -21,4 +21,5 @@ for (i in 1:length(data_subdirectories)){
 }
 
 # Delete directory (if necessary)
+### ***Note: change directory path for desired directory
 #unlink("data/a_raw_data", recursive = T)
