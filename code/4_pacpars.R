@@ -72,14 +72,18 @@ pacpars_dir <- "data/b_intermediate_data/pacpars"
 #####################################
 #####################################
 
+## setback distance
+buffer <- 3704
+
 ## designate region name
 region <- "oregon"
 
-# layer name
+## layer name
 layer <- "d13_fairway"
 
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
+
 
 #####################################
 #####################################
@@ -153,7 +157,7 @@ oregon_boundary_2nm <- oregon_boundary %>%
   # filter out coastal water areas (Feature = 0)
   dplyr::filter(FEATURE != 0) %>%
   # set a buffer of 2 nautical miles to match PACPARS documentation (see page 33) -- 1 nautical mile = 1852 meters
-  sf::st_buffer(dist = 3704)
+  sf::st_buffer(dist = buffer)
 
 ## Oregon 3-nautical mile area (***Note: the data have areas between coast and 3-nautical mile boundary)
 oregon_coast_area <- oregon_boundary %>%
