@@ -56,6 +56,7 @@ rocky_reef_gpkg <- "data/b_intermediate_data/oregon_rocky_reef.gpkg"
 #####################################
 #####################################
 
+# Set parameters
 ## setback (buffer) distance
 buffer <- 500
 

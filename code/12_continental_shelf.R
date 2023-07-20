@@ -61,6 +61,7 @@ sf::st_layers(dsn = shelf_gpkg,
 #####################################
 #####################################
 
+# Set parameters
 ## setback (buffer) distance
 buffer <- 10000
 

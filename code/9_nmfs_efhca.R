@@ -56,6 +56,7 @@ efhca_gpkg <- "data/b_intermediate_data/oregon_efhca.gpkg"
 #####################################
 #####################################
 
+# Set parameters
 ## setback (buffer) distance
 buffer <- 500
 

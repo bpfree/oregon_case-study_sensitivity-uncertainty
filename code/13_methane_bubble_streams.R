@@ -62,6 +62,7 @@ sf::st_layers(dsn = methane_gdb,
 #####################################
 #####################################
 
+# Set parameters
 ## setback (buffer) distance
 buffer <- 1000
 

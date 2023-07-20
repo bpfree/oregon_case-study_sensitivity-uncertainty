@@ -75,6 +75,7 @@ sf::st_layers(dsn = study_area_gpkg,
 #####################################
 #####################################
 
+# Set parameters
 ## designate region name
 region <- "oregon"
 

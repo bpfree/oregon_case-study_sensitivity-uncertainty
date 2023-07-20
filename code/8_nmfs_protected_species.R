@@ -59,6 +59,7 @@ sf::st_layers(dsn = prd_species,
 #####################################
 #####################################
 
+# Set parameters
 ## designate region name
 region <- "oregon"
 

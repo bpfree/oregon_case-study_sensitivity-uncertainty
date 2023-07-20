@@ -129,6 +129,7 @@ unzip_function(coral_sponge_dir, file)
 #####################################
 #####################################
 
+# Set parameters
 ## setback (buffer) distance
 buffer <- 500
 

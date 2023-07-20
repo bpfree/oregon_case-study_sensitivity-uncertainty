@@ -64,6 +64,7 @@ bathymetry_gpkg <- "data/b_intermediate_data/bathymetry/oregon_bathymetry.gpkg"
 #####################################
 #####################################
 
+# Set parameters
 ## designate region name
 region <- "oregon"
 
