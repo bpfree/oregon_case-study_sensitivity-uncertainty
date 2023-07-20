@@ -5,20 +5,33 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
+               janitor,
+               ncf,
+               pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
@@ -44,6 +57,21 @@ continental_shelf_geopackage <- "data/b_intermediate_data/oregon_continental_she
 
 sf::st_layers(dsn = shelf_gpkg,
               do_count = T)
+
+#####################################
+#####################################
+
+## setback (buffer) distance
+buffer <- 10000
+
+## designate region name
+region <- "oregon"
+
+## layer names
+layer <- "continental_shelf"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -81,7 +109,7 @@ continental_shelf_10km <- continental_shelf %>%
   dplyr::group_by(layer) %>%
   dplyr::summarise() %>%
   # apply a buffer of 10km (10000m)
-  sf::st_buffer(dist = 10000)
+  sf::st_buffer(dist = buffer)
 
 plot(continental_shelf_10km)
 
@@ -91,7 +119,7 @@ oregon_continental_shelf <- continental_shelf_10km %>%
   rmapshaper::ms_clip(target = .,
                       clip = oregon_call_areas)
 
-plot(oregon_call_area_continental_shelf)
+plot(oregon_continental_shelf)
 
 #####################################
 #####################################
@@ -110,10 +138,16 @@ oregon_hex_continental_shelf <- oregon_hex[oregon_continental_shelf, ]  %>%
 
 # Export data
 ## Natural resources submodel
-sf::st_write(obj = oregon_hex_continental_shelf, dsn = natural_resources_submodel, layer = "oregon_hex_continental_shelf_10km", append = F)
+sf::st_write(obj = oregon_hex_continental_shelf, dsn = natural_resources_submodel, layer = paste0(region, "_hex_", layer, "_10km"), append = F)
 
 ## Continental shelf geopackage
 sf::st_write(obj = continental_shelf, dsn = natural_resources_submodel, layer = "continental_shelf", append = F)
 sf::st_write(obj = continental_shelf_10km, dsn = natural_resources_submodel, layer = "continental_shelf_10km", append = F)
 sf::st_write(obj = oregon_continental_shelf, dsn = natural_resources_submodel, layer = "oregon_continental_shelf_10km", append = F)
 sf::st_write(obj = oregon_hex_continental_shelf, dsn = natural_resources_submodel, layer = "oregon_hex_continental_shelf_10km", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
