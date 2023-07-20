@@ -5,25 +5,35 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
                janitor,
+               ncf,
                pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
-
 
 #####################################
 #####################################
@@ -41,6 +51,18 @@ oregon_suitability_gpkg <- "data/d_suitability_data/suitability_model.gpkg"
 
 sf::st_layers(dsn = constraints_submodel,
               do_count = T)
+
+#####################################
+#####################################
+
+## designate region name
+region <- "oregon"
+
+## submodel
+submodel <- "constraints"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -102,9 +124,15 @@ oregon_constraints <- oregon_hex_constraints %>%
 
 # Export data
 ## Suitability
-sf::st_write(obj = oregon_constraints, dsn = oregon_suitability_gpkg, layer = "oregon_constraints", append = F)
+sf::st_write(obj = oregon_constraints, dsn = oregon_suitability_gpkg, layer = paste0(region, "_", submodel), append = F)
 
 ## Constraints
 sf::st_write(obj = oregon_hex_dod_opnav, dsn = oregon_constraints_gpkg, layer = "oregon_hex_dod_opnav", append = F)
 sf::st_write(obj = oregon_hex_pacpars, dsn = oregon_constraints_gpkg, layer = "oregon_hex_pacpars", append = F)
 sf::st_write(obj = oregon_hex_constraints, dsn = oregon_suitability_gpkg, layer = "oregon_hex_constraints", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
