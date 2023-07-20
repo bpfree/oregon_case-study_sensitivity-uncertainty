@@ -72,6 +72,7 @@ pacpars_dir <- "data/b_intermediate_data/pacpars"
 #####################################
 #####################################
 
+# Set parameters
 ## setback (buffer) distance
 buffer <- 3704
 
