@@ -5,20 +5,33 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
+               janitor,
+               ncf,
+               pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
@@ -39,6 +52,22 @@ natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.g
 
 #### Intermediate directories
 rocky_reef_gpkg <- "data/b_intermediate_data/oregon_rocky_reef.gpkg"
+
+#####################################
+#####################################
+
+## setback (buffer) distance
+buffer <- 500
+
+## designate region name
+region <- "oregon"
+
+## layer names
+layer_mapped <- "rocky_reef_mapped"
+layer_probable <- "rocky_reef_probable"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -95,7 +124,7 @@ rocky_reef_mapped_hard_mixed <- rocky_reef_mapped %>%
 #####################################
 
 ## ***Note: The analysis calls for a 500-meter buffer around the mapped rocky reef habitats.
-##          Normally, the buffer would distance would be added to the areas and then clipped to the call areas.
+##          Normally, the buffer distance would get added to the areas and then clipped to the call areas.
 ##          However, the processing for that took too long.
 ##          Instead a buffer of a similar distance was added to the call area to get all possible habitat areas,
 ##          then those areas had a 500-meter buffer added before focused on areas that would venture into the
@@ -106,14 +135,14 @@ rocky_reef_mapped_hard_mixed <- rocky_reef_mapped %>%
 
 call_area_500m <- oregon_call_areas %>%
   # add the 500-meter buffer to the call areas
-  sf::st_buffer(500)
+  sf::st_buffer(dist = buffer)
 
 rocky_reef_oregon_hard_mixed <- rocky_reef_mapped_hard_mixed %>%
   # extract habitat areas that fall within the extend call areas
   rmapshaper::ms_clip(target = .,
                       clip = call_area_500m) %>%
   # add a 500-meter buffer to those areas
-  sf::st_buffer(500) %>%
+  sf::st_buffer(dist = buffer) %>%
   # limit back to the original Oregon call areas
   rmapshaper::ms_clip(target = .,
                       clip = oregon_call_areas)
@@ -131,7 +160,7 @@ oregon_hex_rocky_reef_mapped <- oregon_hex[rocky_reef_oregon_hard_mixed, ] %>%
 # Probable rocky reef habitat
 rocky_reef_probable500 <- rocky_reef_probable %>%
   # apply 500-meter buffer onto probable area
-  sf::st_buffer(dist = 500)
+  sf::st_buffer(dist = buffer)
 
 oregon_hex_rocky_reef_probable <- oregon_hex[rocky_reef_probable500, ] %>%
   # spatially join NMFS EFHCA values to Oregon hex cells
@@ -148,11 +177,17 @@ oregon_hex_rocky_reef_probable <- oregon_hex[rocky_reef_probable500, ] %>%
 
 # Export data
 ## Analysis geopackage
-sf::st_write(oregon_hex_rocky_reef_mapped, dsn = natural_resources_submodel, layer = "oregon_hex_rocky_reef_mapped_500m", append = F)
-sf::st_write(oregon_hex_rocky_reef_probable, dsn = natural_resources_submodel, layer = "oregon_hex_rocky_reef_probable_500m", append = F)
+sf::st_write(oregon_hex_rocky_reef_mapped, dsn = natural_resources_submodel, layer = paste0(region, "_hex_", layer_mapped, "_", buffer, "m"), append = F)
+sf::st_write(oregon_hex_rocky_reef_probable, dsn = natural_resources_submodel, layer = paste0(region, "_hex_", layer_probable, "_", buffer, "m"), append = F)
 
 ## Rocky Reef geopackage
 sf::st_write(rocky_reef_mapped, dsn = rocky_reef_gpkg, layer = "sgh_v4_rocky_reef_mapped", append = F)
 sf::st_write(rocky_reef_mapped_hard_mixed, dsn = rocky_reef_gpkg, layer = "sgh_v4_rocky_reef_mapped_hard_mixed", append = F)  
 sf::st_write(rocky_reef_oregon_hard_mixed, dsn = rocky_reef_gpkg, layer = "oregon_sgh_v4_rocky_reef_mapped_hard_mixed", append = F)
 sf::st_write(oregon_hex_rocky_reef_mapped, dsn = rocky_reef_gpkg, layer = "oregon_hex_rocky_reef_mapped", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
