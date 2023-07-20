@@ -5,20 +5,33 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
+               janitor,
+               ncf,
+               pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
@@ -116,6 +129,22 @@ unzip_function(coral_sponge_dir, file)
 #####################################
 #####################################
 
+## setback (buffer) distance
+buffer <- 500
+
+## designate region name
+region <- "oregon"
+
+## layer names
+layer_high <- "high_habitat_coral_sponge"
+layer_robust <- "robust_habitat_coral_sponge"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
+
+#####################################
+#####################################
+
 # Load data
 
 ## Oregon Call Areas
@@ -135,7 +164,7 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg,
 oregon_call_areas_500 <- oregon_call_areas %>%
   # extend call areas by 500 meters
   ## this will help extract the deep-sea coral and sponge richness areas
-  sf::st_buffer(dist = 500)
+  sf::st_buffer(dist = buffer)
 
 #####################################
 
@@ -165,7 +194,7 @@ high_habitat_point <- terra::as.points(x = high_habitat) %>%
 ## Create point setbacks and limit to original call areas
 oregon_high_habitat_point <- high_habitat_point %>%
   # create setback
-  sf::st_buffer(dist = 500) %>%
+  sf::st_buffer(dist = buffer) %>%
   # obtain data within Oregon call areas
   rmapshaper::ms_clip(clip = oregon_call_areas)
 
@@ -188,7 +217,7 @@ robust_habitat_point <- terra::as.points(x = robust_habitat) %>%
 ## Create point setbacks and limit to original call areas
 oregon_robust_habitat_point <- robust_habitat_point %>%
   # create setback
-  sf::st_buffer(dist = 500) %>%
+  sf::st_buffer(dist = buffer) %>%
   # obtain data within Oregon call areas
   rmapshaper::ms_clip(clip = oregon_call_areas)
 
@@ -241,8 +270,8 @@ oregon_hex_coral_sponge_robust <- oregon_hex[oregon_robust_habitat_point, ] %>%
 
 # Export data
 ## Natural resources submodel
-sf::st_write(obj = oregon_hex_coral_sponge_high, dsn = natural_resources_submodel, layer = "oregon_hex_high_habitat_coral_sponge", append = F)
-sf::st_write(obj = oregon_hex_coral_sponge_robust, dsn = natural_resources_submodel, layer = "oregon_hex_robust_habitat_coral_sponge", append = F)
+sf::st_write(obj = oregon_hex_coral_sponge_high, dsn = natural_resources_submodel, layer = paste0(region, "_hex_", layer_high, "_", buffer, "m"), append = F)
+sf::st_write(obj = oregon_hex_coral_sponge_robust, dsn = natural_resources_submodel, layer = paste0(region, "_hex_", layer_robust, "_", buffer, "m"), append = F)
 
 ## Deep-sea coral and sponge habitat
 ### Richness point
@@ -259,3 +288,9 @@ sf::st_write(obj = oregon_hex_coral_sponge_robust, dsn = coral_sponge_habitat_gp
 
 terra::writeRaster(high_habitat, filename = file.path(deep_coral_sponge_dir, "coral_sponge_high_habitat.grd"), overwrite = T)
 terra::writeRaster(robust_habitat, filename = file.path(deep_coral_sponge_dir, "coral_sponge_robust_high_habitat.grd"), overwrite = T)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
