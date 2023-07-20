@@ -5,25 +5,34 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
                janitor,
+               ncf,
                pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
-
 
 #####################################
 #####################################
@@ -61,6 +70,18 @@ clean_function <- function(data){
   
   return(data)
 }
+
+#####################################
+#####################################
+
+## designate region name
+region <- "oregon"
+
+## submodel
+submodel <- "wind"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -119,8 +140,14 @@ wind_duplicates <- oregon_wind %>%
 
 # Export data
 ## Suitability
-sf::st_write(obj = oregon_wind, dsn = oregon_suitability_gpkg, layer = "oregon_wind_suitability", append = F)
+sf::st_write(obj = oregon_wind, dsn = oregon_suitability_gpkg, layer = paste0(region, "_", submodel, "_suitability"), append = F)
 
 ## Submodel
 ### Fisheries
 saveRDS(obj = oregon_wind_values, file = paste(oregon_wind_dir, "oregon_wind_values.rds", sep = "/"))
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
