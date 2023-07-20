@@ -5,25 +5,35 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
                janitor,
+               ncf,
                pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
-
 
 #####################################
 #####################################
@@ -44,7 +54,7 @@ oregon_overall_suitability <- "data/d_suitability_data/overall_suitability/overa
 
 #####################################
 
-sf::st_layers(dsn = suitability_submodels,
+sf::st_layers(dsn = suitability_models,
               do_count = T)
 
 #####################################
@@ -58,6 +68,18 @@ clean_function <- function(data){
   
   return(data)
 }
+
+#####################################
+#####################################
+
+## designate region name
+region <- "oregon"
+
+## model areas
+model <- "model_areas"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -174,4 +196,20 @@ oregon_model_areas <- oregon_model %>%
 
 # Export data
 ## Overall suitability
-sf::st_write(obj = oregon_model_areas, dsn = suitability_models, layer = "oregon_model_areas", append = F)
+sf::st_write(obj = oregon_model_areas, dsn = suitability_models, layer = paste0(region, "_", model), append = F)
+
+## Submodels
+base::saveRDS(object = oregon_constraints_values, file = paste(oregon_overall_suitability_dir, "oregon_constraints_values.RDS", sep = "/"))
+base::saveRDS(object = oregon_fisheries_values, file = paste(oregon_overall_suitability_dir, "oregon_fisheries_values.RDS", sep = "/"))
+base::saveRDS(object = oregon_industry_operations_values, file = paste(oregon_overall_suitability_dir, "oregon_industry_operations_values.RDS", sep = "/"))
+base::saveRDS(object = oregon_natural_resources_values, file = paste(oregon_overall_suitability_dir, "oregon_natural_resources_values.RDS", sep = "/"))
+base::saveRDS(object = oregon_wind_values, file = paste(oregon_overall_suitability_dir, "oregon_wind_values.RDS", sep = "/"))
+
+## Model
+sf::st_write(obj = oregon_model, dsn = oregon_overall_suitability, layer = "oregon_model_suitability", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
