@@ -5,9 +5,16 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
                elsa,
                fasterize,
                fs,
@@ -24,6 +31,7 @@ pacman::p_load(dplyr,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
@@ -44,6 +52,19 @@ lisa_gpkg <- "data/e_rank_data/lisa.gpkg"
 # Inspect geopackage layers
 sf::st_layers(dsn = suitability_models,
               do_count = F)
+
+#####################################
+#####################################
+
+## designate region name
+region <- "oregon"
+
+## lisa
+lisa <- "lisa"
+classification <- "_highhigh"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -80,7 +101,7 @@ weights_8400 <- rgeoda::distance_weights(sf_obj = oregon_model_areas_sf,
                                          is_mile = F)
 
 ## Create the LISA product
-start = Sys.time() # set start time
+start <- Sys.time() # set start time
 lisa <- rgeoda::local_moran(w = weights_8400, # weight is equal to distance weight of 8400 meters
                             # analyze using the final model geometric mean values
                             df = oregon_model_areas_sf["model_geom_mean"],
@@ -242,5 +263,11 @@ g
 
 # Export data
 ## LISA
-sf::st_write(obj = oregon_lisa_highhigh, dsn = lisa_gpkg, layer = "oregon_hex_lisa_highhigh", append = F)
-sf::st_write(obj = oregon_hex_lisa, dsn = lisa_gpkg, layer = "oregon_hex_lisa", append = F)
+sf::st_write(obj = oregon_lisa_highhigh, dsn = lisa_gpkg, layer = paste0(region, "_", lisa, classification), append = F)
+sf::st_write(obj = oregon_hex_lisa, dsn = lisa_gpkg, layer = paste0(region, "_hex_", lisa), append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
