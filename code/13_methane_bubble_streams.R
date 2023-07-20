@@ -5,23 +5,33 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(docxtractr,
                dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
                janitor,
+               ncf,
                pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
@@ -48,6 +58,21 @@ methane_bubble_gpkg <- "data/b_intermediate_data/oregon_methane_bubble_streams.g
 
 sf::st_layers(dsn = methane_gdb,
               do_count = T)
+
+#####################################
+#####################################
+
+## setback (buffer) distance
+buffer <- 1000
+
+## designate region name
+region <- "oregon"
+
+## layer names
+layer <- "methane_bubble_streams"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -95,7 +120,7 @@ methane_bubble_streams <- sf::st_read(dsn = methane_gdb, layer = "USGS_seeps_mer
 # Buffered (1km) methane bubble streams within Oregon call areas
 oregon_methane_bubbles <- methane_bubble_streams%>%
   # apply a 1-kilometer (1000m) buffer on all methane bubble streams
-  sf::st_buffer(dist = 1000) %>%
+  sf::st_buffer(dist = buffer) %>%
   # limit to only Oregon call areas
   rmapshaper::ms_clip(target = .,
                       clip = oregon_call_areas) %>%
@@ -147,7 +172,7 @@ methane_merle_all <- readxl::read_xlsx(path = paste(data_dir, "methane_bubble_st
 #####################################
 
 ## Datasets included in the Merle et al. (2021)
-## ***Note: These data are separately downloaded during script 1 during the data acquistion phase.
+## ***Note: These data are separately downloaded during script 1 during the data acquisition phase.
 ##          Thus, you will find the raw data in the a_raw_data subdirectory within the data directory
 
 ## Methane bubble streams (Reidel et al. 2018)
@@ -200,7 +225,7 @@ methane_johnson_s2 <- methane_johnson_s2 %>%
 
 # Export data
 ## Natural Resources submodel
-sf::st_write(obj = oregon_hex_methane_bubbles, dsn = natural_resources_submodel, layer = "oregon_hex_methane_bubble_streams_1km", append = F)
+sf::st_write(obj = oregon_hex_methane_bubbles, dsn = natural_resources_submodel, layer = paste0(region, "_hex_", layer, "_1km"), append = F)
 
 ## Methane geopackage
 sf::st_write(obj = methane_bubble_streams, dsn = methane_bubble_gpkg, layer = "methane_bubble_streams", append = F)
@@ -210,3 +235,9 @@ sf::st_write(obj = oregon_hex_methane_bubbles, dsn = methane_bubble_gpkg, layer 
 sf::st_write(obj = methane_merle_all, dsn = methane_bubble_gpkg, layer = "methane_bubble_stream_merle_all", append = F)
 sf::st_write(obj = methane_reidel, dsn = methane_bubble_gpkg, layer = "methane_bubble_stream_reidel", append = F)
 sf::st_write(methane_johnson_s2, dsn = methane_bubble_gpkg, layer = "methane_bubble_stream_johnson_s2", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
