@@ -5,23 +5,33 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(docxtractr,
                dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
                janitor,
+               ncf,
                pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
@@ -42,6 +52,18 @@ wind_submodel <- "data/c_submodel_data/wind_submodel.gpkg"
 
 #### Intermediate directories
 wind_gpkg <- "data/b_intermediate_data/wind.gpkg"
+
+#####################################
+#####################################
+
+## designate region name
+region <- "oregon"
+
+## layer names
+layer <- "lcoe_2027"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -144,8 +166,14 @@ oregon_hex_lcoe_2027 <- oregon_hex[oregon_lcoe_2027_norm, ] %>%
 
 # Export data
 ## Wind submodel
-sf::st_write(obj = oregon_hex_lcoe_2027, dsn = wind_submodel, layer = "oregon_hex_lcoe_2027", append = F)
+sf::st_write(obj = oregon_hex_lcoe_2027, dsn = wind_submodel, layer = paste0(region, "_hex_", layer), append = F)
 
 ## Wind geopackage
 sf::st_write(obj = oregon_lcoe_2027, dsn = wind_gpkg, layer = "oregon_lcoe_2027", append = F)
 sf::st_write(obj = oregon_lcoe_2027_norm, dsn = wind_gpkg, layer = "oregon_lcoe_2027_norm", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
