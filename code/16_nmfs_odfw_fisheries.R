@@ -57,6 +57,7 @@ fisheries_gpkg <- "data/b_intermediate_data/oregon_fisheries.gpkg"
 #####################################
 #####################################
 
+# Set parameters
 ## designate region name
 region <- "oregon"
 

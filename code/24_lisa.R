@@ -56,6 +56,7 @@ sf::st_layers(dsn = suitability_models,
 #####################################
 #####################################
 
+# Set parameters
 ## designate region name
 region <- "oregon"
 

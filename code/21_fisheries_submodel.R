@@ -74,6 +74,7 @@ clean_function <- function(data){
 #####################################
 #####################################
 
+# Set parameters
 ## designate region name
 region <- "oregon"
 

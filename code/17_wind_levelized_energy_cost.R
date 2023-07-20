@@ -56,6 +56,7 @@ wind_gpkg <- "data/b_intermediate_data/wind.gpkg"
 #####################################
 #####################################
 
+# Set parameters
 ## designate region name
 region <- "oregon"
 

@@ -55,6 +55,7 @@ sf::st_layers(dsn = constraints_submodel,
 #####################################
 #####################################
 
+# Set parameters
 ## designate region name
 region <- "oregon"
 

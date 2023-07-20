@@ -67,6 +67,16 @@ clean_function <- function(data){
 #####################################
 #####################################
 
+# Set parameters
+## designate region name
+region <- "oregon"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
+
+#####################################
+#####################################
+
 # load data
 # prepare data
 # combine data
