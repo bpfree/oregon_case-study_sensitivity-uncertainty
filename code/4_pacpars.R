@@ -72,7 +72,7 @@ pacpars_dir <- "data/b_intermediate_data/pacpars"
 #####################################
 #####################################
 
-## setback distance
+## setback (buffer) distance
 buffer <- 3704
 
 ## designate region name
