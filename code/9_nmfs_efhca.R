@@ -5,20 +5,33 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
+               janitor,
+               ncf,
+               pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
@@ -39,6 +52,21 @@ natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.g
 #### Intermediate directories
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
 efhca_gpkg <- "data/b_intermediate_data/oregon_efhca.gpkg"
+
+#####################################
+#####################################
+
+## setback (buffer) distance
+buffer <- 500
+
+## designate region name
+region <- "oregon"
+
+## layer names
+layer <- "efhca"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -65,7 +93,7 @@ oregon_nmfs_efhca <- nmfs_efhca_data %>%
   rmapshaper::ms_clip(target = .,
                       clip = oregon_wind_call_area) %>%
   # add a 500-meter buffer (setback distance)
-  sf::st_buffer(dist = 500)
+  sf::st_buffer(dist = buffer)
 
 #####################################
 #####################################
@@ -86,10 +114,16 @@ oregon_hex_efhca <- oregon_hex[oregon_nmfs_efhca, ] %>%
 
 # Export data
 ## Analysis geopackage
-sf::st_write(oregon_hex_efhca, dsn = natural_resources_submodel, layer = "oregon_hex_efhca_500m", append = F)
+sf::st_write(oregon_hex_efhca, dsn = natural_resources_submodel, layer = paste0(region, "_hex_", layer, "_", buffer, "m"), append = F)
 
 ## EFHCA geopackage
 sf::st_write(nmfs_efhca_data, dsn = efhca_gpkg, layer = "nmfs_efhca", append = F)
 
 sf::st_write(oregon_nmfs_efhca, dsn = efhca_gpkg, layer = "oregon_nmfs_efhca_500m", append = F)
 sf::st_write(oregon_hex_efhca, dsn = efhca_gpkg, layer = "oregon_hex_efhca_500m", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
