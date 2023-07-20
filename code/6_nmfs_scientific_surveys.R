@@ -64,8 +64,8 @@ sf::st_layers(dsn = survey_gpkg,
 region <- "oregon"
 
 ## layer names
-eastwest_survey <- "eastwest_survey_4nm_corridors"
-additional_eastwest <- "additional_eastwest_survey_4m_corridors"
+eastwest_survey <- "eastwest_survey_corridors_4nm"
+additional_eastwest <- "additional_eastwest_survey_corridors_4nm"
 survey_stations <- "survey_stations_2nm"
 survey_transects <- "survey_transects_1nm"
 
