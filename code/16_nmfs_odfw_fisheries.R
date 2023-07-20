@@ -5,20 +5,33 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
+               janitor,
+               ncf,
+               pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
@@ -40,6 +53,18 @@ fisheries_submodel <- "data/c_submodel_data/fisheries_submodel.gpkg"
 #### Intermediate directories
 ##### Fisheries geopackage
 fisheries_gpkg <- "data/b_intermediate_data/oregon_fisheries.gpkg"
+
+#####################################
+#####################################
+
+## designate region name
+region <- "oregon"
+
+## layer names
+layer <- "fisheries"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -104,8 +129,14 @@ oregon_hex_fisheries <- oregon_hex[oregon_fisheries, ] %>%
 
 # Export data
 ## Fisheries submodel
-sf::st_write(obj = oregon_hex_fisheries, dsn = fisheries_submodel, layer = "oregon_hex_fisheries", append = F)
+sf::st_write(obj = oregon_hex_fisheries, dsn = fisheries_submodel, layer = paste0(region, "_hex_", layer), append = F)
 
 ## Fisheries geopackage
 sf::st_write(obj = nmfs_odfw_fisheries, dsn = fisheries_gpkg, layer = "nmfs_odfw_fisheries", append = F)
 sf::st_write(obj = oregon_fisheries, dsn = fisheries_gpkg, layer = "oregon_fisheries", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
