@@ -5,25 +5,35 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
+               elsa,
                fasterize,
                fs,
                ggplot2,
                janitor,
+               ncf,
                pdftools,
                plyr,
                raster,
                rgdal,
+               rgeoda,
                rgeos,
                rmapshaper,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
-
 
 #####################################
 #####################################
@@ -65,6 +75,18 @@ clean_function <- function(data){
 #####################################
 #####################################
 
+## designate region name
+region <- "oregon"
+
+## submodel
+submodel <- "industry_operations"
+
+## designate date
+date <- format(Sys.time(), "%Y%m%d")
+
+#####################################
+#####################################
+
 # Load data
 ## Oregon hex
 oregon_hex <- sf::st_read(dsn = study_area_gpkg,
@@ -73,25 +95,25 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg,
 
 ## Industry and Operations
 ### Submarine cables
-oregon_hex_submarine_cable500 <- sf::st_read(dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable500") %>%
+oregon_hex_submarine_cable500 <- sf::st_read(dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable500m") %>%
   dplyr::mutate(sc500_value = 0.6) %>%
   as.data.frame() %>%
   dplyr::select(-geom)
 
-oregon_hex_submarine_cable1000 <- sf::st_read(dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable1000") %>%
+oregon_hex_submarine_cable1000 <- sf::st_read(dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable1000m") %>%
   dplyr::mutate(sc1000_value = 0.8) %>%
   as.data.frame() %>%
   dplyr::select(-geom)
 
 ### Scientific surveys
 oregon_hex_eastwest_survey_corridors <- sf::st_read(dsn = industry_operations_submodel,
-                                                    layer = "oregon_hex_eastwest_survey_corridors") %>%
+                                                    layer = "oregon_hex_eastwest_survey_corridors_4nm") %>%
   dplyr::mutate(eastwest_value = 0.01) %>%
   as.data.frame() %>%
   dplyr::select(-geom)
 
 oregon_hex_additional_eastwest_survey_corridors <- sf::st_read(dsn = industry_operations_submodel,
-                                                               layer = "oregon_hex_additional_eastwest_survey_corridors") %>%
+                                                               layer = "oregon_hex_additional_eastwest_survey_corridors_4nm") %>%
   dplyr::mutate(eastwest_add_value = 0.5) %>%
   as.data.frame() %>%
   dplyr::select(-geom)
@@ -180,15 +202,21 @@ io_duplicates <- oregon_industry_operations %>%
 
 # Export data
 ## Suitability
-sf::st_write(obj = oregon_industry_operations, dsn = oregon_suitability_gpkg, layer = "oregon_industry_operations_suitability", append = F)
+sf::st_write(obj = oregon_industry_operations, dsn = oregon_suitability_gpkg, layer = paste0(region, "_", submodel, "_suitability"), append = F)
   
 ## Submodel
 saveRDS(obj = oregon_hex_submarine_cable500, file = paste(oregon_industry_operations_dir, "oregon_hex_submarine_cable_500m.rds", sep = "/"))
 saveRDS(obj = oregon_hex_submarine_cable1000, file = paste(oregon_industry_operations_dir, "oregon_hex_submarine_cable_1000m.rds", sep = "/"))
 
-saveRDS(obj = oregon_hex_eastwest_survey_corridors, file = paste(oregon_industry_operations_dir, "oregon_hex_eastwest_survey_corridors.rds", sep = "/"))
-saveRDS(obj = oregon_hex_additional_eastwest_survey_corridors, file = paste(oregon_industry_operations_dir, "oregon_hex_additional_eastwest_survey_corridors.rds", sep = "/"))
+saveRDS(obj = oregon_hex_eastwest_survey_corridors, file = paste(oregon_industry_operations_dir, "oregon_hex_eastwest_survey_corridors_4nm.rds", sep = "/"))
+saveRDS(obj = oregon_hex_additional_eastwest_survey_corridors, file = paste(oregon_industry_operations_dir, "oregon_hex_additional_eastwest_survey_corridors_4nm.rds", sep = "/"))
 saveRDS(obj = oregon_hex_survey_stations, file = paste(oregon_industry_operations_dir, "oregon_hex_survey_stations_2nm.rds", sep = "/"))
 saveRDS(obj = oregon_hex_survey_transects, file = paste(oregon_industry_operations_dir, "oregon_hex_submarine_cable_1nm.rds", sep = "/"))
 
 sf::st_write(obj = oregon_industry_operations, dsn = oregon_industry_operations_suitability, layer = "oregon_industry_operations_suitability", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
