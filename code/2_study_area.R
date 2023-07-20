@@ -64,7 +64,8 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 #####################################
 #####################################
 
-# Create template region name
+# Set parameters
+## designate region name
 region <- "oregon"
 
 #####################################
@@ -145,9 +146,9 @@ oregon_call_area_hex_dissolve <- wind_area_hex %>%
 
 # Export data
 ## Study Area
-sf::st_write(wind_area_grid, dsn = study_area_gpkg, layer = "oregon_call_area_grid", append = F)
-sf::st_write(wind_area_hex, dsn = study_area_gpkg, layer = "oregon_call_area_hex", append = F)
-sf::st_write(oregon_call_area_hex_dissolve, dsn = study_area_gpkg, layer = "oregon_call_areas_dissolve", append = F)
+sf::st_write(wind_area_grid, dsn = study_area_gpkg, layer = paste0(region, "_call_area_grid"), append = F)
+sf::st_write(wind_area_hex, dsn = study_area_gpkg, layer = paste0(region, "_call_area_hex"), append = F)
+sf::st_write(oregon_call_area_hex_dissolve, dsn = study_area_gpkg, layer = paste0(region, "_call_areas_dissolve"), append = F)
 
 ## Wind Call Areas
 sf::st_write(wind_areas, dsn = wind_area_gpkg, layer = "oregon_wind_call_areas", append = F)
