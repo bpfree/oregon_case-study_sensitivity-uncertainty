@@ -54,6 +54,7 @@ oregon_overall_suitability <- "data/d_suitability_data/overall_suitability/overa
 
 #####################################
 
+# Inspect available layers and names within suitability model geopackage
 sf::st_layers(dsn = suitability_models,
               do_count = T)
 
