@@ -182,7 +182,7 @@ oregon_model_areas <- oregon_model %>%
                 # natural resources
                 leatherback_value, killerwhale_value, humpback_ca_value, humpback_mx_value, bluewhale_value, species_product,
                 efhca_value, rreef_map_value, rreef_prob_value, deep_coralsponge_value, continental_shelf_value,
-                methane_bubble_value, habitat_value,
+                methane_bubble_value, habitat_value, marine_bird_value,
                 # fisheries
                 fisheries_value,
                 # wind
