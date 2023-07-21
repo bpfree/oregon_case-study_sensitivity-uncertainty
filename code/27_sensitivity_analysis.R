@@ -48,6 +48,7 @@ sensitivity_dir <- "data/f_sensitivity_data"
 
 #####################################
 
+# Inspect available layers and names within suitability model geopackage
 sf::st_layers(dsn = suitability_models,
               do_count = T)
 
