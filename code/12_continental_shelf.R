@@ -55,6 +55,7 @@ continental_shelf_geopackage <- "data/b_intermediate_data/oregon_continental_she
 
 #####################################
 
+# Inspect available layers and names
 sf::st_layers(dsn = shelf_gpkg,
               do_count = T)
 
