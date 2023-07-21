@@ -116,9 +116,9 @@ oregon_constraints <- oregon_hex_constraints %>%
   # return only distinct rows (remove duplicates)
   dplyr::distinct() %>%
   # create a field called "constraints" that populates with 0 if either DoD or PACPARS values are 0
-  dplyr::mutate(constraints = ifelse(dod_value == 0, 0,
-                                     # now check for PACPARS
-                                     ifelse(pacpars_value == 0, 0, NA)))
+  dplyr::mutate(constraints = case_when(dod_value == 0 ~ 0, # when DoD value is 0, constraints gets a 0
+                                        # if PACPARS values is 0, constraints get a 0
+                                        pacpars_value == 0 ~ 0))
 
 #####################################
 #####################################
