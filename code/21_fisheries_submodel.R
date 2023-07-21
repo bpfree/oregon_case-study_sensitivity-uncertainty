@@ -56,6 +56,7 @@ oregon_fisheries_suitability <- "data/d_suitability_data/fisheries_suitability/f
 
 #####################################
 
+# Inspect available layers and names within fisheries submodel geopackage
 sf::st_layers(dsn = fisheries_submodel,
               do_count = T)
 
