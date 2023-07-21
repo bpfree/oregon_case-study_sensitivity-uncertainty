@@ -192,6 +192,9 @@ oregon_model_areas <- oregon_model %>%
                 # model geometric value
                 model_geom_mean)
 
+dim(oregon_model)[1] - dim(oregon_model[!is.na(oregon_model$constraints), ])[1]
+dim(oregon_model_areas)[1]
+
 #####################################
 #####################################
 
