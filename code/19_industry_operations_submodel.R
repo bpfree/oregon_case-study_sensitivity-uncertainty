@@ -57,6 +57,7 @@ oregon_industry_operations_suitability <- "data/d_suitability_data/industry_oper
 
 #####################################
 
+# Inspect available layers and names within industry and operations submodel geopackage
 sf::st_layers(dsn = industry_operations_submodel,
               do_count = T)
 
