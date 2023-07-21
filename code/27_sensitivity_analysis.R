@@ -170,7 +170,7 @@ test <- data %>%
                                            # remove any values that are NA when calculating the mean
                                            na.rm = T)))
 
-assign(paste("data", fields[i], sep = "_"), test)
+assign(paste("sensitivity_jackknife_removed", fields[i], sep = "_"), test)
 
 # Export data
 ## Jackknife
