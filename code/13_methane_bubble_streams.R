@@ -56,6 +56,7 @@ methane_bubble_gpkg <- "data/b_intermediate_data/oregon_methane_bubble_streams.g
 
 #####################################
 
+# Inspect available layers and names
 sf::st_layers(dsn = methane_gdb,
               do_count = T)
 
