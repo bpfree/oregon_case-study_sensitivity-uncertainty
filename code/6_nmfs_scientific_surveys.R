@@ -54,6 +54,7 @@ nmfs_scientific_survey_gpkg <- "data/b_intermediate_data/oregon_nmfs_scientific_
 
 #####################################
 
+# Inspect available layers and names
 sf::st_layers(dsn = survey_gpkg,
               do_count = T)
 
