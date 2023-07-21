@@ -53,6 +53,7 @@ natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.g
 #####################################
 #####################################
 
+# Inspect available layers and names
 sf::st_layers(dsn = prd_species,
               do_count = TRUE)
 
