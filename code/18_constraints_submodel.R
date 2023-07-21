@@ -49,6 +49,7 @@ oregon_suitability_gpkg <- "data/d_suitability_data/suitability_model.gpkg"
 
 #####################################
 
+# Inspect available layers and names within constraints submodel geopackage
 sf::st_layers(dsn = constraints_submodel,
               do_count = T)
 
