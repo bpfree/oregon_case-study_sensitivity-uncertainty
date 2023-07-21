@@ -66,6 +66,7 @@ oregon_nr_marine_bird_dir <- "data/d_suitability_data/natural_resources_suitabil
 
 #####################################
 
+# Inspect available layers and names within natural resources submodel geopackage
 sf::st_layers(dsn = natural_resources_submodel,
               do_count = T)
 
