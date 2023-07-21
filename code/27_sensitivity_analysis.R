@@ -67,15 +67,41 @@ date <- format(Sys.time(), "%Y%m%d")
 # load data
 data <- sf::st_read(dsn = suitability_models, layer = "oregon_model_areas")
 
+fields <- names(test[4:23])
+fields
+
 i <- 6
 
 name <- names(data)[i]
 name
 
 test <- data %>%
+  # reorder fields to keep key data fields in order (columns 4 - 23)
+  dplyr::select(index,
+                # constraints
+                dod_value, pacpars_value,
+                # industry and operations
+                sc500_value, sc1000_value, eastwest_value, eastwest_add_value, sstat_value, stransect_value,
+                # natural resources
+                leatherback_value, killerwhale_value, humpback_ca_value, humpback_mx_value, bluewhale_value,
+                efhca_value, rreef_map_value, rreef_prob_value, deep_coralsponge_value, continental_shelf_value,
+                methane_bubble_value, marine_bird_value,
+                # fisheries
+                fisheries_value,
+                # wind
+                wind_value,
+                # summary values (move to end as it is easier to iterate over columns)
+                species_product, habitat_value, 
+                # submodel geometric values
+                constraints, io_geom_mean, nr_geom_mean, fish_geom_mean, wind_geom_mean,
+                # model geometric value
+                model_geom_mean) %>%
+  
+  # when field is elected (column i) fill with NA values so as to "remove" it from analysis
   dplyr::mutate(across(.cols = i,
                        ~replace(i, !is.na(i), NA))) %>%
-  # calculate the geometric mean (geometric mean = nth root of the product of the variable values)
+  
+  # recalculate the geometric means for each submodel (geometric mean = nth root of the product of the variable values)
   ## industry and operations
   dplyr::mutate(io_geom_mean = exp(mean(log(c_across(c("sc500_value",
                                                        "sc1000_value",
@@ -87,6 +113,17 @@ test <- data %>%
                                         na.rm = T))) %>%
   
   ## natural resources
+  ### calculate across rows
+  dplyr::rowwise() %>%
+  #### calculate the product of all protected species values
+  dplyr:::mutate(species_product = prod(leatherback_value,
+                                        killerwhale_value,
+                                        humpback_ca_value,
+                                        humpback_mx_value,
+                                        bluewhale_value,
+                                        non_protected_value,
+                                        # remove NA values for product 
+                                        na.rm = T)) %>%
   ### calculate minimum value across the habitat subdatasets
   dplyr::rowwise() %>%
   dplyr::mutate(habitat_value = pmin(efhca_value,
@@ -121,6 +158,7 @@ test <- data %>%
                                           # remove any values that are NA when calculating the mean
                                           na.rm = T))) %>%
   
+  # recalculate the geometric means for each final model (geometric mean = nth root of the product of the variable values)
   ## final model
   ### calculate across rows
   dplyr::rowwise() %>%
@@ -132,14 +170,7 @@ test <- data %>%
                                            # remove any values that are NA when calculating the mean
                                            na.rm = T)))
 
-
-# prepare data
-# combine data
-# remove dataset --> loop across columns
-# recalculate geometric mean --> rowwise
-# run calculations
-# iterate for each dataset
-
+assign(paste("data", fields[i], sep = "_"), test)
 
 # Export data
 ## Jackknife
