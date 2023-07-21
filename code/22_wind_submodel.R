@@ -56,6 +56,7 @@ oregon_wind_suitability <- "data/d_suitability_data/wind_suitability/wind_suitab
 
 #####################################
 
+# Inspect available layers and names within wind submodel geopackage
 sf::st_layers(dsn = wind_submodel,
               do_count = T)
 
