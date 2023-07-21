@@ -49,7 +49,7 @@ lisa_gpkg <- "data/e_rank_data/lisa.gpkg"
 #####################################
 #####################################
 
-# Inspect geopackage layers
+# Inspect available layers and names within suitability model geopackage
 sf::st_layers(dsn = suitability_models,
               do_count = F)
 
