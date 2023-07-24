@@ -97,25 +97,25 @@ oregon_hex <- sf::st_read(dsn = study_area_gpkg,
 
 ## Industry and Operations
 ### Submarine cables
-oregon_hex_submarine_cable500 <- sf::st_read(dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable500m") %>%
+oregon_hex_submarine_cable500 <- sf::st_read(dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable500") %>%
   dplyr::mutate(sc500_value = 0.6) %>%
   as.data.frame() %>%
   dplyr::select(-geom)
 
-oregon_hex_submarine_cable1000 <- sf::st_read(dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable1000m") %>%
+oregon_hex_submarine_cable1000 <- sf::st_read(dsn = industry_operations_submodel, layer = "oregon_hex_submarine_cable1000") %>%
   dplyr::mutate(sc1000_value = 0.8) %>%
   as.data.frame() %>%
   dplyr::select(-geom)
 
 ### Scientific surveys
 oregon_hex_eastwest_survey_corridors <- sf::st_read(dsn = industry_operations_submodel,
-                                                    layer = "oregon_hex_eastwest_survey_corridors_4nm") %>%
+                                                    layer = "oregon_hex_eastwest_survey_corridors") %>%
   dplyr::mutate(eastwest_value = 0.01) %>%
   as.data.frame() %>%
   dplyr::select(-geom)
 
 oregon_hex_additional_eastwest_survey_corridors <- sf::st_read(dsn = industry_operations_submodel,
-                                                               layer = "oregon_hex_additional_eastwest_survey_corridors_4nm") %>%
+                                                               layer = "oregon_hex_additional_eastwest_survey_corridors") %>%
   dplyr::mutate(eastwest_add_value = 0.5) %>%
   as.data.frame() %>%
   dplyr::select(-geom)
