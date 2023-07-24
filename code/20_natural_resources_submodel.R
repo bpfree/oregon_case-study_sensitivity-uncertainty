@@ -343,6 +343,7 @@ oregon_natural_resources <- oregon_hex %>%
                 humpback_ca_value,
                 humpback_mx_value,
                 bluewhale_value,
+                non_protected_value,
                 species_product,
                 efhca_value,
                 rreef_map_value,
@@ -375,7 +376,7 @@ sf::st_write(obj = oregon_natural_resources, dsn = oregon_suitability_gpkg, laye
 
 ## Submodel
 ### Protected species
-base::saveRDS(object = protected_species, file = paste(oregon_nr_species_dir, "oregon_protected_species_suitability.RDS", ))
+base::saveRDS(object = protected_species, file = paste(oregon_nr_species_dir, "oregon_protected_species_suitability.RDS", sep = "/"))
 base::saveRDS(object = leatherback_value, file = paste(oregon_nr_species_dir, "oregon_leatherback_value.RDS", sep = "/"))
 base::saveRDS(object = killer_whale_value, file = paste(oregon_nr_species_dir, "oregon_killer_whale_value.RDS", sep = "/"))
 base::saveRDS(object = humpback_mx_value, file = paste(oregon_nr_species_dir, "oregon_humpback_mexico_value.RDS", sep = "/"))
