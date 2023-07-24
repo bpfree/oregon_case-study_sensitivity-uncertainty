@@ -92,14 +92,14 @@ sensitivity_jackknife <- data %>%
                 model_geom_mean)
 
 # 4 - 26
-for (i in 4:5){
+for (i in 4:26){
   start2 <- Sys.time()
   
   #i <- 4
   
   name <- names(data)[i]
   
-  sensitivity_jacknife <- sensitivity_jackknife %>%
+  sensitivity_jackknife <- sensitivity_jackknife %>%
     
     # when field is elected (column i) fill with NA values so as to "remove" it from analysis
     dplyr::mutate(across(.cols = i,
