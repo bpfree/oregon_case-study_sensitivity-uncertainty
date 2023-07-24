@@ -67,36 +67,39 @@ date <- format(Sys.time(), "%Y%m%d")
 # load data
 data <- sf::st_read(dsn = suitability_models, layer = "oregon_model_areas")
 
-for (i in 4:26){
+sensitivity_jackknife <- data %>%
+  dplyr::select(index,
+                # constraints
+                dod_value, pacpars_value,
+                # industry and operations
+                sc500_value, sc1000_value, eastwest_value, eastwest_add_value, sstat_value, stransect_value,
+                # natural resources
+                ## species product
+                leatherback_value, killerwhale_value, humpback_ca_value, humpback_mx_value, bluewhale_value,
+                non_protected_value, species_product,
+                ## minimum habitat
+                efhca_value, rreef_map_value, rreef_prob_value, deep_coralsponge_value, continental_shelf_value,
+                methane_bubble_value, habitat_value,
+                ## marine seabird
+                marine_bird_value,
+                # fisheries
+                fisheries_value,
+                # wind
+                wind_value,
+                # submodel geometric values
+                constraints, io_geom_mean, nr_geom_mean, fish_geom_mean, wind_geom_mean,
+                # model geometric value
+                model_geom_mean)
+
+# 4 - 26
+for (i in 4:5){
   start2 <- Sys.time()
   
-  i <- 4
+  #i <- 4
   
   name <- names(data)[i]
   
-  sensitivity_jackknife <- data %>%
-    dplyr::select(index,
-                  # constraints
-                  dod_value, pacpars_value,
-                  # industry and operations
-                  sc500_value, sc1000_value, eastwest_value, eastwest_add_value, sstat_value, stransect_value,
-                  # natural resources
-                  ## species product
-                  leatherback_value, killerwhale_value, humpback_ca_value, humpback_mx_value, bluewhale_value,
-                  non_protected_value, species_product,
-                  ## minimum habitat
-                  efhca_value, rreef_map_value, rreef_prob_value, deep_coralsponge_value, continental_shelf_value,
-                  methane_bubble_value, habitat_value,
-                  ## marine seabird
-                  marine_bird_value,
-                  # fisheries
-                  fisheries_value,
-                  # wind
-                  wind_value,
-                  # submodel geometric values
-                  constraints, io_geom_mean, nr_geom_mean, fish_geom_mean, wind_geom_mean,
-                  # model geometric value
-                  model_geom_mean) %>%
+  sensitivity_jacknife <- sensitivity_jackknife %>%
     
     # when field is elected (column i) fill with NA values so as to "remove" it from analysis
     dplyr::mutate(across(.cols = i,
@@ -183,7 +186,7 @@ for (i in 4:26){
     # change all the NaN values back to NA (using is.na() given data are a dataframe -- avoid is.nana())
     dplyr::mutate_all(~ifelse(is.na(.), NA, .))
   
-  print(paste(Sys.time() - start2, "to complete creating and adding", name, "data to dataframe", sep = " ")) # print how long it takes to calculate
+  print(paste(Sys.time() - start2, "minutes to complete creating and adding", name, "data to dataframe", sep = " ")) # print how long it takes to calculate
 }
 
 # assign(paste("sensitivity_jackknife_removed", fields[i], sep = "_"), test)
