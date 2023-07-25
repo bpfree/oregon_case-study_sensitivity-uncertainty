@@ -44,6 +44,7 @@ suitability_models <- "data/d_suitability_data/suitability_model.gpkg"
 
 ## Output directories
 ### Sensitivity directory
+sensitivity_gpkg <- "data/f_sensitivity_data/oregon_sensitivity.gpkg"
 
 #####################################
 
@@ -65,9 +66,8 @@ date <- format(Sys.time(), "%Y%m%d")
 #####################################
 
 # load data
-data <- sf::st_read(dsn = suitability_models, layer = "oregon_model_areas")
-
-sensitivity_jackknife <- data %>%
+## Oregon suitability data
+oregon_suitability <- sf::st_read(dsn = suitability_models, layer = "oregon_model_areas") %>%
   dplyr::select(index,
                 # constraints
                 dod_value, pacpars_value,
@@ -91,15 +91,26 @@ sensitivity_jackknife <- data %>%
                 # model geometric value
                 model_geom_mean)
 
-# 4 - 26
-for (i in 4:26){
+#####################################
+#####################################
+
+# Create a reference dataframe where data will get added
+sensitivity_jackknife <- oregon_suitability
+
+#####################################
+#####################################
+
+# Jackknife analysis across all datasets to determine how suitability scores change when dataset is removed
+## Datasets cross fields 4 - 26
+for (i in 4:5){
   start2 <- Sys.time()
   
-  #i <- 4
+  # if wanting to test a particular dataset
+  i <- 4
   
-  name <- names(data)[i]
+  name <- names(oregon_suitability)[i]
   
-  sensitivity_jackknife <- sensitivity_jackknife %>%
+  sensitivity_iteration <- oregon_suitability %>%
     
     # when field is elected (column i) fill with NA values so as to "remove" it from analysis
     dplyr::mutate(across(.cols = i,
@@ -117,8 +128,6 @@ for (i in 4:26){
                                                                              "stransect_value"))),
                                                               # remove any values that are NA when calculating the mean
                                                               na.rm = T))) %>%
-    # change all the NaN values back to NA (using is.na() given data are a dataframe -- avoid is.nana())
-    dplyr::mutate_all(~ifelse(is.na(.), NA, .)) %>%
     
     ## natural resources
     ### calculate across rows
@@ -149,8 +158,6 @@ for (i in 4:26){
                                                                              "marine_bird_value"))),
                                                               # remove any values that are NA when calculating the mean
                                                               na.rm = T))) %>%
-    # change all the NaN values back to NA (using is.na() given data are a dataframe -- avoid is.nana())
-    dplyr::mutate_all(~ifelse(is.na(.), NA, .)) %>%
     
     ## fisheries
     ### calculate across rows
@@ -159,8 +166,6 @@ for (i in 4:26){
     dplyr::mutate(!!paste0("fish_geom_mean_", name) := exp(mean(log(c_across(c("fisheries_value"))),
                                                                 # remove any values that are NA when calculating the mean
                                                                 na.rm = T))) %>%
-    # change all the NaN values back to NA (using is.na() given data are a dataframe -- avoid is.nana())
-    dplyr::mutate_all(~ifelse(is.na(.), NA, .)) %>%
     
     ## wind
     ### calculate across rows
@@ -169,8 +174,6 @@ for (i in 4:26){
     dplyr::mutate(!!paste0("wind_geom_mean_", name) := exp(mean(log(c_across(c("wind_value"))),
                                                                 # remove any values that are NA when calculating the mean
                                                                 na.rm = T))) %>%
-    # change all the NaN values back to NA (using is.na() given data are a dataframe -- avoid is.nana())
-    dplyr::mutate_all(~ifelse(is.na(.), NA, .)) %>%
     
     # recalculate the geometric means for each final model (geometric mean = nth root of the product of the variable values)
     ## final model
@@ -183,16 +186,28 @@ for (i in 4:26){
                                                                                 "wind_geom_mean"))),
                                                                  # remove any values that are NA when calculating the mean
                                                                  na.rm = T))) %>%
-    # change all the NaN values back to NA (using is.na() given data are a dataframe -- avoid is.nana())
-    dplyr::mutate_all(~ifelse(is.na(.), NA, .))
+    
+    
+    # convert to dataframe so geometry is dropped and not duplicated when binded to the reference dataframe
+    as.data.frame() %>%
   
-  print(paste(Sys.time() - start2, "minutes to complete creating and adding", name, "data to dataframe", sep = " ")) # print how long it takes to calculate
+    # select the fields created by the iteration
+    dplyr::select(paste0("io_geom_mean_", name),
+                  paste0("nr_geom_mean_", name),
+                  paste0("fish_geom_mean_", name),
+                  paste0("wind_geom_mean_", name),
+                  paste0("model_geom_mean_", name))
+  
+  # add the results from the iteration to the sensitivity jackknife dataframe
+  sensitivity_jackknife <- cbind(sensitivity_jackknife, sensitivity_iteration)
+  
+  # print how long it takes to calculate
+  print(paste(Sys.time() - start2, "minutes to complete creating and adding", name, "data to dataframe", sep = " "))
 }
-
-# assign(paste("sensitivity_jackknife_removed", fields[i], sep = "_"), test)
 
 # Export data
 ## Jackknife
+sf::st_write(obj = sensitivity_jackknife, dsn = sensitivity_gpkg, layer = paste(region, "sensitivity", sep = "_"), append = F)
 
 #####################################
 #####################################
