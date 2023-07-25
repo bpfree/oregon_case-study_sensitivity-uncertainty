@@ -951,3 +951,108 @@ lisa_colors <- rgeoda::lisa_colors(gda_lisa = lisa) %>%
 
 #####################################
 
+### Code 27 -- Sensitivity
+
+# 4 - 26
+for (i in 4:4){
+  start2 <- Sys.time()
+  
+  i <- 4
+  
+  name <- names(data)[i]
+  
+  sensitivity_jackknife <- sensitivity_jackknife %>%
+    
+    # when field is elected (column i) fill with NA values so as to "remove" it from analysis
+    dplyr::mutate(across(.cols = i,
+                         ~replace(i, !is.na(i), NA))) %>%
+    
+    # recalculate the geometric means for each submodel (geometric mean = nth root of the product of the variable values)
+    ## calculate across rows
+    dplyr::rowwise() %>%
+    ## industry and operations
+    dplyr::mutate(!!paste0("io_geom_mean_", name) := exp(mean(log(c_across(c("sc500_value",
+                                                                             "sc1000_value",
+                                                                             "eastwest_value",
+                                                                             "eastwest_add_value",
+                                                                             "sstat_value",
+                                                                             "stransect_value"))),
+                                                              # remove any values that are NA when calculating the mean
+                                                              na.rm = T))) %>%
+    # change all the NaN values back to NA (using is.na() given data are a dataframe -- avoid is.nana())
+    #dplyr::mutate_all(~ifelse(is.na(.), NA, .)) %>%
+    
+    ## natural resources
+    ### calculate across rows
+    dplyr::rowwise() %>%
+    #### calculate the product of all protected species values
+    dplyr:::mutate(species_product = prod(leatherback_value,
+                                          killerwhale_value,
+                                          humpback_ca_value,
+                                          humpback_mx_value,
+                                          bluewhale_value,
+                                          non_protected_value,
+                                          # remove NA values for product 
+                                          na.rm = T)) %>%
+    ### calculate minimum value across the habitat subdatasets
+    dplyr::rowwise() %>%
+    dplyr::mutate(habitat_value = pmin(efhca_value,
+                                       rreef_map_value,
+                                       rreef_prob_value,
+                                       deep_coralsponge_value,
+                                       continental_shelf_value,
+                                       methane_bubble_value,
+                                       na.rm = T)) %>%
+    ### calculate across rows
+    dplyr::rowwise() %>%
+    #### calculate the geometric mean (geometric mean = nth root of the product of the variable values)
+    dplyr::mutate(!!paste0("nr_geom_mean_", name) := exp(mean(log(c_across(c("species_product",
+                                                                             "habitat_value",
+                                                                             "marine_bird_value"))),
+                                                              # remove any values that are NA when calculating the mean
+                                                              na.rm = T))) %>%
+    # change all the NaN values back to NA (using is.na() given data are a dataframe -- avoid is.nana())
+    #dplyr::mutate_all(~ifelse(is.na(.), NA, .)) %>%
+    
+    ## fisheries
+    ### calculate across rows
+    dplyr::rowwise() %>%
+    #### calculate the geometric mean (geometric mean = nth root of the product of the variable values)
+    dplyr::mutate(!!paste0("fish_geom_mean_", name) := exp(mean(log(c_across(c("fisheries_value"))),
+                                                                # remove any values that are NA when calculating the mean
+                                                                na.rm = T))) %>%
+    # change all the NaN values back to NA (using is.na() given data are a dataframe -- avoid is.nana())
+    #dplyr::mutate_all(~ifelse(is.na(.), NA, .)) %>%
+    
+    ## wind
+    ### calculate across rows
+    dplyr::rowwise() %>%
+    #### calculate the geometric mean (geometric mean = nth root of the product of the variable values)
+    dplyr::mutate(!!paste0("wind_geom_mean_", name) := exp(mean(log(c_across(c("wind_value"))),
+                                                                # remove any values that are NA when calculating the mean
+                                                                na.rm = T))) %>%
+    # change all the NaN values back to NA (using is.na() given data are a dataframe -- avoid is.nana())
+    #dplyr::mutate_all(~ifelse(is.na(.), NA, .)) %>%
+    
+    # recalculate the geometric means for each final model (geometric mean = nth root of the product of the variable values)
+    ## final model
+    ### calculate across rows
+    dplyr::rowwise() %>%
+    #### calculate the geometric mean (geometric mean = nth root of the product of the variable values)
+    dplyr::mutate(!!paste0("model_geom_mean_", name) := exp(mean(log(c_across(c("io_geom_mean",
+                                                                                "nr_geom_mean",
+                                                                                "fish_geom_mean",
+                                                                                "wind_geom_mean"))),
+                                                                 # remove any values that are NA when calculating the mean
+                                                                 na.rm = T))) %>%
+    # change all the NaN values back to NA (using is.na() given data are a dataframe -- avoid is.nana())
+    #dplyr::mutate_all(~ifelse(is.na(.), NA, .))
+    
+    print(paste(Sys.time() - start2, "minutes to complete creating and adding", name, "data to dataframe", sep = " ")) # print how long it takes to calculate
+}
+
+sensitivity_jackknife <- sensitivity_jackknife %>%
+  sf::st_make_valid() %>%
+  sf::st_as_sf(x = ., wkt = "geom")
+
+# assign(paste("sensitivity_jackknife_removed", fields[i], sep = "_"), test)
