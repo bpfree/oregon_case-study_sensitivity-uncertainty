@@ -106,7 +106,7 @@ for (i in 4:5){
   start2 <- Sys.time()
   
   # if wanting to test a particular dataset
-  i <- 4
+  i <- 5
   
   name <- names(oregon_suitability)[i]
   
@@ -180,10 +180,10 @@ for (i in 4:5){
     ### calculate across rows
     dplyr::rowwise() %>%
     #### calculate the geometric mean (geometric mean = nth root of the product of the variable values)
-    dplyr::mutate(!!paste0("model_geom_mean_", name) := exp(mean(log(c_across(c("io_geom_mean",
-                                                                                "nr_geom_mean",
-                                                                                "fish_geom_mean",
-                                                                                "wind_geom_mean"))),
+    dplyr::mutate(!!paste0("model_geom_mean_", name) := exp(mean(log(c_across(c(paste0("io_geom_mean_", name),
+                                                                                paste0("nr_geom_mean_", name),
+                                                                                paste0("fish_geom_mean_", name),
+                                                                                paste0("wind_geom_mean_", name)))),
                                                                  # remove any values that are NA when calculating the mean
                                                                  na.rm = T))) %>%
     
