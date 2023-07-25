@@ -102,7 +102,7 @@ sensitivity_jackknife <- oregon_suitability
 
 # Jackknife analysis across all datasets to determine how suitability scores change when dataset is removed
 ## Datasets cross fields 4 - 26
-for (i in 4:5){
+for (i in 4:26){
   start2 <- Sys.time()
   
   # if wanting to test a particular dataset
