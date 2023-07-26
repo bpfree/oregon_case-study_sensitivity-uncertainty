@@ -168,10 +168,24 @@ oregon_industry_operations <- oregon_hex %>%
                 sstat_value,
                 stransect_value) %>%
   
+  # create combined submarine cable field
+  ## fill with values of 500-m buffer, 500-1000-m buffer
+  ## when a hex has both values give it the lower value (500-m buffer = 0.6)
+  # calculate across rows
+  dplyr::rowwise() %>%
+  dplyr::mutate(sub_cable = sum(sc500_value,
+                                sc1000_value,
+                                na.rm = T)) %>%
+  dplyr::mutate(sub_cable =  case_when(sub_cable == 1.4 ~ 0.6,
+                                       sub_cable == 0.6 ~ 0.6,
+                                       sub_cable == 0.8 ~ 0.8)) %>%
+  dplyr::relocate(sub_cable,
+                  .after = sc1000_value) %>%
+  
   # add value of 1 for datasets when hex cell has value of NA
   ## for hex cells not impacted by a particular dataset, that cell gets a value of 1
   ### this indicates  suitability with wind energy development
-  dplyr::mutate(across(2:7, ~replace(x = .,
+  dplyr::mutate(across(4:8, ~replace(x = .,
                                      list = is.na(.),
                                      # replacement values
                                      values = 1))) %>%
@@ -180,8 +194,7 @@ oregon_industry_operations <- oregon_hex %>%
   dplyr::rowwise() %>%
   # calculate the geometric mean
   ## geometric mean = nth root of the product of the variable values
-  dplyr::mutate(io_geom_mean = exp(mean(log(c_across(c("sc500_value",
-                                                       "sc1000_value",
+  dplyr::mutate(io_geom_mean = exp(mean(log(c_across(c("sub_cable",
                                                        "eastwest_value",
                                                        "eastwest_add_value",
                                                        "sstat_value",
@@ -189,14 +202,8 @@ oregon_industry_operations <- oregon_hex %>%
                                         # remove any values that are NA when calculating the mean
                                         na.rm = T))) %>%
   # select the fields of interest
-  dplyr::select(index,
-                sc500_value,
-                sc1000_value,
-                eastwest_value,
-                eastwest_add_value,
-                sstat_value,
-                stransect_value,
-                io_geom_mean)
+  dplyr::relocate(io_geom_mean,
+                  .after = stransect_value)
 
 ### Check to see if there are any duplicates of the indices
 ### There are none
