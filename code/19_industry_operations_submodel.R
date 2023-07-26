@@ -167,6 +167,15 @@ oregon_industry_operations <- oregon_hex %>%
                 eastwest_add_value,
                 sstat_value,
                 stransect_value) %>%
+  
+  # add value of 1 for datasets when hex cell has value of NA
+  ## for hex cells not impacted by a particular dataset, that cell gets a value of 1
+  ### this indicates  suitability with wind energy development
+  dplyr::mutate(across(2:7, ~replace(x = .,
+                                     list = is.na(.),
+                                     # replacement values
+                                     values = 1))) %>%
+  
   # calculate across rows
   dplyr::rowwise() %>%
   # calculate the geometric mean
@@ -177,8 +186,8 @@ oregon_industry_operations <- oregon_hex %>%
                                                        "eastwest_add_value",
                                                        "sstat_value",
                                                        "stransect_value"))),
-                                # remove any values that are NA when calculating the mean
-                                na.rm = T))) %>%
+                                        # remove any values that are NA when calculating the mean
+                                        na.rm = T))) %>%
   # select the fields of interest
   dplyr::select(index,
                 sc500_value,
