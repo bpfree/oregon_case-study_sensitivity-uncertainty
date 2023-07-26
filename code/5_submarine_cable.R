@@ -180,8 +180,8 @@ sf::st_write(obj = oregon_hex_submarine_cable500, dsn = industry_operations_subm
 sf::st_write(obj = oregon_hex_submarine_cable1000, dsn = industry_operations_submodel, layer = paste0(region, "_hex_", layer_1000), append = F)
 
 ## Submarine Cable geopackage
-sf::st_write(obj = oregon_hex_submarine_cable500, dsn = submarine_cable_gpkg, layer = paste0(region, "_hex_", layer500), append = F)
-sf::st_write(obj = oregon_hex_submarine_cable1000, dsn = submarine_cable_gpkg, layer = paste0(region, "_hex_", layer1000), append = F)
+sf::st_write(obj = oregon_hex_submarine_cable500, dsn = submarine_cable_gpkg, layer = paste0(region, "_hex_", layer_500), append = F)
+sf::st_write(obj = oregon_hex_submarine_cable1000, dsn = submarine_cable_gpkg, layer = paste0(region, "_hex_", layer_1000), append = F)
 
 sf::st_write(obj = submarine_cables_noaa, dsn = submarine_cable_gpkg, layer = "noaa_submarine_cable", append = F)
 sf::st_write(obj = oregon_submarine_cables, dsn = submarine_cable_gpkg, layer = "oregon_submarine_cables", append = F)
