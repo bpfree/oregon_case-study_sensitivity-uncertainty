@@ -114,6 +114,16 @@ oregon_wind <- oregon_hex %>%
   dplyr::left_join(x = .,
                    y = oregon_wind_values,
                    by = "index") %>%
+  
+  # add value of 1 for datasets when hex cell has value of NA
+  ## for hex cells not impacted by a particular dataset, that cell gets a value of 1
+  ### this indicates  suitability with wind energy development
+  dplyr::mutate(across(.cols = lcoe_norm_index,
+                       .fns = ~replace(x = .,
+                                       list = is.na(.),
+                                       # replacement values
+                                       values = 1))) %>%
+  
   # calculate across rows
   dplyr::rowwise() %>%
   # calculate the geometric mean
