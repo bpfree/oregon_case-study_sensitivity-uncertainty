@@ -195,6 +195,7 @@ protected_species <- oregon_hex %>%
                 humpback_mx_value,
                 bluewhale_value,
                 non_protected_value) %>%
+  
   # calculate across rows
   dplyr::rowwise() %>%
   # calculate the product of all protected species values
@@ -285,6 +286,15 @@ habitat_values <- oregon_hex %>%
                 deep_coralsponge_value,
                 continental_shelf_value,
                 methane_bubble_value) %>%
+  
+  # add value of 1 for datasets when hex cell has value of NA
+  ## for hex cells not impacted by a particular dataset, that cell gets a value of 1
+  ### this indicates  suitability with wind energy development
+  dplyr::mutate(across(2:7, ~replace(x = .,
+                                     list = is.na(.),
+                                     # replacement values
+                                     values = 1))) %>%
+  
   # calculate minimum value across the habitat subdatasets
   dplyr::rowwise() %>%
   dplyr::mutate(habitat_value = pmin(efhca_value,
