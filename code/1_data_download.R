@@ -5,6 +5,12 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(docxtractr,
@@ -219,9 +225,10 @@ bia_data <- "https://cetsound.noaa.gov/Assets/cetsound/data/CetMap_BIA_WGS84.zip
 
 #####################################
 
-## Essential fish habitat conservation areas (source: https://media.fisheries.noaa.gov/2021-02/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020.zip)
+## Essential fish habitat conservation areas (source: https://www.habitat.noaa.gov/protection/efh/newInv/data/west_coast/westcoast_efha.zip)
 ### Text: https://www.ecfr.gov/current/title-50/chapter-VI/part-660/subpart-C/section-660.76
-efhca_data <- "https://media.fisheries.noaa.gov/2021-02/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020.zip"
+### Alternative download source: https://www.fisheries.noaa.gov/s3/2021-02/EFH-HAPC-EFHCA-shapefiles-AM19-2006-AM28-2020.zip
+efhca_data <- "https://www.habitat.noaa.gov/protection/efh/newInv/data/west_coast/westcoast_efha.zip"
 
 #####################################
 
@@ -461,3 +468,9 @@ file.rename(from = file.path(data_dir,
             to = file.path(data_dir, "pacpars_draft_report.pdf"))
 
 list.files(data_dir)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
