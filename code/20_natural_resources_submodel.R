@@ -388,24 +388,24 @@ sf::st_write(obj = oregon_natural_resources, dsn = oregon_suitability_gpkg, laye
 
 ## Submodel
 ### Protected species
-base::saveRDS(object = protected_species, file = paste(oregon_nr_species_dir, "oregon_protected_species_suitability.RDS", sep = "/"))
-base::saveRDS(object = leatherback_value, file = paste(oregon_nr_species_dir, "oregon_leatherback_value.RDS", sep = "/"))
-base::saveRDS(object = killer_whale_value, file = paste(oregon_nr_species_dir, "oregon_killer_whale_value.RDS", sep = "/"))
-base::saveRDS(object = humpback_mx_value, file = paste(oregon_nr_species_dir, "oregon_humpback_mexico_value.RDS", sep = "/"))
-base::saveRDS(object = humpback_ca_value, file = paste(oregon_nr_species_dir, "oregon_humpback_central_america_value.RDS", sep = "/"))
-base::saveRDS(object = bluewhale_value, file = paste(oregon_nr_species_dir, "oregon_blue_whale_value.RDS", sep = "/"))
+base::saveRDS(object = protected_species, file = paste(oregon_nr_species_dir, "oregon_protected_species_suitability.rds", sep = "/"))
+base::saveRDS(object = leatherback_value, file = paste(oregon_nr_species_dir, "oregon_leatherback_value.rds", sep = "/"))
+base::saveRDS(object = killer_whale_value, file = paste(oregon_nr_species_dir, "oregon_killer_whale_value.rds", sep = "/"))
+base::saveRDS(object = humpback_mx_value, file = paste(oregon_nr_species_dir, "oregon_humpback_mexico_value.rds", sep = "/"))
+base::saveRDS(object = humpback_ca_value, file = paste(oregon_nr_species_dir, "oregon_humpback_central_america_value.rds", sep = "/"))
+base::saveRDS(object = bluewhale_value, file = paste(oregon_nr_species_dir, "oregon_blue_whale_value.rds", sep = "/"))
 
 ### Habitat layers
-base::saveRDS(object = habitat_values, file = paste(oregon_nr_habitat_dir, layer = "oregon_habitat_suitability.RDS", sep = "/"))
-base::saveRDS(object = efhca_value, file = paste(oregon_nr_habitat_dir, layer = "oregon_efhca_value.RDS", sep = "/"))
-base::saveRDS(object = rreef_map_value, file = paste(oregon_nr_habitat_dir, layer = "oregon_rocky_reef_mapped_500m_value.RDS", sep = "/"))
-base::saveRDS(object = rreef_prob_value, file = paste(oregon_nr_habitat_dir, layer = "oregon_rocky_reef_probable_500m_value.RDS", sep = "/"))
-base::saveRDS(object = coral_sponge_value, file = paste(oregon_nr_habitat_dir, layer = "oregon_deep_sea_coral_sponge_value.RDS", sep = "/"))
-base::saveRDS(object = continental_shelf_value, file = paste(oregon_nr_habitat_dir, layer = "oregon_continental_shelf_value.RDS", sep = "/"))
-base::saveRDS(object = methane_bubble_value, file = paste(oregon_nr_habitat_dir, layer = "oregon_methane_bubble_streams_value.RDS", sep = "/"))
+base::saveRDS(object = habitat_values, file = paste(oregon_nr_habitat_dir, layer = "oregon_habitat_suitability.rds", sep = "/"))
+base::saveRDS(object = efhca_value, file = paste(oregon_nr_habitat_dir, layer = "oregon_efhca_value.rds", sep = "/"))
+base::saveRDS(object = rreef_map_value, file = paste(oregon_nr_habitat_dir, layer = "oregon_rocky_reef_mapped_500m_value.rds", sep = "/"))
+base::saveRDS(object = rreef_prob_value, file = paste(oregon_nr_habitat_dir, layer = "oregon_rocky_reef_probable_500m_value.rds", sep = "/"))
+base::saveRDS(object = coral_sponge_value, file = paste(oregon_nr_habitat_dir, layer = "oregon_deep_sea_coral_sponge_value.rds", sep = "/"))
+base::saveRDS(object = continental_shelf_value, file = paste(oregon_nr_habitat_dir, layer = "oregon_continental_shelf_value.rds", sep = "/"))
+base::saveRDS(object = methane_bubble_value, file = paste(oregon_nr_habitat_dir, layer = "oregon_methane_bubble_streams_value.rds", sep = "/"))
 
 ### Seabird
-base::saveRDS(object = marine_bird_value, file = paste(oregon_nr_marine_bird_dir, layer = "oregon_marine_bird_value.RDS", sep = "/"))
+base::saveRDS(object = marine_bird_value, file = paste(oregon_nr_marine_bird_dir, layer = "oregon_marine_bird_value.rds", sep = "/"))
 
 #####################################
 #####################################
