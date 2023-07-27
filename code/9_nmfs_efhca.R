@@ -41,7 +41,7 @@ pacman::p_load(docxtractr,
 # Set directories
 ## Define data directory (as this is an R Project, pathnames are simplified)
 ### Input directories
-nmfs_efhca_dir <- "data/a_raw_data/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020/EFHCA shapefile_2020"
+nmfs_efhca_dir <- "data/a_raw_data/westcoast_efha"
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
 wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
@@ -73,15 +73,22 @@ date <- format(Sys.time(), "%Y%m%d")
 #####################################
 
 # Load data
-## Oregon wind study area
-oregon_wind_call_area <- sf::st_read(dsn = wind_area_gpkg, "oregon_wind_call_areas")
+## Oregon call areas
+oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
+                                 layer = paste(sf::st_layers(dsn = wind_area_gpkg,
+                                                             do_count = TRUE)))
 
-## Oregon call area hex
-oregon_hex <- sf::st_read(dsn = study_area_gpkg, "oregon_call_area_hex")
+## Oregon hex areas (original data)
+oregon_hex <- sf::st_read(dsn = study_area_gpkg,
+                          layer = paste(sf::st_layers(dsn = study_area_gpkg,
+                                                      do_count = TRUE)[[1]][4]))
 
-## NMFS Essential Fish Habitat Conservation Areas (source: https://media.fisheries.noaa.gov/2021-02/EFH_HAPC_EFHCA_shapefiles_AM19-2006%2BAM28-2020.zip)
+## NMFS Essential Fish Habitat Conservation Areas (source: https://www.habitat.noaa.gov/protection/efh/newInv/data/west_coast/westcoast_efha.zip)
 ### Text: https://www.ecfr.gov/current/title-50/chapter-VI/part-660/subpart-C/section-660.76
-nmfs_efhca_data <- sf::st_read(dsn = nmfs_efhca_dir, layer = "EFH_ConsArea_polygons_v20191107") %>%
+### Alternative download source: https://www.fisheries.noaa.gov/s3/2021-02/EFH-HAPC-EFHCA-shapefiles-AM19-2006-AM28-2020.zip
+### Essential Fish Habitat Mapper: https://www.habitat.noaa.gov/apps/efhmapper/?data_id=dataSource_13-EFHA_7887%3A102&page=page_4
+#### ***Note: In particular, see the "EFH Areas Protected From Fishing"
+nmfs_efhca_data <- sf::st_read(dsn = nmfs_efhca_dir, layer = "westcoast_efha") %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
   sf::st_transform("EPSG:26910")
 
@@ -90,9 +97,11 @@ nmfs_efhca_data <- sf::st_read(dsn = nmfs_efhca_dir, layer = "EFH_ConsArea_polyg
 
 # NMFS Essential Fish Habitat Conservation Area in Oregon call areas
 oregon_nmfs_efhca <- nmfs_efhca_data %>%
+  # filter out 700 fathom areas and deep-sea conservation ecosystem conservation areas
+  dplyr::filter(!OBJECTID == c(1016, 1017)) %>%
   # obtain NMFS EFCA within Oregon call areas
   rmapshaper::ms_clip(target = .,
-                      clip = oregon_wind_call_area) %>%
+                      clip = oregon_call_areas) %>%
   # add a 500-meter buffer (setback distance)
   sf::st_buffer(dist = buffer)
 
