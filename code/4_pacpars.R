@@ -122,15 +122,15 @@ date <- format(Sys.time(), "%Y%m%d")
 #####################################
 
 # Load data
-## Oregon Call Areas
+## Oregon call areas
 oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
                                  layer = paste(sf::st_layers(dsn = wind_area_gpkg,
                                                              do_count = TRUE)))
 
-## Oregon hex areas
+## Oregon hex areas (original data)
 oregon_hex <- sf::st_read(dsn = study_area_gpkg,
                           layer = paste(sf::st_layers(dsn = study_area_gpkg,
-                                                      do_count = TRUE)[[1]][2]))
+                                                      do_count = TRUE)[[1]][4]))
 
 #####################################
 
@@ -461,15 +461,13 @@ sf::st_write(d13_offshore_point1, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds
 sf::st_write(d13_offshore_polygon, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore_polygon", append = F)
 
 ### D13 Coastal Fairway
-saveRDS(ds_coastal_table, paste(pacpars_dir, "oregon_pacpars_ds13_coastal_table", sep = "/"))
+saveRDS(d13_coastal_table, paste(pacpars_dir, "oregon_pacpars_ds13_coastal_table", sep = "/"))
 saveRDS(d13_coastal1, paste(pacpars_dir, "oregon_pacpars_d13_coastal1", sep = "/"))
 saveRDS(d13_coastal2, paste(pacpars_dir, "oregon_pacpars_d13_coastal2", sep = "/"))
 saveRDS(d13_coastal3, paste(pacpars_dir, "oregon_pacpars_d13_coastal3", sep = "/"))
 saveRDS(d13_coastal, paste(pacpars_dir, "oregon_pacpars_d13_coastal", sep = "/"))
 
 sf::st_write(d13_coastal_point, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coastal_point", append = F)
-sf::st_write(d13_coastal_polygon, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coastal_polygon", append = F)
-
 sf::st_write(d13_coast_3nm, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coast_3nm_polygon", append = F)
 
 ### D13 Fairway (combined) -- call area
