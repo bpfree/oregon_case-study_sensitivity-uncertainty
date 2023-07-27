@@ -80,7 +80,7 @@ buffer <- 3704
 region <- "oregon"
 
 ## layer name
-layer <- "d13_fairway"
+layer <- "pacpars"
 
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
