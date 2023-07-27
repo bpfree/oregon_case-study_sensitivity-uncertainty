@@ -52,6 +52,8 @@ suitability_dir <- "data/d_suitability_data"
 dir.create(paste0(suitability_dir, "/",
                   "natural_resources_suitability"))
 
+
+
 oregon_natural_resources_dir <- "data/d_suitability_data/natural_resources_suitability"
 dir.create(paste0(oregon_natural_resources_dir, "/",
                   "protected_species"))
@@ -404,9 +406,6 @@ base::saveRDS(object = methane_bubble_value, file = paste(oregon_nr_habitat_dir,
 
 ### Seabird
 base::saveRDS(object = marine_bird_value, file = paste(oregon_nr_marine_bird_dir, layer = "oregon_marine_bird_value.RDS", sep = "/"))
-
-### Suitability
-sf::st_write(obj = oregon_natural_resources, dsn = oregon_natural_resources_suitability, layer = "oregon_natural_resources_suitability", append = F)
 
 #####################################
 #####################################
