@@ -461,11 +461,11 @@ sf::st_write(d13_offshore_point1, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds
 sf::st_write(d13_offshore_polygon, dsn = pacpars_gpkg, layer = "oregon_pacpars_ds13_offshore_polygon", append = F)
 
 ### D13 Coastal Fairway
-saveRDS(d13_coastal_table, paste(pacpars_dir, "oregon_pacpars_ds13_coastal_table", sep = "/"))
-saveRDS(d13_coastal1, paste(pacpars_dir, "oregon_pacpars_d13_coastal1", sep = "/"))
-saveRDS(d13_coastal2, paste(pacpars_dir, "oregon_pacpars_d13_coastal2", sep = "/"))
-saveRDS(d13_coastal3, paste(pacpars_dir, "oregon_pacpars_d13_coastal3", sep = "/"))
-saveRDS(d13_coastal, paste(pacpars_dir, "oregon_pacpars_d13_coastal", sep = "/"))
+saveRDS(d13_coastal_table, paste(pacpars_dir, "oregon_pacpars_ds13_coastal_table.rds", sep = "/"))
+saveRDS(d13_coastal1, paste(pacpars_dir, "oregon_pacpars_d13_coastal1.rds", sep = "/"))
+saveRDS(d13_coastal2, paste(pacpars_dir, "oregon_pacpars_d13_coastal2.rds", sep = "/"))
+saveRDS(d13_coastal3, paste(pacpars_dir, "oregon_pacpars_d13_coastal3.rds", sep = "/"))
+saveRDS(d13_coastal, paste(pacpars_dir, "oregon_pacpars_d13_coastal.rds", sep = "/"))
 
 sf::st_write(d13_coastal_point, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coastal_point", append = F)
 sf::st_write(d13_coast_3nm, dsn = pacpars_gpkg, layer = "oregon_pacpars_d13_coast_3nm_polygon", append = F)
