@@ -105,7 +105,7 @@ port_orford <- terra::rast(paste(data_dir, "port_orford_13_mhw_2008.nc", sep = "
 ### ***Note: NAVD88 (https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ngdc.mgg.dem:724/html)
 ###          and mean high water data both exist; the mean high water data are downloaded in case the MHW data
 ###          for Central Oregon become available
-crescent_city <- terra::rast(paste(data_dir, "crescent_city_13_mhw_2010.nc", sep = "/"))
+crescent_city <- terra::rast(paste(data_dir, "crescent_city_13_navd88_2010.nc", sep = "/"))
 
 ## Coastal Relief Model volume 7 (source: https://www.ngdc.noaa.gov/thredds/fileServer/crm/crm_vol7.nc))
 ### Metadata: https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ngdc.mgg.dem:348
