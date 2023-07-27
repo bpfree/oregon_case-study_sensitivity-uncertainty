@@ -72,7 +72,7 @@ oregon_suitability <- sf::st_read(dsn = suitability_models, layer = "oregon_mode
                 # constraints
                 dod_value, pacpars_value,
                 # industry and operations
-                sc500_value, sc1000_value, eastwest_value, eastwest_add_value, sstat_value, stransect_value,
+                sc500_value, sc1000_value, sub_cable, eastwest_value, eastwest_add_value, sstat_value, stransect_value,
                 # natural resources
                 ## species product
                 leatherback_value, killerwhale_value, humpback_ca_value, humpback_mx_value, bluewhale_value,
@@ -101,8 +101,8 @@ sensitivity_jackknife <- oregon_suitability
 #####################################
 
 # Jackknife analysis across all datasets to determine how suitability scores change when dataset is removed
-## Datasets cross fields 4 - 26
-for (i in 4:26){
+## Datasets cross fields 4 - 27
+for (i in 4:27){
   start2 <- Sys.time()
   
   # if wanting to test a particular dataset
@@ -120,8 +120,7 @@ for (i in 4:26){
     ## calculate across rows
     dplyr::rowwise() %>%
     ## industry and operations
-    dplyr::mutate(!!paste0("io_geom_mean_", name) := exp(mean(log(c_across(c("sc500_value",
-                                                                             "sc1000_value",
+    dplyr::mutate(!!paste0("io_geom_mean_", name) := exp(mean(log(c_across(c("sub_cable",
                                                                              "eastwest_value",
                                                                              "eastwest_add_value",
                                                                              "sstat_value",
