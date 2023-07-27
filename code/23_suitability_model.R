@@ -206,11 +206,11 @@ dim(oregon_model_areas)[1]
 sf::st_write(obj = oregon_model_areas, dsn = suitability_models, layer = paste0(region, "_", model), append = F)
 
 ## Submodels
-base::saveRDS(object = oregon_constraints_values, file = paste(oregon_overall_suitability_dir, "oregon_constraints_values.RDS", sep = "/"))
-base::saveRDS(object = oregon_fisheries_values, file = paste(oregon_overall_suitability_dir, "oregon_fisheries_values.RDS", sep = "/"))
-base::saveRDS(object = oregon_industry_operations_values, file = paste(oregon_overall_suitability_dir, "oregon_industry_operations_values.RDS", sep = "/"))
-base::saveRDS(object = oregon_natural_resources_values, file = paste(oregon_overall_suitability_dir, "oregon_natural_resources_values.RDS", sep = "/"))
-base::saveRDS(object = oregon_wind_values, file = paste(oregon_overall_suitability_dir, "oregon_wind_values.RDS", sep = "/"))
+base::saveRDS(object = oregon_constraints_values, file = paste(oregon_overall_suitability_dir, "oregon_constraints_values.rds", sep = "/"))
+base::saveRDS(object = oregon_fisheries_values, file = paste(oregon_overall_suitability_dir, "oregon_fisheries_values.rds", sep = "/"))
+base::saveRDS(object = oregon_industry_operations_values, file = paste(oregon_overall_suitability_dir, "oregon_industry_operations_values.rds", sep = "/"))
+base::saveRDS(object = oregon_natural_resources_values, file = paste(oregon_overall_suitability_dir, "oregon_natural_resources_values.rds", sep = "/"))
+base::saveRDS(object = oregon_wind_values, file = paste(oregon_overall_suitability_dir, "oregon_wind_values.rds", sep = "/"))
 
 ## Model
 sf::st_write(obj = oregon_model, dsn = oregon_overall_suitability, layer = "oregon_model_suitability", append = F)
