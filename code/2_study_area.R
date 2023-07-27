@@ -5,6 +5,12 @@
 # Clear environment
 rm(list = ls())
 
+# Calculate start time of code (determine how long it takes to complete all code)
+start <- Sys.time()
+
+#####################################
+#####################################
+
 # Load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(docxtractr,
@@ -52,6 +58,7 @@ pacman::p_load(docxtractr,
 ## Define data directory (as this is an R Project, pathnames are simplified)
 ### Input directories
 wind_area_dir <- "data/a_raw_data/BOEM-Renewable-Energy-Geodatabase/BOEMWindLayers_4Download.gdb"
+original_hex_gdb <- "data/a_raw_data/Draft_5_final.gdb"
 
 ### Output directories
 #### Analysis directories
@@ -75,6 +82,20 @@ region <- "oregon"
 sf::st_layers(dsn = wind_area_dir,
               do_count = TRUE)
 
+# Inspect available layers and names within original final Oregon study geodatabase
+sf::st_layers(dsn = original_hex_gdb,
+              do_count = TRUE)
+
+#####################################
+#####################################
+
+# Load original data
+original_hex_grid <- sf::st_read(dsn = original_hex_gdb, layer = "most_conservative_model") %>%
+  # add field "index" that will be populated with the row_number
+  dplyr::mutate(index = row_number()) %>%
+  dplyr::select(index)
+
+#####################################
 #####################################
 
 # Load call areas
@@ -150,5 +171,13 @@ sf::st_write(wind_area_grid, dsn = study_area_gpkg, layer = paste0(region, "_cal
 sf::st_write(wind_area_hex, dsn = study_area_gpkg, layer = paste0(region, "_call_area_hex"), append = F)
 sf::st_write(oregon_call_area_hex_dissolve, dsn = study_area_gpkg, layer = paste0(region, "_call_areas_dissolve"), append = F)
 
+sf::st_write(original_hex_grid, dsn = study_area_gpkg, layer = paste(region, "original_hex_grid", sep = "_"), append = F)
+
 ## Wind Call Areas
 sf::st_write(wind_areas, dsn = wind_area_gpkg, layer = "oregon_wind_call_areas", append = F)
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
