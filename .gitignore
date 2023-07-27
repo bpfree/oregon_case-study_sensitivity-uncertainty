@@ -52,20 +52,20 @@ data/a_raw_data/marine_bird/0242882/1.1/data/0-data/model_input_predictors.zip
 data/a_raw_data/marine_bird/0242882/1.1/data/0-data/model_output_predictions.zip
 
 ### Offshore mean annual wind speed
-data/a_raw_data/wind_prospector/Aliquots
-data/a_raw_data/wind_prospector/Bald_Eagle_Extent
-data/a_raw_data/wind_prospector/Golden_Eagle_Extent
-data/a_raw_data/wind_prospector/Hillshade
-data/a_raw_data/wind_prospector/Land_Cover
-data/a_raw_data/wind_prospector/Slope_20_
-data/a_raw_data/wind_prospector/Rose_30m
-data/a_raw_data/wind_prospector/Rose_55m
-data/a_raw_data/wind_prospector/Rose_70m
-data/a_raw_data/wind_prospector/Rose_80m
-data/a_raw_data/wind_prospector/Rose_100m
-data/a_raw_data/wind_prospector/Rose_120m
-data/a_raw_data/wind_prospector/Wind_Speed_January
-data/a_raw_data/wind_prospector/Wind_Speed_August
+data/a_raw_data/wind-prospector/wind-prospector/Aliquots
+data/a_raw_data/wind-prospector/wind-prospector/Bald_Eagle_Extent
+data/a_raw_data/wind-prospector/wind-prospector/Golden_Eagle_Extent
+data/a_raw_data/wind-prospector/wind-prospector/Hillshade
+data/a_raw_data/wind-prospector/wind-prospector/Land_Cover
+data/a_raw_data/wind-prospector/wind-prospector/Slope_20_
+data/a_raw_data/wind-prospector/wind-prospector/Rose_30m
+data/a_raw_data/wind-prospector/wind-prospector/Rose_55m
+data/a_raw_data/wind-prospector/wind-prospector/Rose_70m
+data/a_raw_data/wind-prospector/wind-prospector/Rose_80m
+data/a_raw_data/wind-prospector/wind-prospector/Rose_100m
+data/a_raw_data/wind-prospector/wind-prospector/Rose_120m
+data/a_raw_data/wind-prospector/wind-prospector/Wind_Speed_January
+data/a_raw_data/wind-prospector/wind-prospector/Wind_Speed_August
 
 ### NREL wind speed
 data/a_raw_data/month.h5
