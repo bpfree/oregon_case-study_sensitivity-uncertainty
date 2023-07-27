@@ -71,16 +71,15 @@ date <- format(Sys.time(), "%Y%m%d")
 #####################################
 
 # Load data
-## Oregon
-### Oregon Call Areas
+## Oregon call areas
 oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
                                  layer = paste(sf::st_layers(dsn = wind_area_gpkg,
                                                              do_count = TRUE)))
 
-### Oregon hex areas
+## Oregon hex areas (original data)
 oregon_hex <- sf::st_read(dsn = study_area_gpkg,
                           layer = paste(sf::st_layers(dsn = study_area_gpkg,
-                                                      do_count = TRUE)[[1]][2]))
+                                                      do_count = TRUE)[[1]][4]))
 
 #####################################
 
