@@ -90,10 +90,10 @@ date <- format(Sys.time(), "%Y%m%d")
 #####################################
 
 # Load data
-## Oregon hex
+## Oregon hex areas (original data)
 oregon_hex <- sf::st_read(dsn = study_area_gpkg,
                           layer = paste(sf::st_layers(dsn = study_area_gpkg,
-                                                      do_count = TRUE)[[1]][2]))
+                                                      do_count = TRUE)[[1]][4]))
 
 ## Industry and Operations
 ### Submarine cables
@@ -176,9 +176,9 @@ oregon_industry_operations <- oregon_hex %>%
   dplyr::mutate(sub_cable = sum(sc500_value,
                                 sc1000_value,
                                 na.rm = T)) %>%
-  dplyr::mutate(sub_cable =  case_when(sub_cable == 1.4 ~ 0.6,
-                                       sub_cable == 0.6 ~ 0.6,
-                                       sub_cable == 0.8 ~ 0.8)) %>%
+  dplyr::mutate(sub_cable = case_when(sub_cable == 1.4 ~ 0.6,
+                                      sub_cable == 0.6 ~ 0.6,
+                                      sub_cable == 0.8 ~ 0.8)) %>%
   dplyr::relocate(sub_cable,
                   .after = sc1000_value) %>%
   
