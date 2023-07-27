@@ -155,8 +155,8 @@ wind_duplicates <- oregon_wind %>%
 sf::st_write(obj = oregon_wind, dsn = oregon_suitability_gpkg, layer = paste0(region, "_", submodel, "_suitability"), append = F)
 
 ## Submodel
-### Fisheries
-saveRDS(obj = oregon_wind_values, file = paste(oregon_wind_dir, "oregon_wind_values.rds", sep = "/"))
+### Wind
+base::saveRDS(obj = oregon_wind_values, file = paste(oregon_wind_dir, "oregon_wind_values.rds", sep = "/"))
 
 #####################################
 #####################################
