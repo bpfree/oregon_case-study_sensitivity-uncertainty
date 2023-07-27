@@ -61,7 +61,7 @@ sf::st_layers(dsn = suitability_models,
 region <- "oregon"
 
 ## lisa
-lisa <- "lisa"
+layer <- "lisa"
 classification <- "_highhigh"
 
 ## designate date
@@ -264,8 +264,8 @@ g
 
 # Export data
 ## LISA
-sf::st_write(obj = oregon_lisa_highhigh, dsn = lisa_gpkg, layer = paste0(region, "_", lisa, classification), append = F)
-sf::st_write(obj = oregon_hex_lisa, dsn = lisa_gpkg, layer = paste0(region, "_hex_", lisa), append = F)
+sf::st_write(obj = oregon_lisa_highhigh, dsn = lisa_gpkg, layer = paste(region, layer, classification, sep = "_"), append = F)
+sf::st_write(obj = oregon_hex_lisa, dsn = lisa_gpkg, layer = paste0(region, "hex", layer), append = F)
 
 #####################################
 #####################################
