@@ -1,0 +1,139 @@
+Company Name,Component,City,State
+Columbia Gear Corporation (should call),nacelle,Avon,MN
+Timken,nacelle,North Canton,OH
+Dyson Corp,other,Painseville,OH
+Morgan AM&T,other,Greensville,SC
+CB Gear and Machine,nacelle,Houston,TX
+LM Wind Power,blade,Little Rock,AR
+LM Wind Power,blade,Grand Forks,ND
+KPI Concepts,other,Burlington,IA
+D.A.D. Manufacturing,other,Hiawatha,IA
+D.A.D. Manufacturing,other,Lisbon,IA
+General Cable Industries,other,Willimantic,CT
+ABB,other,Senataboia,MS
+Power Climber,other,Seattle,WA
+Mersen USA,other,Boonton,NJ
+Rotor Clip Company,other,Somerset,NJ
+Ioxus,other,Oneonta,NY
+Kaydon (Avon) Bearing,other,Avon,OH
+Allied Moulded Products,other,Bryan,OH
+Canton Drop Forge,other,Canton,OH
+EGC Enterprises (should call),other,Chardon,OH
+Eaton Corp,other,Cleveland,OH
+Horsburgh and Scott,nacelle,Cleveland,OH
+Swiger Coil Systems,nacelle,Cleveland,OH
+Federal Gear,nacelle,Eastlake,OH
+Elyria Foundry,other,Elyria,OH
+Magna Machine,other,Forest Park,OH
+CMC/BMC Utility Products (Connector Manufacturing),other,Hamilton,OH
+SGB USA,other,Louisville,OH
+Parker Hannifin Corp (is this only a HQ),nacelle,Mayfield Heights,OH
+Midwest Industrial Castings (Midwest Manufacturing and Logistics),other,Minster,OH
+Kalt Manufacturing,other,North Ridgeville,OH
+Industrial Nut Corporation,other,Sandusky,OH
+Edco Inc,other,Toledo,OH
+Rotek Inc,other,Aurora,OH
+Arcosa (Trinity Structural Towers),tower,Tulsa,OK
+Nord-Lock (Superbolt Inc),other,Carnegie,PA
+Hodge Foundry,other,Greenville,PA
+Windurance,other,Seneca,PA
+ILJIN,other,Greer,SC
+Kemet,other,Simpsonville,SC
+Timken,other,Union,SC
+Molded Fiberglass,blade,Aberdeen,SD
+Marmen,tower,Brandon,SD
+Thomas and Betts Corporation (ABB Installation Products),other,Memphis,TN
+Broadwind,tower,Abilene,TX
+GRI Renewable Industries,tower,Amarillo,TX
+All-Pro Fasteners,other,Arlington,TX
+Barr Fabrication,other,Brownwood,TX
+NGC Renwables,nacelle,Fort Worth,TX
+Proinlosa,other,Houston,TX
+CAB Incorporated,other,Nacogdoches,TX
+EMA Electromecanica,other,Sweetwater,TX
+Arconic Fastening Systems & Rings (Alcoa),other,Waco,TX
+Applied Bolting Technology,other,Bellows Falls,VT
+Rexnord (Merit) Gear,nacelle,Antigo,WI
+Lindquist Machine,nacelle,Green Bay,WI
+Bassett Mechanical,other,Kaukauna,WI
+Broadwind,tower,Manitowoc,WI
+Magnetek,other,Menomonee Falls,WI
+Helwig Carbon Products,other,Milwaukee,WI
+Ingeteam,nacelle,Milwaukee,WI
+Milwaukee Gear Company,nacelle,Milwaukee,WI
+Milwaukee Machine Works,nacelle,Milwaukee,WI
+Plexus,other,Neenah,WI
+ABB,nacelle,New Berlin,WI
+Applied Plastics,other,Oak Creek,WI
+Cooper Power Systems,other,Waukesha,WI
+Matenaer Corporation,other,West Bend,WI
+Molded Fiber Glass Companies,other,Opp,AL
+Creative Foam,other,Berthoud,CO
+Vestas,blade,Brighton,CO
+Vestas,turbine,Brighton,CO
+Aluwind,other,Castle Rock,CO
+Woodward Governor,other,Fort Collins,CO
+PMC Technology,other,Golden,CO
+Cooper and Turner,other,Pueblo,CO
+O'Neal Steel,other,Pueblo,CO
+Vestas,tower,Pueblo,CO
+Vestas,blade,Windsor,CO
+Copper State Bolt and Nut,other,Phoenix,AZ
+Valley Forge Bolt and Manufacturing,other,Phoenix,AZ
+Siemens Gamesa Renewable Energy,turbine,Hutchinson,KS
+J.R. Custom Metal Products,other,Wichita,KS
+Siemens Gamesa Renewable Energy,blade,Fort Madison,IA
+MM Composite,other,Mount Pleasant,IA
+Arcosa (Trinity Structural Towers),tower,Newton,IA
+TPI Composites,blade,Newton,IA
+AZZ Inc,other,Fulton,MO
+Schaeffler Bearings,other,Joplin,MO
+Gasket Engineering,other,Kansas City,MO
+Continental Disc Corporation,nacelle,Liberty,MO
+Vest-Fiber,other,Moberly,MO
+CG Power Systems (bought by WEG 2017),other,Washington,MO
+Centa Corp. (acquired by rexnord 2018),other,Aurora,IL
+R&W America,other,Bensenville,IL
+Stanley Machining & Tool Corp,other,Carpentersville,IL
+Finkl Steel,other,Chicago,IL
+Brad Foote Gear Works,nacelle,Cicero,IL
+Arcosa (Trinity Structural Towers),tower,Clinton,IL
+Siemens/Winergy,nacelle,Elgin,IL
+Winergy Drive Systems Corporation,nacelle,Elgin,IL
+HYDAC,nacelle,Glendale heights,IL
+Stanley Machining & Tool Corp,other,Hampshire,IL
+Randack Fasteners America,other,Lake Zurich,IL
+Deublin Company,other,Waukegan,IL
+Chicago Industrial Fasteners,other,West Chicago,IL
+Bedford Machine and Tool,other,Bedford,IN
+Carlisle Industrial Brake and Friction,nacelle,Bloomington,IN
+Oerlikon Fairfield (bought by DANA),nacelle,Lafayette,IN
+K&M Machine Fabricating,nacelle,Cassopolis,MI
+Three M Tool and Machine (should call),nacelle,Commerce,MI
+Akebono Corp (should call),nacelle,Farmington Hills,MI
+Genzink Steel (should call),nacelle,Holland,MI
+Lapeer Industries (should call),other,Lapeer,MI
+Ventower,tower,Monroe,MI
+Great Lakes Gear Technology (should call),nacelle,Plymouth,MI
+Three M Tool and Machine (should call),nacelle,Wixom,MI
+"Comer Industries, Inc",other,Charlotte,NC
+American Roller Bearing Company,other,Hiddenite,NC
+Southwire,other,Huntersville,NC
+AKG,nacelle,Mebane,NC
+American Roller Bearing Company,other,Morganton,NC
+LAI-International,other,Westminster,MD
+Hailo,nacelle,Elberton,GA
+Cobham Sliprings,other,Naples,FL
+GE Energy,turbine,Pensacola,FL
+Jupiter Group,nacelle,Pensacola,FL
+BJA Magnetics,other,Leominster,MA
+Second Wind,other,Newton,MA
+Hendrix Wire and Cable (marmon Utility,other,Milford,NH
+Millwood Metal Works,other,Freeport,MN
+Zero-Max,other,Plymouth,MN
+Rotary Systems (should call),other,Ramsey,MN
+KEB America,nacelle,Shakopee,MN
+BGB Technology,other,Colonial Heights,VA
+Diab Inc,other,Desoto,TX
+Ellwood Group,other,Irvine,PA
+TPI Composites,other,Warren,RI

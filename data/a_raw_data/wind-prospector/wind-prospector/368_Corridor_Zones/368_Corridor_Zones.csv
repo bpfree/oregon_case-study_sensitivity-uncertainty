@@ -1,0 +1,443 @@
+Buffer Distance,Comments,Designated,Designated Use,Name,Width (ft)
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,126-218,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,80-273,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,78-138,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,121-221,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,129-218,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,138-143,3500
+0.00000000000,"Underground only, not designated, 3500' width",No,Underground-only,73-133,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,130-274,3500
+0.00000000000,"Electric only, not designated, default 3500' width",No,Electric-only,132-276,3500
+0.00000000000,"Multimodal, designated, variable width",Yes,All,126-133,-1
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,55-240,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,79-216,3500
+0.00000000000,"Underground only, not designated, variable width",No,Underground-only,132-133,-1
+0.00000000000,"Underground only, designated, variable width",Yes,Underground-only,132-133,-1
+0.00000000000,"Multimodal, not designated, variable width",No,All,66-212,-1
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,87-277,3500
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,87-277,5280
+0.00000000000,"Multimodal, designated, 1000' width",Yes,All,87-277,1000
+0.00000000000,"Multimodal, designated, variable width",Yes,All,87-277,-1
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,80-273,3500
+0.00000000000,"Underground only, not designated, 1500' width",No,Underground-only,218-240,1500
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,15-17,1056
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,126-218,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,218-240,3500
+0.00000000000,"Multimodal, designated, 15840' width",Yes,All,44-239,1584
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,218-240,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,126-218,3500
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,87-277,5280
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,87-277,5280
+0.00000000000,"Underground only, not designated, 3500' width",No,Underground-only,126-218,3500
+0.00000000000,"Underground only, designated, 5280' width",Yes,Underground-only,132-133,5280
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,131-134,3500
+0.00000000000,"Electric only, not designated, default 3500' width",No,Electric-only,219-220,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,132-276,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,126-133,3500
+0.00000000000,"Multimodal, not designated, 1000' width",No,All,29-36,1000
+0.00000000000,"Multimodal, not designated, variable width",No,All,66-259,-1
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,24-228,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,8-104,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,116-206,3500
+0.00000000000,"Multimodal, not designated, 500' width",No,All,39-231,500
+0.00000000000,"Underground only, not designated, 3500' width",No,Underground-only,132-133,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,132-136,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,136-139,3500
+0.00000000000,"Underground only, designated, 5280' width",Yes,Underground-only,46-269,5280
+0.00000000000,"Electric only, not designated, default 3500' width",No,Electric-only,139-277,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,73-129,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,126-133,3500
+0.00000000000,"Multimodal, not designated, 10560' width",No,All,115-238,1056
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,73-138,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,130-131 (S),3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,129-221,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,81-272,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,144-275,3500
+0.00000000000,"Electric only, not designated, default 3500' width",No,Electric-only,134-139,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,133-142,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,121-240,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,3-8,3500
+0.00000000000,"Multimodal,  not designated, 1320' width",No,All,18-23,1320
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,6-15,3500
+0.00000000000,"Underground only, not designated, 3500' width",No,Underground-only,132-133,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,144-275,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,66-212,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,116-206,3500
+0.00000000000,"Multimodal, designated, 2640' width",Yes,All,44-110,2640
+0.00000000000,"Underground only, designated, default 3500' width",Yes,Underground-only,73-133,3500
+0.00000000000,"Electric only, not designated, 900' width",No,Electric-only,144-275,900
+0.00000000000,"Electric only, not designated, default 3500' width",No,Electric-only,220-221,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,130-274,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,134-136,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,89-271,3500
+0.00000000000,"Electric only, not designated, default 3500' width",No,Electric-only,121-220,3500
+0.00000000000,"Underground only, not designated, 3500' width",No,Underground-only,126-218,3500
+0.00000000000,"Electric only, not designated, 2500' width",No,Electric-only,144-275,2500
+0.00000000000,"Multimodal, not designated, variable width",No,All,66-212,-1
+0.00000000000,"Electric only, not designated, default 3500' width",No,Electric-only,144-275,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,87-277,3500
+0.00000000000,"Electric only, not designated, default 3500' width",No,Electric-only,130-131 (N),3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,87-277,3500
+0.00000000000,"Electric only, not designated, 2500' width",No,Electric-only,144-275,2500
+0.00000000000,"Electric only, not designated, 2000' width",No,Electric-only,144-275,2000
+0.00000000000,"Electric only, not designated, 1000' width",No,Electric-only,144-275,1000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,81-272,3500
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,30-52,1056
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,46-269,5280
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,144-275,3500
+0.00000000000,"Electric only, designated, default 3500' width",Yes,Electric-only,138-143,3500
+0.00000000000,"Underground only, not designated, 3500' width",No,Underground-only,126-218,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,130-274,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,130-274,3500
+0.00000000000,"Underground only, not designated, 3500' width",No,Underground-only,126-218,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,81-272,3500
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,7-8,1500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,78-85,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,144-275,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,80-273,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,79-216,3500
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,87-277,5280
+0.00000000000,"Electric only, not designated, 500' width",No,Electric-only,144-275,500
+0.00000000000,"Multimodal, not designated, 1320' width",No,All,18-23,1320
+0.00000000000,"Multimodal, not designated, 200' width",No,All,144-275,200
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,126-218,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,126-258,3500
+0.00000000000,"Underground only, not designated, 3500' width",No,Underground-only,126-218,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,87-277,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,81-272,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,136-277,3500
+0.00000000000,"Electric only, not designated, default 3500' width",No,Electric-only,87-277,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,134-136,3500
+0.00000000000,"Underground only, designated, 5280' width",Yes,Underground-only,41-46,5280
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,81-272,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,134-136,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,46-270,3500
+0.00000000000,"Multimodal, not designated, variable width",No,All,108-267,-1
+0.00000000000,"Electric only, designated, 1000' width",Yes,Electric-only,264-265,1000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,225-231,3500
+0.00000000000,"Underground only, not designated, 3500' width",No,Underground-only,130-274 (E),3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,130-274,3500
+0.00000000000,"Multimodal, designated, 26400' width",Yes,All,132-136,2640
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,87-277,3500
+0.00000000000,"Multimodal, not designated, variable width",No,All,66-212,-1
+0.00000000000,"Electric only, designated, 2000' width",Yes,Electric-only,236-237,2000
+0.00000000000,"Multimodal, designated, 21120' width",Yes,All,132-136,2112
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,46-270,3500
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,115-238,1056
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,66-212,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,37-223 (N),3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,78-255,3500
+0.00000000000,"Multimodal, not designated, variable width",No,All,61-207,-1
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,30-52,5280
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,234-235,3500
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,27-266,1056
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,61-207,3500
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,115-238,1056
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,61-207,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,81-213,3500
+0.00000000000,"Multimodal, not designated, 10560' width",No,All,115-238,1056
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,62-211,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,61-207,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,115-238,3500
+0.00000000000,"Electric only, not designated, 1000' width",No,Electric-only,115-238,1000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,81-272,3500
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,115-238,1056
+0.00000000000,"Multimodal, not designated, 10560' width",No,All,41-46,1056
+0.00000000000,"Electric only, designated, 1000' width",Yes,Electric-only,107-268,1000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,115-238,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,115-238,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,115-238,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,61-207,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,115-238,3500
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,46-269,5280
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,41-47,5280
+0.00000000000,"Multimodal, not designated, 10560' width",No,All,115-238,1056
+0.00000000000,"Multimodal, not designated, 1500' width",No,All,81-272,1500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,81-272,3500
+0.00000000000,"Electric upgrade only, designated, variable width",Yes,"Elec-only, Upgr-only",102-105,-1
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,81-272,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,81-213,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,61-207,3500
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,115-238,5280
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,30-52,5280
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,115-238,5280
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,115-238,3500
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,115-238,5280
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,46-270,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,115-238,3500
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,115-238,5280
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,81-272,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,16-104,3500
+0.00000000000,"Multimodal, designated, 15840' width",No,All,17-35,1584
+0.00000000000,"Multimodal, not designated, 5280' width",No,All,115-208,5280
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,115-238,1056
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,41-46,5280
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,30-52,5280
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,27-41,1056
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,27-41,3500
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,27-41,1056
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,27-225,1056
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,23-25,1056
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,23-106,1056
+0.00000000000,"Multimodal, designated, variable width",Yes,All,108-267,-1
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,18-224,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-11,3500
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,30-52,1056
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,41-46,1056
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,46-269,1056
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,17-35,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,110-114,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,81-213,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,113-114,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,16-24,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,116-206,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-11,3500
+0.00000000000,"Multimodal, designated, 15840' width",Yes,All,17-35,1584
+0.00000000000,"Multimodal, not designated, variable width",No,All,18-23,-1
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,114-241,3500
+0.00000000000,"Multimodal, designated, 15840' width",Yes,All,17-35,1584
+0.00000000000,"Multimodal, designated, 10560' width",No,All,17-35,1056
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,17-18,1056
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,18-224,1056
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,101-263,3500
+0.00000000000,"Multimodal, not designated, 1320' width",No,All,18-23,1320
+0.00000000000,"Multimodal, not designated, 1000' width",No,All,3-8,1000
+0.00000000000,"Multimodal, not designated, 1320' width",No,All,18-23,1320
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,50-203,3500
+0.00000000000,"Multimodal, designated, 15840' width",Yes,All,43-44,1584
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,101-263,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,112-226,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,3-8,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,6-15,3500
+0.00000000000,"Multimodal, not designated, 1320' width",No,All,18-23,1320
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,24-228,3500
+0.00000000000,"Multimodal, designated, 15840' width",Yes,All,111-226,1584
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,111-226,3500
+0.00000000000,"Electric only, designated, default 3500' width",Yes,Electric-only,66-209,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,36-112,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,16-104,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,50-203,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,36-226,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,36-228,3500
+0.00000000000,"Multimodal, designated, 1500' (3500' for Alt 2)",Yes,All,116-206,1500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,18-224,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,15-104,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,18-224,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,37-232,3500
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,24-228,1500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,18-224,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,24-228,3500
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,24-228,1500
+0.00000000000,"Multimodal, not designated, 1320' width",No,All,18-23,1320
+0.00000000000,"Multimodal, designated, 2640' width",Yes,All,232-233 (W),2640
+0.00000000000,"Multimodal, designated, variable width",Yes,All,113-114,-1
+0.00000000000,"Electric upgrade only, designated, 500' width",Yes,"Elec-only, Upgr-only",102-105,500
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,113-116,5280
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,113-116,5280
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,47-68,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,113-114,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,39-113,3500
+0.00000000000,"Electric only, designated, 5280' width",Yes,Electric-only,47-231,5280
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,24-228,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,223-224,3500
+0.00000000000,"Multimodal, designated, 2640' width",Yes,All,37-232,2640
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,224-225,3500
+0.00000000000,"Multimodal, not designated, 5280' width",No,All,113-116,5280
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,223-224,3500
+0.00000000000,"Multimodal, not designated, 1320' width",No,All,18-23,1320
+0.00000000000,"Multimodal, designated, 2000' width",Yes,All,47-231,2000
+0.00000000000,"Multimodal, not designated, variable width",No,All,18-23,-1
+0.00000000000,"Multimodal,  not designated, 1320' width",No,All,18-23,1320
+0.00000000000,"Underground only, not designated, 2400' width",No,Underground-only,37-223 (S),2400
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,37-39,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,39-231,3500
+0.00000000000,"Multimodal, not designated, variable width",No,All,223-224,-1
+0.00000000000,"Multimodal, designated, 1660' width",Yes,All,47-231,1660
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,27-225,3500
+0.00000000000,"Multimodal, designated, 2640' width",Yes,All,43-111,2640
+0.00000000000,"Multimodal, designated, 2640' width",Yes,All,110-233,2640
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,51-204,3500
+0.00000000000,"Multimodal, designated, 2640' width",Yes,All,44-110,2640
+0.00000000000,"Multimodal, not designated, 1000' width",No,All,36-228,1000
+0.00000000000,"Multimodal, not designated, variable width",No,All,39-231,-1
+0.00000000000,"Electric only, not designated, 2000' width",No,Electric-only,261-262,2000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,113-114,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,101-263,3500
+0.00000000000,"Multimodal, not designated, 1000' width",No,All,36-228,1000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,39-231,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,6-15,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,68-116,3500
+0.00000000000,"Multimodal, designated, 15840' width",Yes,All,111-226,1584
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,36-228,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,16-24,3500
+0.00000000000,"Multimodal,  not designated, 1320' width",No,All,18-23,1320
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,16-17,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,44-239,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-24,3500
+0.00000000000,"Multimodal, designated, 2640' width",Yes,All,44-110,2640
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-11,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,116-206,3500
+0.00000000000,"Multimodal, not designated, 1320' width",No,All,18-23,1320
+0.00000000000,"Multimodal, designated, 2640' width",Yes,All,16-24,2640
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,116-206,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,24-228,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,36-228,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,16-104,1000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,15-104,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,114-241,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,102-105,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,114-241,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-11,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-11,3500
+0.00000000000,"Electric upgrade only, designated, 500' width",Yes,"Elec-only, Upgr-only",102-105,500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,49-202,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,3-8,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,116-206,3500
+0.00000000000,"Multimodal, not designated, 1320' width",No,All,18-23,1320
+0.00000000000,"Multimodal, designated, variable width",Yes,All,37-232,-1
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,232-233 (E),3500
+0.00000000000,"Multimodal, designated, 2640' width",Yes,All,232-233 (W),2640
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,7-11,1500
+0.00000000000,"Multimodal, not designated, 1000' width",No,All,36-228,1000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-8,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,50-203,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,18-224,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,36-228,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,66-212,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-11,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,49-112,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,6-15,3500
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,7-11,1500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,16-24,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-11,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,116-206,3500
+0.00000000000,"Multimodal, designated, 2000' (3500' for Alt 2)",No,All,114-241,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,6-15,3500
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,7-24,1500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-11,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-11,3500
+0.00000000000,"Multimodal, designated, 2640' width",Yes,All,44-110,2640
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-24,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-8,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-8,3500
+0.00000000000,"Multimodal, designated, 2000' (3500' for Alt 2)",No,All,114-241,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-24,3500
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,16-24,1500
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,68-116,5280
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-24,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-24,3500
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,68-116,5280
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,116-206,3500
+0.00000000000,"Multimodal, designated, 1000' width",Yes,All,17-35,1000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,6-15,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,4-247,3500
+0.00000000000,"Electric only, not designated, 2000' width",No,Electric-only,261-262,2000
+0.00000000000,"Electric upgrade only, designated, 500' width",Yes,"Elec-only, Upgr-only",102-105,500
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,4-247,1500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,4-247,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,35-43,3500
+0.00000000000,"Multimodal, not designated, 500' width",No,All,15-104,500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,17-35,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,36-228,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,35-111,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,261-262,3500
+0.00000000000,"Electric only, not designated, 2000' width",No,Electric-only,261-262,2000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,101-263,3500
+0.00000000000,"Multimodal, not designated, 1320' width",No,All,18-23,1320
+0.00000000000,"Multimodal, not designated, 500' width",No,All,8-104,500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,116-206,3500
+0.00000000000,"Multimodal, not designated, 500' width",No,All,16-104,500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,68-116,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,6-15,3500
+0.00000000000,"Multimodal, designated, 2000' (3500' for Alt 2)",Yes,All,114-241,2000
+0.00000000000,"Electric upgrade only, designated, 500' width",Yes,"Elec-only, Upgr-only",102-105,500
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,7-11,1500
+0.00000000000,"Multimodal, designated, 5280' width",Yes,All,113-116,5280
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,116-206,3500
+0.00000000000,"Multimodal, designated, variable width",Yes,All,256-257,-1
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,18-23,1056
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,15-104,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,16-104,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-11,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,116-206,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,116-206,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,36-228,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,11-228,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,29-36,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,16-104,3500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,51-204,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,110-114,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,3-8,3500
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,7-11,1500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,110-114,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,11-228,3500
+0.00000000000,"Multimodal, designated, 10560' width",Yes,All,18-23,1056
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,51-205,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,50-51,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,11-228,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,29-36,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-24,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,51-205,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,79-216,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,4-247,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,250-251,3500
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,11-228,1500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,11-228,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,11-228,3500
+0.00000000000,"Electric only, not designated, 1000' width",No,Electric-only,229-254 (N),1000
+0.00000000000,"Underground only, not designated, 2000' width",No,Underground-only,229-254 (S),2000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,230-248,3500
+0.00000000000,"Multimodal, not designated, 2000' width",No,All,229-254,2000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,50-203,3500
+0.00000000000,"Electric upgrade only, designated, variable width",Yes,"Elec-only, Upgr-only",102-105,-1
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,250-251,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,5-201,3500
+0.00000000000,"Electric only, not designated, default 3500' width",No,Electric-only,10-246,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,230-248,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-11,3500
+0.00000000000,"Electric upgrade only, designated, 500' width",Yes,"Elec-only, Upgr-only",102-105,500
+0.00000000000,"Multimodal, not designated, 1500' width",No,All,7-11,1500
+0.00000000000,"Electric upgrade only, designated, 500' width",Yes,"Elec-only, Upgr-only",102-105,500
+0.00000000000,"Multimodal, designated, default 3500' width",Yes,All,51-205,3500
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,7-11,1500
+0.00000000000,"Multimodal, not designated, 1500' width",No,All,7-11,1500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,11-103,3500
+0.00000000000,"Electric only not designated, 1320' width",No,Electric-only,10-246,1320
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,102-105,3500
+0.00000000000,"Multimodal, designated, 600' width",Yes,All,50-203,600
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,50-203,3500
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,4-247,1500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,4-247,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,4-247,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,50-203,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,11-103,3500
+0.00000000000,"Multimodal, designated, 2000' width",Yes,All,4-247,2000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,4-247,3500
+0.00000000000,"Multimodal, designated, 1500' width",Yes,All,11-103,1500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,250-251,3500
+0.00000000000,"Electric upgrade only, designated, 500' width",Yes,"Elec-only, Upgr-only",102-105,500
+0.00000000000,"Multimodal, designated, 2640' width",Yes,All,50-203,2640
+0.00000000000,"Electric upgrade only, designated, 500' width",Yes,"Elec-only, Upgr-only",102-105,500
+0.00000000000,"Electric upgrade only, designated, 500' width",Yes,"Elec-only, Upgr-only",102-105,500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,50-51,3500
+0.00000000000,"Multimodal, designated, 2640' width",Yes,All,50-203,2640
+0.00000000000,"Electric only, not designated, 1000' width",No,Electric-only,229-254,1000
+0.00000000000,"Electric only, not designated, 1000' width",No,Electric-only,229-254,1000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,50-203,3500
+0.00000000000,"Multimodal, designated, 2640' width",Yes,All,50-51,2640
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,51-204,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,50-203,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,50-51,3500
+0.00000000000,"Multimodal, not designated, variable width",No,All,230-248,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,50-203,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,50-203,3500
+0.00000000000,"Electric only, not designated, 1000' width",No,Electric-only,229-254,1000
+0.00000000000,"Electric only, not designated, 1000' width",No,Electric-only,229-254,1000
+0.00000000000,"Electric only, not designated, 1000' width",No,Electric-only,229-254,1000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,244-245,3500
+0.00000000000,"Electric only, not designated, 1000' width",No,Electric-only,229-254,1000
+0.00000000000,"Electric only, not designated, 1000' width",No,Electric-only,229-254,1000
+0.00000000000,"Electric only, not designated, 1000' width",No,Electric-only,229-254,1000
+0.00000000000,"Electric only, not designated, 1000' width",No,Electric-only,229-254,1000
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,7-11,3500
+0.00000000000,"Multimodal, not designated, default 3500' width",No,All,250-251,3500

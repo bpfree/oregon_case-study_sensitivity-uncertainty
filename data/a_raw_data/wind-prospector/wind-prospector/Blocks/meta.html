@@ -1,0 +1,25 @@
+<p><strong>Gulf Coast Wind Speed - Blocks</strong></p>
+
+<hr />
+
+<p><strong>Description:</strong>
+The geodatabase was created by computing statistical wind speed parameters for seven years of wind data from NREL’s WIND Toolkit and placing them on a GIS grid that corresponds to the existing BOEM block lease grid for the Gulf coastal region.</p>
+
+<p>For the Gulf coastal region, seven years of modeled mean wind speed data on an approximately 2-km grid were obtained from NREL’s WIND Toolkit (http://www.nrel.gov/grid/wind-toolkit.html). Each 4.8-km BOEM block grid cell was assigned a mean wind speed that corresponds to the nearest 2-km WIND Toolkit grid cell representing the majority of its area. The Weibull parameters were estimated by computing the parameters of a Weibull distribution that has the same mean speed and wind energy as the WIND Toolkit data. This process created a long-term, monthly, and hourly (by month and for the whole 7-year period) Weibull representation of the wind speed for each block. The resulting dataset is intended to provide broad estimates of wind speed variation for the purposes of identifying possible good wind energy sites. It is not intended to provide estimates of possible energy production for the purpose of making offshore wind project investment or financing decisions in specific locations.</p>
+
+<p>Explanation of Attributes: Results in the geodatabase are reported on the existing 4.8 km x 4.8 km block grid defined by BOEM for the Gulf coastal region. Wind speed statistics are reported at the center point of each block grid, but represent the mean values over the entire area of each grid cell. The data set delivered to BOEM is a geodatabase consisting of 14 layers. There is one layer for the long-term statistics, one layer for each month, and one polygon layer of blocks covered by the data. The long-term shapefile includes mean wind speed and Weibull parameters to capture the long-term wind speed distribution of the entire 7-year time series. Each monthly shapefile contains mean wind speed and Weibull parameters for that month overall and for each hour of the day within that month. All times are in CST (UTC-6).</p>
+
+<p><strong>Source:</strong>
+National Renewable Energy Laboratory. 15013 Denver West Parkway, Golden, CO 80401. Phone: 303-275-3000. NREL is a national laboratory of the U.S Department of Energy, Office of Energy Efficiency and Renewable Energy. Operated by the Alliance for Sustainable Energy, LLC.</p>
+
+<p><strong>Additional Information:</strong>
+Contact <em>windtoolkit@nrel.gov</em> for more information.</p>
+
+<p><a href="http://gmao.gsfc.nasa.gov/merra/" target="_blank">MERRA</a></p>
+
+<p><a href="http://www.boem.gov/" target="_blank">BOEM</a></p>
+
+<p><a href="https://www.awstruepower.com/" target="_blank">AWS Truepower</a></p>
+
+<p><a href="http://www.nrel.gov/" target="_blank">NREL</a></p>
+
