@@ -89,10 +89,10 @@ date <- format(Sys.time(), "%Y%m%d")
 #####################################
 
 # Load data
-## Oregon hex
+## Oregon hex areas (original data)
 oregon_hex <- sf::st_read(dsn = study_area_gpkg,
                           layer = paste(sf::st_layers(dsn = study_area_gpkg,
-                                                      do_count = TRUE)[[1]][2]))
+                                                      do_count = TRUE)[[1]][4]))
 
 ## Fisheries
 oregon_fisheries_nmfs_odfw <- sf::st_read(dsn = fisheries_submodel,
