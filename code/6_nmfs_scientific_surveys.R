@@ -112,15 +112,15 @@ scientific_survey_function <- function(scientific_survey_points){
 #####################################
 
 # Load data
-## Oregon hex areas
-oregon_hex <- sf::st_read(dsn = study_area_gpkg,
-                          layer = paste(sf::st_layers(dsn = study_area_gpkg,
-                                                      do_count = TRUE)[[1]][2]))
-
 ## Oregon call areas
 oregon_call_areas <- sf::st_read(dsn = wind_area_gpkg,
                                  layer = paste(sf::st_layers(dsn = wind_area_gpkg,
                                                              do_count = TRUE)))
+
+## Oregon hex areas (original data)
+oregon_hex <- sf::st_read(dsn = study_area_gpkg,
+                          layer = paste(sf::st_layers(dsn = study_area_gpkg,
+                                                      do_count = TRUE)[[1]][4]))
 
 #####################################
 
@@ -415,10 +415,10 @@ layer_eastwest <- unique(stringr::str_split_fixed(string = deparse(oregon_hex_ea
 
 # Export data
 ## Submodel geopackage
-sf::st_write(obj = oregon_hex_eastwest_survey_corridors, dsn = industry_operations_submodel, layer = paste0(oregon, "_hex_", eastwest_survey), append = F)
-sf::st_write(obj = oregon_hex_additional_eastwest_survey_corridors, dsn = industry_operations_submodel, layer = paste0(oregon, "_hex_", additional_eastwest), append = F)
-sf::st_write(obj = oregon_hex_survey_stations, dsn = industry_operations_submodel, layer = paste0(oregon, "_hex_", survey_stations), append = F)
-sf::st_write(obj = oregon_hex_survey_transects, dsn = industry_operations_submodel, layer = paste0(oregon, "_hex_", survey_transects), append = F)
+sf::st_write(obj = oregon_hex_eastwest_survey_corridors, dsn = industry_operations_submodel, layer = paste0(region, "_hex_", eastwest_survey), append = F)
+sf::st_write(obj = oregon_hex_additional_eastwest_survey_corridors, dsn = industry_operations_submodel, layer = paste0(region, "_hex_", additional_eastwest), append = F)
+sf::st_write(obj = oregon_hex_survey_stations, dsn = industry_operations_submodel, layer = paste0(region, "_hex_", survey_stations), append = F)
+sf::st_write(obj = oregon_hex_survey_transects, dsn = industry_operations_submodel, layer = paste0(region, "_hex_", survey_transects), append = F)
 
 ## Scientific survey geopackage
 ### Coos Bay
