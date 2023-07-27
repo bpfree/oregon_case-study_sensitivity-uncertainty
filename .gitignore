@@ -21,7 +21,7 @@ data/a_raw_data/ais_counts_2019
 ### Bathymetry
 data/a_raw_data/crm_vol7.nc
 data/a_raw_data/central_oregon_13_navd88_2015.nc
-data/a_raw_data/crescent_city_13_mhw_2010.nc
+data/a_raw_data/crescent_city_13_navd88_2010.nc
 data/a_raw_data/port_orford_13_mhw_2008.nc
 
 ### Land
