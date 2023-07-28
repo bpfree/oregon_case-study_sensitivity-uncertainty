@@ -44,7 +44,7 @@ suitability_models <- "data/d_suitability_data/suitability_model.gpkg"
 
 ## Output directories
 ### LISA directory
-lisa_gpkg <- "data/e_rank_data/lisa.gpkg"
+lisa_gpkg <- "data/e_rank_data/oregon_lisa.gpkg"
 
 #####################################
 #####################################
