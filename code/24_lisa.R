@@ -265,7 +265,7 @@ g
 # Export data
 ## LISA
 sf::st_write(obj = oregon_lisa_highhigh, dsn = lisa_gpkg, layer = paste(region, layer, classification, sep = "_"), append = F)
-sf::st_write(obj = oregon_hex_lisa, dsn = lisa_gpkg, layer = paste0(region, "hex", layer), append = F)
+sf::st_write(obj = oregon_hex_lisa, dsn = lisa_gpkg, layer = paste(region, "hex", layer, sep = "_"), append = F)
 
 #####################################
 #####################################
