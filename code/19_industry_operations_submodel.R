@@ -190,20 +190,30 @@ oregon_industry_operations <- oregon_hex %>%
                                      # replacement values
                                      values = 1))) %>%
   
+  # calculate a summary value for scientific surveys
+  ## when a hex grid cell has multiple values the minimum
+  ## value across the datasets is assigned to the new
+  ## summarized field
+  dplyr::rowwise() %>%
+  dplyr::mutate(sci_survey = pmin(eastwest_value,
+                                  eastwest_add_value,
+                                  sstat_value,
+                                  stransect_value,
+                                  na.rm = T)) %>%
+  dplyr::relocate(sci_survey,
+                  .after = stransect_value) %>%
+  
   # calculate across rows
   dplyr::rowwise() %>%
   # calculate the geometric mean
   ## geometric mean = nth root of the product of the variable values
   dplyr::mutate(io_geom_mean = exp(mean(log(c_across(c("sub_cable",
-                                                       "eastwest_value",
-                                                       "eastwest_add_value",
-                                                       "sstat_value",
-                                                       "stransect_value"))),
+                                                       "sci_survey"))),
                                         # remove any values that are NA when calculating the mean
                                         na.rm = T))) %>%
-  # select the fields of interest
+  # relocate the industry and operations geometric mean field
   dplyr::relocate(io_geom_mean,
-                  .after = stransect_value)
+                  .after = sci_survey)
 
 ### Check to see if there are any duplicates of the indices
 ### There are none
