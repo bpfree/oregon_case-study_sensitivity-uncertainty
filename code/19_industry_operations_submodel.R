@@ -216,6 +216,8 @@ oregon_industry_operations <- oregon_hex %>%
   dplyr::relocate(io_geom_mean,
                   .after = sci_survey)
 
+#list(unique(oregon_industry_operations$sci_survey)
+
 ### Check to see if there are any duplicates of the indices
 ### There are none
 io_duplicates <- oregon_industry_operations %>%
