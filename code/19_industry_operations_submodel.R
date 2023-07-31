@@ -199,6 +199,7 @@ oregon_industry_operations <- oregon_hex %>%
                                   eastwest_add_value,
                                   sstat_value,
                                   stransect_value,
+                                  # remove any values that are NA when new field
                                   na.rm = T)) %>%
   dplyr::relocate(sci_survey,
                   .after = stransect_value) %>%
