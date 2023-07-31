@@ -305,6 +305,7 @@ habitat_values <- oregon_hex %>%
                                      deep_coralsponge_value,
                                      continental_shelf_value,
                                      methane_bubble_value,
+                                     # remove NA values from the minimum calculation
                                      na.rm = T)) %>%
   dplyr::select(index,
                 #layer,
