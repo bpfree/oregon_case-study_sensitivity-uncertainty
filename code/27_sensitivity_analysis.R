@@ -106,7 +106,7 @@ for (i in 4:28){
   start2 <- Sys.time()
   
   # if wanting to test a particular dataset
-  i <- 5
+  #i <- 5
   
   name <- names(oregon_suitability)[i]
   
