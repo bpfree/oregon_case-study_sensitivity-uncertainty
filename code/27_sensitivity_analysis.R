@@ -72,7 +72,7 @@ oregon_suitability <- sf::st_read(dsn = suitability_models, layer = "oregon_mode
                 # constraints
                 dod_value, pacpars_value,
                 # industry and operations
-                sc500_value, sc1000_value, sub_cable, eastwest_value, eastwest_add_value, sstat_value, stransect_value,
+                sc500_value, sc1000_value, sub_cable, eastwest_value, eastwest_add_value, sstat_value, stransect_value, sci_survey,
                 # natural resources
                 ## species product
                 leatherback_value, killerwhale_value, humpback_ca_value, humpback_mx_value, bluewhale_value,
@@ -102,11 +102,11 @@ sensitivity_jackknife <- oregon_suitability
 
 # Jackknife analysis across all datasets to determine how suitability scores change when dataset is removed
 ## Datasets cross fields 4 - 27
-for (i in 4:27){
+for (i in 4:28){
   start2 <- Sys.time()
   
   # if wanting to test a particular dataset
-  #i <- 5
+  i <- 5
   
   name <- names(oregon_suitability)[i]
   
@@ -116,15 +116,42 @@ for (i in 4:27){
     dplyr::mutate(across(.cols = i,
                          ~replace(i, !is.na(i), NA))) %>%
     
+    # create combined submarine cable field
+    ## fill with values of 500-m buffer, 500-1000-m buffer
+    ## when a hex has both values give it the lower value (500-m buffer = 0.6)
+    # calculate across rows
+    dplyr::rowwise() %>%
+    dplyr::mutate(sub_cable = sum(sc500_value,
+                                  sc1000_value,
+                                  # remove any values that are NA when new field
+                                  na.rm = T)) %>%
+    dplyr::mutate(sub_cable = case_when(sub_cable == 1.4 ~ 0.6,
+                                        sub_cable == 0.6 ~ 0.6,
+                                        sub_cable == 0.8 ~ 0.8)) %>%
+    dplyr::relocate(sub_cable,
+                    .after = sc1000_value) %>%
+    
+    # calculate a summary value for scientific surveys
+    ## when a hex grid cell has multiple values the minimum
+    ## value across the datasets is assigned to the new
+    ## summarized field
+    dplyr::rowwise() %>%
+    dplyr::mutate(sci_survey = pmin(eastwest_value,
+                                    eastwest_add_value,
+                                    sstat_value,
+                                    stransect_value,
+                                    # remove any values that are NA when new field
+                                    na.rm = T)) %>%
+    dplyr::relocate(sci_survey,
+                    .after = stransect_value) %>%
+    
     # recalculate the geometric means for each submodel (geometric mean = nth root of the product of the variable values)
     ## calculate across rows
     dplyr::rowwise() %>%
+    # calculate the geometric mean
     ## industry and operations
     dplyr::mutate(!!paste0("io_geom_mean_", name) := exp(mean(log(c_across(c("sub_cable",
-                                                                             "eastwest_value",
-                                                                             "eastwest_add_value",
-                                                                             "sstat_value",
-                                                                             "stransect_value"))),
+                                                                             "sci_survey"))),
                                                               # remove any values that are NA when calculating the mean
                                                               na.rm = T))) %>%
     
@@ -148,6 +175,7 @@ for (i in 4:27){
                                        deep_coralsponge_value,
                                        continental_shelf_value,
                                        methane_bubble_value,
+                                       # remove NA values from the minimum calculation
                                        na.rm = T)) %>%
     ### calculate across rows
     dplyr::rowwise() %>%
