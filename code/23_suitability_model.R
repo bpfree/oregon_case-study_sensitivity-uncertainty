@@ -83,6 +83,9 @@ model <- "model_areas"
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
 
+## geometric mean weight
+final_wt <- 1/4
+
 #####################################
 #####################################
 
@@ -165,24 +168,19 @@ oregon_model <- oregon_hex %>%
 oregon_model_areas <- oregon_model %>%
   # remove any areas that are constraints -- thus get areas that are NA
   dplyr::filter(is.na(constraints)) %>%
-  # calculate across rows
-  dplyr::rowwise() %>%
+
   # calculate the geometric mean
   ## geometric mean = nth root of the product of the variable values
-  dplyr::mutate(model_geom_mean = exp(mean(log(c_across(c("io_geom_mean",
-                                                          "nr_geom_mean",
-                                                          "fish_geom_mean",
-                                                          "wind_geom_mean"))),
-                                          # remove any values that are NA when calculating the mean
-                                          na.rm = T))) %>%
+  dplyr::mutate(model_geom_mean = (io_geom_mean ^ final_wt) * (nr_geom_mean ^ final_wt) * (fish_geom_mean ^ final_wt) * (wind_geom_mean ^ final_wt)) %>%
+  
+  # select desired fields
   dplyr::select(index,
                 # constraints
                 dod_value, pacpars_value,
                 # industry and operations
                 sc500_value, sc1000_value, sub_cable, eastwest_value, eastwest_add_value, sstat_value, stransect_value, sci_survey,
                 # natural resources
-                leatherback_value, killerwhale_value, humpback_ca_value, humpback_mx_value, bluewhale_value,
-                non_protected_value, species_product,
+                leatherback_value, killerwhale_value, humpback_ca_value, humpback_mx_value, bluewhale_value, species_product,
                 efhca_value, rreef_map_value, rreef_prob_value, deep_coralsponge_value, continental_shelf_value,
                 methane_bubble_value, habitat_value,
                 marine_bird_value,
