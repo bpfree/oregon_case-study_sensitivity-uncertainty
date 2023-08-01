@@ -85,6 +85,9 @@ submodel <- "wind"
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
 
+## geometric mean weight
+wind_wt <- 1/1
+
 #####################################
 #####################################
 
@@ -124,13 +127,10 @@ oregon_wind <- oregon_hex %>%
                                        # replacement values
                                        values = 1))) %>%
   
-  # calculate across rows
-  dplyr::rowwise() %>%
   # calculate the geometric mean
   ## geometric mean = nth root of the product of the variable values
-  dplyr::mutate(wind_geom_mean = exp(mean(log(c_across(c("lcoe_norm_index"))),
-                                          # remove any values that are NA when calculating the mean
-                                          na.rm = T))) %>%
+  dplyr::mutate(wind_geom_mean = lcoe_norm_index ^ wind_wt) %>%
+  
   # select the fields of interest
   dplyr::select(index,
                 lcoe_norm_index,
