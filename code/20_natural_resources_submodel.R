@@ -97,6 +97,9 @@ submodel <- "natural_resources"
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
 
+## geometric mean weight
+nr_wt <- 1/3
+
 #####################################
 #####################################
 
@@ -185,30 +188,24 @@ protected_species <- oregon_hex %>%
   dplyr::left_join(x = .,
                    y = bluewhale_value,
                    by = "index") %>%
-  # join the blue whale values by index field to full Oregon call area hex grid
-  dplyr::left_join(x = .,
-                   y = non_protected_species_value,
-                   by = "index") %>%
   # select only fields of interest
   dplyr::select(index,
                 leatherback_value,
                 killerwhale_value,
                 humpback_ca_value,
                 humpback_mx_value,
-                bluewhale_value,
-                non_protected_value) %>%
+                bluewhale_value) %>%
   
-  # calculate across rows
-  dplyr::rowwise() %>%
+  # add value of 1 for datasets when hex cell has value of NA
+  ## for hex cells not impacted by a particular dataset, that cell gets a value of 1
+  ### this indicates  suitability with wind energy development
+  dplyr::mutate(across(2:6, ~replace(x = .,
+                                     list = is.na(.),
+                                     # replacement values
+                                     values = 1))) %>%
+
   # calculate the product of all protected species values
-  dplyr:::mutate(species_product = prod(leatherback_value,
-                                        killerwhale_value,
-                                        humpback_ca_value,
-                                        humpback_mx_value,
-                                        bluewhale_value,
-                                        non_protected_value,
-                                        # remove NA values for product 
-                                        na.rm = T)) %>%
+  dplyr:::mutate(species_product = leatherback_value *killerwhale_value * humpback_ca_value * humpback_mx_value * bluewhale_value) %>%
   # select all the key fields
   dplyr::select(index,
                 leatherback_value,
@@ -216,7 +213,6 @@ protected_species <- oregon_hex %>%
                 humpback_ca_value,
                 humpback_mx_value,
                 bluewhale_value,
-                non_protected_value,
                 species_product) %>%
   as.data.frame()
 
@@ -281,7 +277,6 @@ habitat_values <- oregon_hex %>%
                    by = "index") %>%
   # select only fields of interest
   dplyr::select(index,
-                #layer,
                 efhca_value,
                 rreef_map_value,
                 rreef_prob_value,
@@ -298,7 +293,6 @@ habitat_values <- oregon_hex %>%
                                      values = 1))) %>%
   
   # calculate minimum value across the habitat subdatasets
-  dplyr::rowwise() %>%
   dplyr::mutate(habitat_value = pmin(efhca_value,
                                      rreef_map_value,
                                      rreef_prob_value,
@@ -308,7 +302,6 @@ habitat_values <- oregon_hex %>%
                                      # remove NA values from the minimum calculation
                                      na.rm = T)) %>%
   dplyr::select(index,
-                #layer,
                 efhca_value,
                 rreef_map_value,
                 rreef_prob_value,
@@ -340,15 +333,11 @@ oregon_natural_resources <- oregon_hex %>%
  dplyr::left_join(x = .,
                   y = marine_bird_value,
                   by = "index") %>%
-  # calculate across rows
-  dplyr::rowwise() %>%
+
   # calculate the geometric mean
   ## geometric mean = nth root of the product of the variable values
-  dplyr::mutate(nr_geom_mean = exp(mean(log(c_across(c("species_product",
-                                                       "habitat_value",
-                                                       "marine_bird_value"))),
-                                        # remove any values that are NA when calculating the mean
-                                        na.rm = T))) %>%
+  dplyr::mutate(nr_geom_mean = (species_product ^ nr_wt) * (habitat_value ^ nr_wt) * (marine_bird_value ^ nr_wt)) %>%
+  
   # select the fields of interest
   dplyr::select(index,
                 leatherback_value,
@@ -356,7 +345,6 @@ oregon_natural_resources <- oregon_hex %>%
                 humpback_ca_value,
                 humpback_mx_value,
                 bluewhale_value,
-                non_protected_value,
                 species_product,
                 efhca_value,
                 rreef_map_value,
