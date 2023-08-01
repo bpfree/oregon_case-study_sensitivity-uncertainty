@@ -85,6 +85,9 @@ submodel <- "fisheries"
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
 
+## geometric mean weight
+fish_wt <- 1/1
+
 #####################################
 #####################################
 
@@ -114,13 +117,11 @@ oregon_fisheries <- oregon_hex %>%
   dplyr::left_join(x = .,
                    y = oregon_fisheries_values,
                    by = "index") %>%
-  # calculate across rows
-  dplyr::rowwise() %>%
+  
   # calculate the geometric mean
   ## geometric mean = nth root of the product of the variable values
-  dplyr::mutate(fish_geom_mean = exp(mean(log(c_across(c("fisheries_index"))),
-                                          # remove any values that are NA when calculating the mean
-                                          na.rm = T))) %>%
+  dplyr::mutate(fish_geom_mean = fisheries_index ^ fish_wt) %>%
+  
   # select the fields of interest
   dplyr::select(index,
                 fisheries_index,
