@@ -110,7 +110,8 @@ wind_areas <- sf::st_read(dsn = wind_area_dir,
                                                 # [4] --> 4th element of that list, which is the planning area outlines
                                                 do_count = TRUE)[[1]][4])) %>%
   # filter for only Oregon call areas
-  dplyr::filter(grepl("Oregon", CATEGORY1)) %>%
+  dplyr::filter(grepl(pattern = "Oregon",
+                      x = ADDITIONAL_INFORMATION)) %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 10N) that will convert units from degrees to meters
   sf::st_transform("EPSG:26910")
 
