@@ -255,12 +255,14 @@ methane_bubble_reidel <- "https://static-content.springer.com/esm/art%3A10.1038%
 
 #####################################
 
-## Methane bubble streams (Johnson et al. 2015) (source: https://agupubs.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2F2015GC005955&file=ggge20859-sup-0001-2015GC005955-SupInfo.docx)
-### ***Note: data come from the supporting information document (see S2 and S3)
-### ***Note: S3 does not contain any sites that fall within Oregon call areas
-### Paper: https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2015GC005955
-### ***Note: these data are contained within the Merle et al. (2021) dataset
-methane_bubble_johnson <- "https://agupubs.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2F2015GC005955&file=ggge20859-sup-0001-2015GC005955-SupInfo.docx"
+### ***Note: As of 2 August 2023, getting 403 error when trying programmatic download (manual download works fine)
+
+# ## Methane bubble streams (Johnson et al. 2015) (source: https://agupubs.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2F2015GC005955&file=ggge20859-sup-0001-2015GC005955-SupInfo.docx)
+# ### ***Note: data come from the supporting information document (see S2 and S3)
+# ### ***Note: S3 does not contain any sites that fall within Oregon call areas
+# ### Paper: https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2015GC005955
+# ### ***Note: these data are contained within the Merle et al. (2021) dataset
+# methane_bubble_johnson <- "https://agupubs.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2F2015GC005955"
 
 #####################################
 
@@ -370,7 +372,7 @@ download_list <- c(
   # methane bubble streams
   methane_bubble_merle,
   methane_bubble_reidel,
-  methane_bubble_johnson,
+  # methane_bubble_johnson,
 
   # marine bird
   marine_bird,
@@ -428,12 +430,12 @@ file.rename(from = file.path(data_dir,
             to = file.path(data_dir, "methane_bubble_streams_reidel.xlsx"))
 
 ## Methane bubble streams (Johnson et al. 2015)
-file.rename(from = file.path(data_dir,
-                             # find original name
-                             list.files(data_dir,
-                                        # search for pattern that matches dataset
-                                        pattern = "SupInfo.docx")),
-            to = file.path(data_dir, "methane_bubble_streams_johnson.docx"))
+# file.rename(from = file.path(data_dir,
+#                              # find original name
+#                              list.files(data_dir,
+#                                         # search for pattern that matches dataset
+#                                         pattern = "SupInfo.docx")),
+#             to = file.path(data_dir, "methane_bubble_streams_johnson.docx"))
 
 ## Marine bird
 file.rename(from = file.path(data_dir,
