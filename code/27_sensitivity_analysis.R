@@ -101,11 +101,11 @@ sensitivity_jackknife <- oregon_suitability
 
 # Jackknife analysis across all datasets to determine how suitability scores change when dataset is removed
 ## Datasets cross fields 4 - 27
-for (i in 4:27){
+for (i in 4:17){
   start2 <- Sys.time()
   
   # if wanting to test a particular dataset
-  i <- 5
+  i <- 14
   
   name <- names(oregon_suitability)[i]
   
@@ -142,6 +142,7 @@ for (i in 4:27){
     dplyr::rowwise() %>%
     # calculate the geometric mean
     ## industry and operations
+    ### ***Note: !! will have will create the new field name before evaluating the statement
     dplyr::mutate(!!paste0("io_geom_mean_", name) := exp(mean(log(c_across(c("sub_cable",
                                                                              "sci_survey"))),
                                                               # remove any values that are NA when calculating the mean
@@ -149,7 +150,13 @@ for (i in 4:27){
     
     ### natural resources
     #### calculate the product of all protected species values
-    dplyr:::mutate(species_product = leatherback_value * killerwhale_value * humpback_ca_value * humpback_mx_value * bluewhale_value) %>%
+    dplyr::mutate(species_product = prod(leatherback_value,
+                                         killerwhale_value,
+                                         humpback_ca_value,
+                                         humpback_mx_value,
+                                         bluewhale_value,
+                                         # remove NA values from the minimum calculation
+                                         na.rm = T)) %>%
     #### calculate minimum value across the habitat subdatasets
     dplyr::mutate(habitat_value = pmin(efhca_value,
                                        rreef_map_value,
@@ -212,8 +219,33 @@ for (i in 4:27){
   sensitivity_jackknife <- cbind(sensitivity_jackknife, sensitivity_iteration)
   
   # print how long it takes to calculate
-  print(paste(Sys.time() - start2, "minutes to complete creating and adding", name, "data to dataframe", sep = " "))
+  print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding", name, "data to dataframe", sep = " "))
 }
+
+#####################################
+#####################################
+
+# Calculate nominal and percent changes between model iterations
+original_model_score <- 33
+
+p <- 38
+
+name_change <- names(sensitivity_jackknife)[p] %>%
+  # extract name of leftout dataset
+  ## ?<= will look back and exclude the match (mean_)
+  ## .*? will look for match until next pattern
+  ## ?= will look ahead and exclude the match (_value)
+  stringr::str_extract(string = ., pattern = "(?<=mean_).*?(?=_value)")
+
+test <- sensitivity_jackknife %>%
+  dplyr::mutate(!!paste("model_geom_mean", name_change, "nominal_change", sep = "_") := .[[p]] - .[[original_model_score]],
+                .after = paste0("model_geom_mean_", name_change, "_value")) %>%
+  dplyr::mutate(!!paste("model_geom_mean", name_change, "percent_change", sep = "_") := round(((.[[p]] - .[[original_model_score]]) / .[[p]]) * 100, 2) ,
+                .after = paste("model_geom_mean", name_change, "nominal_change", sep = "_"))
+
+
+#####################################
+#####################################
 
 # Export data
 ## Jackknife
