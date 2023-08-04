@@ -178,9 +178,9 @@ oregon_model_areas <- oregon_model %>%
                 # constraints
                 dod_value, pacpars_value,
                 # industry and operations
-                sc500_value, sc1000_value, sub_cable, eastwest_value, eastwest_add_value, sstat_value, stransect_value, sci_survey,
+                sc500_value, sc1000_value, sub_cable_value, eastwest_value, eastwest_add_value, sstat_value, stransect_value, sci_survey_value,
                 # natural resources
-                leatherback_value, killerwhale_value, humpback_ca_value, humpback_mx_value, bluewhale_value, species_product,
+                leatherback_value, killerwhale_value, humpback_ca_value, humpback_mx_value, bluewhale_value, species_product_value,
                 efhca_value, rreef_map_value, rreef_prob_value, deep_coralsponge_value, continental_shelf_value,
                 methane_bubble_value, habitat_value,
                 marine_bird_value,
