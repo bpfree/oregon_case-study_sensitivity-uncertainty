@@ -182,35 +182,36 @@ oregon_industry_operations <- oregon_hex %>%
   # create combined submarine cable field
   ## fill with values of 500-m buffer, 500-1000-m buffer
   ## when a hex has both values give it the lower value (500-m buffer = 0.6)
-  dplyr::mutate(sub_cable = sc500_value + sc1000_value) %>%
-  dplyr::mutate(sub_cable = case_when(sub_cable == 2 ~ 1,
-                                      sub_cable == 1.8 ~ 0.8,
-                                      sub_cable == 1.6 ~ 0.6,
-                                      sub_cable == 1.4 ~ 0.6,
-                                      sub_cable == 0.8 ~ 0.8,
-                                      sub_cable == 0.6 ~ 0.6)) %>%
-  dplyr::relocate(sub_cable,
+  dplyr::mutate(sub_cable_value = sc500_value + sc1000_value) %>%
+  dplyr::mutate(sub_cable_value = case_when(sub_cable_value == 2 ~ 1,
+                                            sub_cable_value == 1.8 ~ 0.8,
+                                            sub_cable_value == 1.6 ~ 0.6,
+                                            sub_cable_value == 1.4 ~ 0.6,
+                                            sub_cable_value == 0.8 ~ 0.8,
+                                            sub_cable_value == 0.6 ~ 0.6)) %>%
+                                      
+  dplyr::relocate(sub_cable_value,
                   .after = sc1000_value) %>%
   
   # calculate a summary value for scientific surveys
   ## when a hex grid cell has multiple values the minimum
   ## value across the datasets is assigned to the new
   ## summarized field
-  dplyr::mutate(sci_survey = pmin(eastwest_value,
-                                  eastwest_add_value,
-                                  sstat_value,
-                                  stransect_value,
-                                  # remove any values that are NA when new field
-                                  na.rm = T)) %>%
-  dplyr::relocate(sci_survey,
+  dplyr::mutate(sci_survey_value = pmin(eastwest_value,
+                                        eastwest_add_value,
+                                        sstat_value,
+                                        stransect_value,
+                                        # remove any values that are NA when new field
+                                        na.rm = T)) %>%
+  dplyr::relocate(sci_survey_value,
                   .after = stransect_value) %>%
 
   ## geometric mean = nth root of the product of the variable values
-  dplyr::mutate(io_geom_mean = (sub_cable ^ io_wt) * (sci_survey ^ io_wt)) %>%
+  dplyr::mutate(io_geom_mean = (sub_cable_value ^ io_wt) * (sci_survey_value ^ io_wt)) %>%
   
   # relocate the industry and operations geometric mean field
   dplyr::relocate(io_geom_mean,
-                  .after = sci_survey)
+                  .after = sci_survey_value)
 
 #list(unique(oregon_industry_operations$sci_survey)
 
@@ -230,7 +231,7 @@ io_duplicates <- oregon_industry_operations %>%
 # Export data
 ## Suitability
 sf::st_write(obj = oregon_industry_operations, dsn = oregon_suitability_gpkg, layer = paste0(region, "_", submodel, "_suitability"), append = F)
-  
+
 ## Submodel
 saveRDS(obj = oregon_hex_submarine_cable500, file = paste(oregon_industry_operations_dir, "oregon_hex_submarine_cable_500m.rds", sep = "/"))
 saveRDS(obj = oregon_hex_submarine_cable1000, file = paste(oregon_industry_operations_dir, "oregon_hex_submarine_cable_1000m.rds", sep = "/"))
