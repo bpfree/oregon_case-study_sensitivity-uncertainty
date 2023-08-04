@@ -45,6 +45,7 @@ suitability_models <- "data/d_suitability_data/suitability_model.gpkg"
 ## Output directories
 ### Sensitivity directory
 sensitivity_gpkg <- "data/f_sensitivity_data/oregon_sensitivity.gpkg"
+sensitivity_dir <- "data/f_sensitivity_data"
 
 #####################################
 
@@ -72,10 +73,10 @@ oregon_suitability <- sf::st_read(dsn = suitability_models, layer = "oregon_mode
                 # constraints
                 dod_value, pacpars_value,
                 # industry and operations
-                sc500_value, sc1000_value, sub_cable, eastwest_value, eastwest_add_value, sstat_value, stransect_value, sci_survey,
+                sc500_value, sc1000_value, sub_cable_value, eastwest_value, eastwest_add_value, sstat_value, stransect_value, sci_survey_value,
                 # natural resources
                 ## species product
-                leatherback_value, killerwhale_value, humpback_ca_value, humpback_mx_value, bluewhale_value, species_product,
+                leatherback_value, killerwhale_value, humpback_ca_value, humpback_mx_value, bluewhale_value, species_product_value,
                 ## minimum habitat
                 efhca_value, rreef_map_value, rreef_prob_value, deep_coralsponge_value, continental_shelf_value,
                 methane_bubble_value, habitat_value,
@@ -101,11 +102,11 @@ sensitivity_jackknife <- oregon_suitability
 
 # Jackknife analysis across all datasets to determine how suitability scores change when dataset is removed
 ## Datasets cross fields 4 - 27
-for (i in 4:17){
+for (i in 4:27){
   start2 <- Sys.time()
   
   # if wanting to test a particular dataset
-  i <- 14
+  #i <- 14
   
   name <- names(oregon_suitability)[i]
   
@@ -118,24 +119,24 @@ for (i in 4:17){
     # create combined submarine cable field
     ## fill with values of 500-m buffer, 500-1000-m buffer
     ## when a hex has both values give it the lower value (500-m buffer = 0.6)
-    dplyr::mutate(sub_cable = sc500_value + sc1000_value) %>%
-    dplyr::mutate(sub_cable = case_when(sub_cable == 2 ~ 1,
-                                        sub_cable == 1.8 ~ 0.8,
-                                        sub_cable == 1.6 ~ 0.6,
-                                        sub_cable == 1.4 ~ 0.6,
-                                        sub_cable == 0.8 ~ 0.8,
-                                        sub_cable == 0.6 ~ 0.6)) %>%
+    dplyr::mutate(sub_cable_value = sc500_value + sc1000_value) %>%
+    dplyr::mutate(sub_cable_value = case_when(sub_cable_value == 2 ~ 1,
+                                              sub_cable_value == 1.8 ~ 0.8,
+                                              sub_cable_value == 1.6 ~ 0.6,
+                                              sub_cable_value == 1.4 ~ 0.6,
+                                              sub_cable_value == 0.8 ~ 0.8,
+                                              sub_cable_value == 0.6 ~ 0.6)) %>%
     
     # calculate a summary value for scientific surveys
     ## when a hex grid cell has multiple values the minimum
     ## value across the datasets is assigned to the new
     ## summarized field
-    dplyr::mutate(sci_survey = pmin(eastwest_value,
-                                    eastwest_add_value,
-                                    sstat_value,
-                                    stransect_value,
-                                    # remove any values that are NA when new field
-                                    na.rm = T)) %>%
+    dplyr::mutate(sci_survey_value = pmin(eastwest_value,
+                                          eastwest_add_value,
+                                          sstat_value,
+                                          stransect_value,
+                                          # remove any values that are NA when new field
+                                          na.rm = T)) %>%
     
     # recalculate the geometric means for each submodel (geometric mean = nth root of the product of the variable values)
     ## calculate across rows
@@ -143,20 +144,20 @@ for (i in 4:17){
     # calculate the geometric mean
     ## industry and operations
     ### ***Note: !! will have will create the new field name before evaluating the statement
-    dplyr::mutate(!!paste0("io_geom_mean_", name) := exp(mean(log(c_across(c("sub_cable",
-                                                                             "sci_survey"))),
+    dplyr::mutate(!!paste0("io_geom_mean_", name) := exp(mean(log(c_across(c("sub_cable_value",
+                                                                             "sci_survey_value"))),
                                                               # remove any values that are NA when calculating the mean
                                                               na.rm = T))) %>%
     
     ### natural resources
     #### calculate the product of all protected species values
-    dplyr::mutate(species_product = prod(leatherback_value,
-                                         killerwhale_value,
-                                         humpback_ca_value,
-                                         humpback_mx_value,
-                                         bluewhale_value,
-                                         # remove NA values from the minimum calculation
-                                         na.rm = T)) %>%
+    dplyr::mutate(species_product_value = prod(leatherback_value,
+                                               killerwhale_value,
+                                               humpback_ca_value,
+                                               humpback_mx_value,
+                                               bluewhale_value,
+                                               # remove NA values from the minimum calculation
+                                               na.rm = T)) %>%
     #### calculate minimum value across the habitat subdatasets
     dplyr::mutate(habitat_value = pmin(efhca_value,
                                        rreef_map_value,
@@ -170,7 +171,7 @@ for (i in 4:17){
     ### calculate across rows
     dplyr::rowwise() %>%
     #### calculate the geometric mean (geometric mean = nth root of the product of the variable values)
-    dplyr::mutate(!!paste0("nr_geom_mean_", name) := exp(mean(log(c_across(c("species_product",
+    dplyr::mutate(!!paste0("nr_geom_mean_", name) := exp(mean(log(c_across(c("species_product_value",
                                                                              "habitat_value",
                                                                              "marine_bird_value"))),
                                                               # remove any values that are NA when calculating the mean
@@ -204,7 +205,6 @@ for (i in 4:17){
                                                                  # remove any values that are NA when calculating the mean
                                                                  na.rm = T))) %>%
     
-    
     # convert to dataframe so geometry is dropped and not duplicated when binded to the reference dataframe
     as.data.frame() %>%
   
@@ -225,24 +225,150 @@ for (i in 4:17){
 #####################################
 #####################################
 
+sensitivity_jackknife <- sf::st_read(dsn = sensitivity_gpkg, layer = paste(region, "sensitivity", sep = "_"))
+
+sensitivity_nominal_percent_change <- sensitivity_jackknife %>%
+  dplyr::select(index,
+                model_geom_mean)
+
 # Calculate nominal and percent changes between model iterations
-original_model_score <- 33
+for (i in 1:24){
+  start2 <- Sys.time()
+  
+  # if wanting to test a particular dataset
+  #i <- 8
+  
+  original_model_score <- 33
+  
+  p <- original_model_score + i*5
+  
+  name_change <- names(sensitivity_jackknife)[p] %>%
+    # extract name of leftout dataset
+    ## ?<= will look back and exclude the match (mean_)
+    ## .*? will look for match until next pattern
+    ## ?= will look ahead and exclude the match (_value)
+    stringr::str_extract(string = ., pattern = "(?<=mean_).*?(?=_value)")
+  
+  change_iteration <- sensitivity_jackknife %>%
+    dplyr::mutate(!!paste("model_geom_mean", name_change, "nominal_change", sep = "_") := .[[p]] - .[[original_model_score]],
+                  .after = paste0("model_geom_mean_", name_change, "_value")) %>%
+    dplyr::mutate(!!paste("model_geom_mean", name_change, "percent_change", sep = "_") := round(((.[[p]] - .[[original_model_score]]) / .[[p]]) * 100, 2) ,
+                  .after = paste("model_geom_mean", name_change, "nominal_change", sep = "_")) %>%
+    
+    
+    # convert to dataframe so geometry is dropped and not duplicated when binded to the reference dataframe
+    as.data.frame() %>%
+    
+    # select the fields created by the iteration
+    dplyr::select(paste("model_geom_mean", name_change, "nominal_change", sep = "_"),
+                  paste("model_geom_mean", name_change, "percent_change", sep = "_"))
+  
+  # add the results from the iteration to the sensitivity nominal and percent change dataframe
+  sensitivity_nominal_percent_change <- cbind(sensitivity_nominal_percent_change, change_iteration)
+  
+  # print how long it takes to calculate
+  print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding", name_change, "data to dataframe", sep = " "))
+}
 
-p <- 38
+#####################################
 
-name_change <- names(sensitivity_jackknife)[p] %>%
-  # extract name of leftout dataset
-  ## ?<= will look back and exclude the match (mean_)
-  ## .*? will look for match until next pattern
-  ## ?= will look ahead and exclude the match (_value)
-  stringr::str_extract(string = ., pattern = "(?<=mean_).*?(?=_value)")
+table <- data.frame(dataset = character(),
+                    n_min = numeric(),
+                    n_max = numeric(),
+                    p_min = numeric(),
+                    p_max = numeric())
 
-test <- sensitivity_jackknife %>%
-  dplyr::mutate(!!paste("model_geom_mean", name_change, "nominal_change", sep = "_") := .[[p]] - .[[original_model_score]],
-                .after = paste0("model_geom_mean_", name_change, "_value")) %>%
-  dplyr::mutate(!!paste("model_geom_mean", name_change, "percent_change", sep = "_") := round(((.[[p]] - .[[original_model_score]]) / .[[p]]) * 100, 2) ,
-                .after = paste("model_geom_mean", name_change, "nominal_change", sep = "_"))
+# Calculate minimum and maximum changes for each dataset on model geometric mean
+for (i in 0:23){
+  start2 <- Sys.time()
+  
+  # if wanting to test a particular dataset
+  #i <- 4
+  
+  nominal_data <- 3 + i*2
+  percent_data <- 4 + i*2
+  
+  name_change <- names(sensitivity_nominal_percent_change)[nominal_data] %>%
+    # extract name of leftout dataset
+    ## ?<= will look back and exclude the match (mean_)
+    ## .*? will look for match until next pattern
+    ## ?= will look ahead and exclude the match (_value)
+    stringr::str_extract(string = ., pattern = "(?<=mean_).*?(?=_nominal_change)")
+  
+  dataset_list <- c(name_change)
+  
+  n_min <- min(sensitivity_nominal_percent_change[[nominal_data]])
+  n_max <- max(sensitivity_nominal_percent_change[[nominal_data]])
 
+  p_min <- min(sensitivity_nominal_percent_change[[percent_data]])
+  p_max <- max(sensitivity_nominal_percent_change[[percent_data]])
+  
+  result_table <- data.frame(
+    dataset_list,
+    n_min,
+    n_max,
+    p_min,
+    p_max
+  )
+  
+  table <- rbind(table, result_table)
+  
+  hist(sensitivity_nominal_percent_change[[nominal_data]])
+  hist(sensitivity_nominal_percent_change[[percent_data]])
+  
+  # print how long it takes to calculate
+  print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding", name_change, "data to dataframe", sep = " "))
+}
+
+table <- table %>%
+  dplyr::mutate(n_range = n_max - n_min,
+                p_range = p_max - p_min) %>%
+  dplyr::mutate(dataset_list = recode(dataset_list,
+                                      "sc500" = "Submarine cable (500m)",
+                                      "sc1000" = "Submarine cable (1000m)",
+                                      "sub_cable" = "Submarine cable",
+                                      "eastwest" = "East-west surveys",
+                                      "eastwest_add" = "East-west surveys (additional)",
+                                      "sstat" = "Survey station",
+                                      "stransect" = "Survey transect",
+                                      "sci_survey" = "Scientific survey (combined)",
+                                      "leatherback" = "Leatherback",
+                                      "killerwhale" = "Killer whale",
+                                      "humpback_ca" = "Humpback (CA)",
+                                      "humpback_mx" = "Humpback (MX)",
+                                      "bluewhale" = "Blue whale",
+                                      "species_product" = "Species product (combined)",
+                                      "efhca" = "EFHCA",
+                                      "rreef_map" = "Rocky reef (mapped)",
+                                      "rreef_prob" = "Rocky reef (probable)",
+                                      "deep_coralsponge" = "Deep sea coral-sponge",
+                                      "continental_shelf" = "Contiental shelf (10km)",
+                                      "methane_bubble" = "Methan bubble streams",
+                                      "habitat" = "Habitat (combined)",
+                                      "marine_bird" = "Marine seabird",
+                                      "fisheries" = "Fisheries",
+                                      "wind" = "Wind"))
+
+n <- ggplot(table, aes(x = reorder(dataset_list, n_range), y = n_range)) +
+  #geom_bar(stat = "identity", fill = "lightblue") +
+  geom_errorbar(aes(ymin = n_min,
+                    ymax = n_max), width = 0.5, color = "darkblue") +
+  coord_flip() +
+  labs(x = "Dataset", y = "Nominal Range") +
+  theme_minimal()
+
+print(n)
+
+
+p <- ggplot(table, aes(x = reorder(dataset_list, p_range), y = p_range)) +
+  #geom_bar(stat = "identity", fill = "lightblue") +
+  geom_errorbar(aes(ymin = p_min,
+                    ymax = p_max), width = 0.5, color = "darkblue") +
+  coord_flip() +
+  labs(x = "Dataset", y = "Percent Range") +
+  theme_minimal()
+
+print(p)
 
 #####################################
 #####################################
@@ -250,6 +376,15 @@ test <- sensitivity_jackknife %>%
 # Export data
 ## Jackknife
 sf::st_write(obj = sensitivity_jackknife, dsn = sensitivity_gpkg, layer = paste(region, "sensitivity", sep = "_"), append = F)
+
+## Nominal / percent change
+sf::st_write(obj = sensitivity_nominal_percent_change, dsn = sensitivity_gpkg, layer = paste(region, "sensitivity_nominal_percent_change", sep = "_"), append = F)
+
+## Table
+base::saveRDS(object = table, file = paste(sensitivity_dir, paste(region, "sensitivity_rable.rds", sep = "_"), sep = "/"))
+
+# Export figures
+
 
 #####################################
 #####################################
