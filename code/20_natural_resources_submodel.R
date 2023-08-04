@@ -205,7 +205,7 @@ protected_species <- oregon_hex %>%
                                      values = 1))) %>%
 
   # calculate the product of all protected species values
-  dplyr:::mutate(species_product = leatherback_value *killerwhale_value * humpback_ca_value * humpback_mx_value * bluewhale_value) %>%
+  dplyr:::mutate(species_product_value = leatherback_value *killerwhale_value * humpback_ca_value * humpback_mx_value * bluewhale_value) %>%
   # select all the key fields
   dplyr::select(index,
                 leatherback_value,
@@ -213,7 +213,7 @@ protected_species <- oregon_hex %>%
                 humpback_ca_value,
                 humpback_mx_value,
                 bluewhale_value,
-                species_product) %>%
+                species_product_value) %>%
   as.data.frame()
 
 #####################################
@@ -336,7 +336,7 @@ oregon_natural_resources <- oregon_hex %>%
 
   # calculate the geometric mean
   ## geometric mean = nth root of the product of the variable values
-  dplyr::mutate(nr_geom_mean = (species_product ^ nr_wt) * (habitat_value ^ nr_wt) * (marine_bird_value ^ nr_wt)) %>%
+  dplyr::mutate(nr_geom_mean = (species_product_value ^ nr_wt) * (habitat_value ^ nr_wt) * (marine_bird_value ^ nr_wt)) %>%
   
   # select the fields of interest
   dplyr::select(index,
@@ -345,7 +345,7 @@ oregon_natural_resources <- oregon_hex %>%
                 humpback_ca_value,
                 humpback_mx_value,
                 bluewhale_value,
-                species_product,
+                species_product_value,
                 efhca_value,
                 rreef_map_value,
                 rreef_prob_value,
