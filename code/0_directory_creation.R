@@ -20,6 +20,19 @@ for (i in 1:length(data_subdirectories)){
   subdirectories <- dir.create(paste0("data/", data_subdirectories[i]))
 }
 
+#####################################
+
+# Create code direcotry
+code_dir <- dir.create("code")
+
+#####################################
+
+# Create figure directory
+figure_dir <- dir.create("figure")
+
+#####################################
+#####################################
+
 # Delete directory (if necessary)
 ### ***Note: change directory path for desired directory
 #unlink("data/a_raw_data", recursive = T)
