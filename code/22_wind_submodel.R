@@ -52,7 +52,7 @@ dir.create(paste0(suitability_dir, "/",
                   "wind_suitability"))
 
 oregon_wind_dir <- "data/d_suitability_data/wind_suitability"
-oregon_wind_suitability <- "data/d_suitability_data/wind_suitability/wind_suitability.gpkg"
+oregon_wind_suitability <- "data/d_suitability_data/wind_suitability/oregon_wind_suitability.gpkg"
 
 #####################################
 
