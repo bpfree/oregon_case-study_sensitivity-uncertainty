@@ -52,7 +52,7 @@ dir.create(paste0(suitability_dir, "/",
                   "fisheries_suitability"))
 
 oregon_fisheries_dir <- "data/d_suitability_data/fisheries_suitability"
-oregon_fisheries_suitability <- "data/d_suitability_data/fisheries_suitability/fisheries_suitability.gpkg"
+oregon_fisheries_suitability <- "data/d_suitability_data/fisheries_suitability/oregon_fisheries_suitability.gpkg"
 
 #####################################
 
