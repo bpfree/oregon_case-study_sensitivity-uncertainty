@@ -41,11 +41,11 @@ pacman::p_load(docxtractr,
 # Set directories
 ## Input directories
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
-industry_operations_submodel <- "data/c_submodel_data/industry_operations_submodel.gpkg"
+industry_operations_submodel <- "data/c_submodel_data/oregon_industry_operations_submodel.gpkg"
 
 ## Output directories
 ### Oregon suitability geopackage
-oregon_suitability_gpkg <- "data/d_suitability_data/suitability_model.gpkg"
+oregon_suitability_gpkg <- "data/d_suitability_data/oregon_suitability_model.gpkg"
 
 ### Industry and operations directory
 suitability_dir <- "data/d_suitability_data"
@@ -53,7 +53,7 @@ dir.create(paste0(suitability_dir, "/",
                   "industry_operations_suitability"))
 
 oregon_industry_operations_dir <- "data/d_suitability_data/industry_operations_suitability"
-oregon_industry_operations_suitability <- "data/d_suitability_data/industry_operations_suitability/industry_operations_suitability.gpkg"
+oregon_industry_operations_suitability <- "data/d_suitability_data/industry_operations_suitability/oregon_industry_operations_suitability.gpkg"
 
 #####################################
 
