@@ -40,7 +40,7 @@ pacman::p_load(docxtractr,
 
 # Set directories
 ## Input directories
-suitability_models <- "data/d_suitability_data/suitability_model.gpkg"
+suitability_models <- "data/d_suitability_data/oregon_suitability_model.gpkg"
 
 ## Output directories
 ### LISA directory
