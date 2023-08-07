@@ -41,7 +41,7 @@ pacman::p_load(docxtractr,
 # Set directories
 ## Input directories
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
-suitability_models <- "data/d_suitability_data/suitability_model.gpkg"
+suitability_models <- "data/d_suitability_data/oregon_suitability_model.gpkg"
 
 ## Output directories
 ### Suitability directory
