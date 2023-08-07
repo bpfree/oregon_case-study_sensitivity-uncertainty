@@ -41,11 +41,11 @@ pacman::p_load(docxtractr,
 # Set directories
 ## Input directories
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
-natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.gpkg"
+natural_resources_submodel <- "data/c_submodel_data/oregon_natural_resources_submodel.gpkg"
 
 ## Output directories
 ### Oregon suitability geopackage
-oregon_suitability_gpkg <- "data/d_suitability_data/suitability_model.gpkg"
+oregon_suitability_gpkg <- "data/d_suitability_data/oregon_suitability_model.gpkg"
 
 ### Natural resources directory
 suitability_dir <- "data/d_suitability_data"
