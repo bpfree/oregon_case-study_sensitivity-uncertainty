@@ -237,7 +237,7 @@ print(p)
 sf::st_write(obj = sensitivity_nominal_percent_change, dsn = sensitivity_gpkg, layer = paste(region, "sensitivity_nominal_percent_change", sep = "_"), append = F)
 
 ## Table
-base::saveRDS(object = table, file = paste(sensitivity_dir, paste(region, "sensitivity_rable.rds", sep = "_"), sep = "/"))
+base::saveRDS(object = table, file = paste(sensitivity_dir, paste(region, "sensitivity_table.rds", sep = "_"), sep = "/"))
 
 ## Figures
 ggsave(n, filename=file.path(figure_dir, paste(region, "nominal_change_tornado_plot.tiff", sep = "_")), width=6.5,
