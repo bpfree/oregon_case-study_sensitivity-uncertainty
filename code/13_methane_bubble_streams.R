@@ -119,7 +119,7 @@ methane_bubble_streams <- sf::st_read(dsn = methane_gdb, layer = "USGS_seeps_mer
 #####################################
 
 # Buffered (1km) methane bubble streams within Oregon call areas
-oregon_methane_bubbles <- methane_bubble_streams%>%
+oregon_methane_bubbles <- methane_bubble_streams %>%
   # apply a 1-kilometer (1000m) buffer on all methane bubble streams
   sf::st_buffer(dist = buffer) %>%
   # limit to only Oregon call areas
