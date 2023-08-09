@@ -66,6 +66,32 @@ date <- format(Sys.time(), "%Y%m%d")
 #####################################
 #####################################
 
+# Function to calculate product of non-NA values
+calculate_geometric_mean <- function(row) {
+  non_na_values <- row[!is.na(row)]
+  if (length(non_na_values) > 0) {
+    prod_values <- prod(non_na_values)
+    geometric_mean <- prod_values^(1/length(non_na_values))
+    return(geometric_mean)
+  } else {
+    return(NA)
+  }
+}
+
+# Function to calculate product of non-NA values
+calculate_product <- function(...) {
+  values <- c(...)
+  non_na_values <- values[!is.na(values)]
+  if (length(non_na_values) > 0) {
+    return(prod(non_na_values))
+  } else {
+    return(NA)
+  }
+}
+
+#####################################
+#####################################
+
 # load data
 ## Oregon suitability data
 oregon_suitability <- sf::st_read(dsn = suitability_models, layer = "oregon_model_areas") %>%
@@ -106,114 +132,130 @@ for (i in 4:27){
   start2 <- Sys.time()
   
   # if wanting to test a particular dataset
-  #i <- 14
+  #i <- 6
   
   name <- names(oregon_suitability)[i]
   
   sensitivity_iteration <- oregon_suitability %>%
+    as.data.frame() %>%
     
     # when field is elected (column i) fill with NA values so as to "remove" it from analysis
     dplyr::mutate(across(.cols = i,
                          .fns = ~replace(i, !is.na(i), NA))) %>%
     
-    # create combined submarine cable field
-    ## fill with values of 500-m buffer, 500-1000-m buffer
-    ## when a hex has both values give it the lower value (500-m buffer = 0.6)
-    dplyr::mutate(sub_cable_value = sc500_value + sc1000_value) %>%
-    dplyr::mutate(sub_cable_value = case_when(sub_cable_value == 2 ~ 1,
+    # industry and operations
+    ### fill sub_cable_values with the sum of 500-m buffer and 500-1000-m buffer values
+    ### when a hex has both values give it the lower value (500-m buffer = 0.6)
+    #### when iterating, if the column is the sub_cable_value, the field gets NA
+    #### otherwise, follow the minimum value rules
+    dplyr::mutate(sub_cable_value = rowSums((.[,4:5]),
+                                            na.rm = T)) %>%
+    dplyr::mutate(sub_cable_value = ifelse(i == 6, NA,
+                                           case_when(sub_cable_value == 2 ~ 1,
                                               sub_cable_value == 1.8 ~ 0.8,
                                               sub_cable_value == 1.6 ~ 0.6,
                                               sub_cable_value == 1.4 ~ 0.6,
+                                              sub_cable_value == 1.0 ~ 1.0,
                                               sub_cable_value == 0.8 ~ 0.8,
-                                              sub_cable_value == 0.6 ~ 0.6)) %>%
+                                              sub_cable_value == 0.6 ~ 0.6))) %>%
     
-    # calculate a summary value for scientific surveys
-    ## when a hex grid cell has multiple values the minimum
-    ## value across the datasets is assigned to the new
-    ## summarized field
-    dplyr::mutate(sci_survey_value = pmin(eastwest_value,
-                                          eastwest_add_value,
-                                          sstat_value,
-                                          stransect_value,
-                                          # remove any values that are NA when new field
-                                          na.rm = T)) %>%
     
-    # recalculate the geometric means for each submodel (geometric mean = nth root of the product of the variable values)
-    ## calculate across rows
-    dplyr::rowwise() %>%
-    # calculate the geometric mean
-    ## industry and operations
-    ### ***Note: !! will have will create the new field name before evaluating the statement
-    dplyr::mutate(!!paste0("io_geom_mean_", name) := exp(mean(log(c_across(c("sub_cable_value",
-                                                                             "sci_survey_value"))),
-                                                              # remove any values that are NA when calculating the mean
-                                                              na.rm = T))) %>%
+    ## calculate a summary value for scientific surveys
+    ### when a hex grid cell has multiple values the minimum
+    ### value across the datasets is assigned to the new
+    ### summarized field
+    dplyr::mutate(sci_survey_value = ifelse(i == 11, NA,
+                                            pmin(eastwest_value,
+                                                 eastwest_add_value,
+                                                 sstat_value,
+                                                 stransect_value,
+                                                 # remove any values that are NA when new field
+                                                 na.rm = T))) %>%
+                                          
+    ## calculate the geometric mean (geometric mean = nth root of the product of the variable values)
+    dplyr::mutate(!!paste("io_geom_mean", name, sep ="_") := apply(X = .[c("sub_cable_value",
+                                                                           "sci_survey_value")],
+                                                                   # 1 = rows, 2 = columns
+                                                                   MARGIN = 1,
+                                                                   # use the calculate geometric mean function
+                                                                   FUN = calculate_geometric_mean)) %>%
     
-    ### natural resources
-    #### calculate the product of all protected species values
-    dplyr::mutate(species_product_value = prod(leatherback_value,
+    #####################################
+  
+  # natural resources
+  ## calculate the product of all protected species values
+  dplyr::mutate(species_product_value = ifelse(i == 17, NA,
+                                               # function
+                                               mapply(FUN = calculate_product,
+                                               # fields to apply function to
+                                               leatherback_value,
                                                killerwhale_value,
                                                humpback_ca_value,
                                                humpback_mx_value,
-                                               bluewhale_value,
-                                               # remove NA values from the minimum calculation
-                                               na.rm = T)) %>%
-    #### calculate minimum value across the habitat subdatasets
-    dplyr::mutate(habitat_value = pmin(efhca_value,
-                                       rreef_map_value,
-                                       rreef_prob_value,
-                                       deep_coralsponge_value,
-                                       continental_shelf_value,
-                                       methane_bubble_value,
-                                       # remove NA values from the minimum calculation
-                                       na.rm = T)) %>%
+                                               bluewhale_value))) %>%
     
-    ### calculate across rows
-    dplyr::rowwise() %>%
-    #### calculate the geometric mean (geometric mean = nth root of the product of the variable values)
-    dplyr::mutate(!!paste0("nr_geom_mean_", name) := exp(mean(log(c_across(c("species_product_value",
-                                                                             "habitat_value",
-                                                                             "marine_bird_value"))),
-                                                              # remove any values that are NA when calculating the mean
-                                                              na.rm = T))) %>%
+    ## calculate minimum value across the habitat subdatasets
+    dplyr::mutate(habitat_value = ifelse(i == 24, NA,
+                                         pmin(efhca_value,
+                                              rreef_map_value,
+                                              rreef_prob_value,
+                                              deep_coralsponge_value,
+                                              continental_shelf_value,
+                                              methane_bubble_value,
+                                              # remove NA values from the minimum calculation
+                                              na.rm = T))) %>%
     
-    ## fisheries
-    ### calculate across rows
-    dplyr::rowwise() %>%
-    #### calculate the geometric mean (geometric mean = nth root of the product of the variable values)
-    dplyr::mutate(!!paste0("fish_geom_mean_", name) := exp(mean(log(c_across(c("fisheries_value"))),
-                                                                # remove any values that are NA when calculating the mean
-                                                                na.rm = T))) %>%
+    ## calculate the geometric mean (geometric mean = nth root of the product of the variable values)
+    dplyr::mutate(!!paste("nr_geom_mean", name, sep= "_") := apply(X = .[c("species_product_value",
+                                                                           "habitat_value",
+                                                                           "marine_bird_value")],
+                                                                   # 1 = rows, 2 = columns
+                                                                   MARGIN = 1,
+                                                                   # use the calculate geometric mean function
+                                                                   FUN = calculate_geometric_mean)) %>%
     
-    ## wind
-    ### calculate across rows
-    dplyr::rowwise() %>%
-    #### calculate the geometric mean (geometric mean = nth root of the product of the variable values)
-    dplyr::mutate(!!paste0("wind_geom_mean_", name) := exp(mean(log(c_across(c("wind_value"))),
-                                                                # remove any values that are NA when calculating the mean
-                                                                na.rm = T))) %>%
+    #####################################
+  
+  # fisheries
+  ## calculate the geometric mean (geometric mean = nth root of the product of the variable values)
+  dplyr::mutate(!!paste("fish_geom_mean", name, sep = "_") := apply(X = .[c("fisheries_value")],
+                                                                    # 1 = rows, 2 = columns
+                                                                    MARGIN = 1,
+                                                                    # use the calculate geometric mean function
+                                                                    FUN = calculate_geometric_mean)) %>%
     
-    # recalculate the geometric means for each final model (geometric mean = nth root of the product of the variable values)
-    ## final model
-    ### calculate across rows
-    dplyr::rowwise() %>%
-    #### calculate the geometric mean (geometric mean = nth root of the product of the variable values)
-    dplyr::mutate(!!paste0("model_geom_mean_", name) := exp(mean(log(c_across(c(paste0("io_geom_mean_", name),
-                                                                                paste0("nr_geom_mean_", name),
-                                                                                paste0("fish_geom_mean_", name),
-                                                                                paste0("wind_geom_mean_", name)))),
-                                                                 # remove any values that are NA when calculating the mean
-                                                                 na.rm = T))) %>%
+  #####################################
+  
+  # wind
+  ## calculate the geometric mean (geometric mean = nth root of the product of the variable values)
+  dplyr::mutate(!!paste("wind_geom_mean", name, sep = "_") := apply(X = .[c("wind_value")],
+                                                                    # 1 = rows, 2 = columns
+                                                                    MARGIN = 1,
+                                                                    # use the calculate geometric mean function
+                                                                    FUN = calculate_geometric_mean)) %>%
+    
+  #####################################
+  
+  # final model score
+  ## calculate the geometric mean (geometric mean = nth root of the product of the variable values)
+  dplyr::mutate(!!paste("model_geom_mean", name, sep = "_") := apply(X = .[c(paste("io_geom_mean", name, sep = "_"),
+                                                                                   paste("nr_geom_mean", name, sep = "_"),
+                                                                                   paste("fish_geom_mean", name, sep = "_"),
+                                                                                   paste("wind_geom_mean", name, sep = "_"))],
+                                                                           # 1 = rows, 2 = columns
+                                                                           MARGIN = 1,
+                                                                           # use the calculate geometric mean function
+                                                                           FUN = calculate_geometric_mean)) %>%
     
     # convert to dataframe so geometry is dropped and not duplicated when binded to the reference dataframe
     as.data.frame() %>%
-  
+    
     # select the fields created by the iteration
-    dplyr::select(paste0("io_geom_mean_", name),
-                  paste0("nr_geom_mean_", name),
-                  paste0("fish_geom_mean_", name),
-                  paste0("wind_geom_mean_", name),
-                  paste0("model_geom_mean_", name))
+    dplyr::select(paste("io_geom_mean", name, sep = "_"),
+                  paste("nr_geom_mean", name, sep = "_"),
+                  paste("fish_geom_mean", name, sep = "_"),
+                  paste("wind_geom_mean", name, sep = "_"),
+                  paste("model_geom_mean", name, sep = "_"))
   
   # add the results from the iteration to the sensitivity jackknife dataframe
   sensitivity_jackknife <- cbind(sensitivity_jackknife, sensitivity_iteration)
