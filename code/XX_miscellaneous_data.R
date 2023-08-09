@@ -1056,3 +1056,48 @@ sensitivity_jackknife <- sensitivity_jackknife %>%
   sf::st_as_sf(x = ., wkt = "geom")
 
 # assign(paste("sensitivity_jackknife_removed", fields[i], sep = "_"), test)
+
+## Version 2
+
+
+# dplyr::mutate(species_product_value = prod(leatherback_value,
+#                                            killerwhale_value,
+#                                            humpback_ca_value,
+#                                            humpback_mx_value,
+#                                            bluewhale_value,
+#                                            # remove NA values from the minimum calculation
+#                                            na.rm = T)) %>%
+
+
+#####################################
+
+# ### calculate across rows
+# dplyr::rowwise() %>%
+# #### calculate the geometric mean (geometric mean = nth root of the product of the variable values)
+# dplyr::mutate(!!paste0("nr_geom_mean_", name) := exp(mean(log(c_across(c("species_product_value",
+#                                                                          "habitat_value",
+#                                                                          "marine_bird_value"))),
+#                                                           # remove any values that are NA when calculating the mean
+#                                                           na.rm = T))) %>%
+
+# dplyr::mutate(!!paste0("fish_geom_mean_", name) := exp(mean(log(c_across(c("fisheries_value"))),
+#                                                             # remove any values that are NA when calculating the mean
+#                                                             na.rm = T))) %>%
+
+# dplyr::mutate(!!paste0("wind_geom_mean_", name) := exp(mean(log(c_across(c("wind_value"))),
+#                                                             # remove any values that are NA when calculating the mean
+#                                                             na.rm = T))) %>%
+
+# recalculate the geometric means for each final model (geometric mean = nth root of the product of the variable values)
+## final model
+### calculate across rows
+# dplyr::rowwise() %>%
+# #### calculate the geometric mean (geometric mean = nth root of the product of the variable values)
+# dplyr::mutate(!!paste0("model_geom_mean_", name) := exp(mean(log(c_across(c(paste0("io_geom_mean_", name),
+#                                                                             paste0("nr_geom_mean_", name),
+#                                                                             paste0("fish_geom_mean_", name),
+#                                                                             paste0("wind_geom_mean_", name)))),
+#                                                              # remove any values that are NA when calculating the mean
+#                                                              na.rm = T))) %>%
+
+
