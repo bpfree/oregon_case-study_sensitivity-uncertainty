@@ -132,7 +132,7 @@ for (i in 4:27){
   start2 <- Sys.time()
   
   # if wanting to test a particular dataset
-  #i <- 6
+  #i <- 14
   
   name <- names(oregon_suitability)[i]
   
@@ -150,27 +150,26 @@ for (i in 4:27){
     #### otherwise, follow the minimum value rules
     dplyr::mutate(sub_cable_value = rowSums((.[,4:5]),
                                             na.rm = T)) %>%
-    dplyr::mutate(sub_cable_value = ifelse(i == 6, NA,
-                                           case_when(sub_cable_value == 2 ~ 1,
+    dplyr::mutate(sub_cable_value = case_when(i == 6 ~ NA,
+                                              sub_cable_value == 2 ~ 1,
                                               sub_cable_value == 1.8 ~ 0.8,
                                               sub_cable_value == 1.6 ~ 0.6,
                                               sub_cable_value == 1.4 ~ 0.6,
                                               sub_cable_value == 1.0 ~ 1.0,
                                               sub_cable_value == 0.8 ~ 0.8,
-                                              sub_cable_value == 0.6 ~ 0.6))) %>%
-    
+                                              sub_cable_value == 0.6 ~ 0.6)) %>%       
     
     ## calculate a summary value for scientific surveys
     ### when a hex grid cell has multiple values the minimum
     ### value across the datasets is assigned to the new
     ### summarized field
-    dplyr::mutate(sci_survey_value = ifelse(i == 11, NA,
-                                            pmin(eastwest_value,
-                                                 eastwest_add_value,
-                                                 sstat_value,
-                                                 stransect_value,
-                                                 # remove any values that are NA when new field
-                                                 na.rm = T))) %>%
+    dplyr::mutate(sci_survey_value = case_when(i == 11 ~ NA,
+                                               i != 11 ~ pmin(eastwest_value,
+                                                              eastwest_add_value,
+                                                              sstat_value,
+                                                              stransect_value,
+                                                              # remove any values that are NA when new field
+                                                              na.rm = T))) %>%
                                           
     ## calculate the geometric mean (geometric mean = nth root of the product of the variable values)
     dplyr::mutate(!!paste("io_geom_mean", name, sep ="_") := apply(X = .[c("sub_cable_value",
@@ -180,31 +179,31 @@ for (i in 4:27){
                                                                    # use the calculate geometric mean function
                                                                    FUN = calculate_geometric_mean)) %>%
     
-    #####################################
+  #####################################
   
   # natural resources
   ## calculate the product of all protected species values
-  dplyr::mutate(species_product_value = ifelse(i == 17, NA,
-                                               # function
-                                               mapply(FUN = calculate_product,
-                                               # fields to apply function to
-                                               leatherback_value,
-                                               killerwhale_value,
-                                               humpback_ca_value,
-                                               humpback_mx_value,
-                                               bluewhale_value))) %>%
+  dplyr::mutate(species_product_value = case_when(i == 17 ~ NA,
+                                                  i != 17 ~ mapply(FUN = calculate_product,
+                                                                   # fields to apply function to
+                                                                   leatherback_value,
+                                                                   killerwhale_value,
+                                                                   humpback_ca_value,
+                                                                   humpback_mx_value,
+                                                                   bluewhale_value))) %>%
+                                               
     
     ## calculate minimum value across the habitat subdatasets
-    dplyr::mutate(habitat_value = ifelse(i == 24, NA,
-                                         pmin(efhca_value,
-                                              rreef_map_value,
-                                              rreef_prob_value,
-                                              deep_coralsponge_value,
-                                              continental_shelf_value,
-                                              methane_bubble_value,
-                                              # remove NA values from the minimum calculation
-                                              na.rm = T))) %>%
-    
+    dplyr::mutate(habitat_value = case_when(i == 24 ~ NA,
+                                            i != 24 ~ pmin(efhca_value,
+                                                           rreef_map_value,
+                                                           rreef_prob_value,
+                                                           deep_coralsponge_value,
+                                                           continental_shelf_value,
+                                                           methane_bubble_value,
+                                                           # remove NA values from the minimum calculation
+                                                           na.rm = T))) %>%
+                                        
     ## calculate the geometric mean (geometric mean = nth root of the product of the variable values)
     dplyr::mutate(!!paste("nr_geom_mean", name, sep= "_") := apply(X = .[c("species_product_value",
                                                                            "habitat_value",
@@ -214,7 +213,7 @@ for (i in 4:27){
                                                                    # use the calculate geometric mean function
                                                                    FUN = calculate_geometric_mean)) %>%
     
-    #####################################
+  #####################################
   
   # fisheries
   ## calculate the geometric mean (geometric mean = nth root of the product of the variable values)
