@@ -1,6 +1,6 @@
-############################################################
-### 30. Sensitivity Analysis -- Quantile Classifications ###
-############################################################
+###############################################################################
+### 30. Sensitivity Analysis -- Quantile Classifications (model iterations) ###
+###############################################################################
 
 # Clear environment
 rm(list = ls())
@@ -84,7 +84,21 @@ plot_theme <- theme(panel.grid.major = element_blank(),
                     legend.title = element_text(size = 8),
                     legend.text = element_text(size = 5))
 
-quant_change_colors <- (RColorBrewer::brewer.pal(9,"PiYG"))
+color_palette <- c(colorRampPalette(rev(brewer.pal(9, "BuPu")))(14),
+                   # 0 values
+                   "grey",
+                   # positive values
+                   colorRampPalette(brewer.pal(9, "YlGn"))(10))
+
+color_palette <- c(rev(paletteer_c("ggthemes::Purple", 14)),
+                   # 0 values
+                   "grey",
+                   # positive values
+                   colorRampPalette(brewer.pal(9, "YlGn"))(10))
+
+us_boundary <- rnaturalearth::ne_states(country = "United States of America", returnclass = "sf") %>%
+  dplyr::filter(name %in% c("California",
+                            "Oregon"))
 
 #####################################
 #####################################
@@ -113,7 +127,7 @@ model_quant_class <- quantile(x = sensitivity_quant_class[["model_geom_mean"]],
                                         0.875, 1.0))
 
 ### Reclassification of probabilities too classifications (1 - 8)
-sensitivity_quant_class <- sensitivity_quan_class %>%
+sensitivity_quant_class <- sensitivity_quant_class %>%
   dplyr::mutate(model_score_classification = dplyr::case_when(.[[2]] <= model_quant_class[[1]] ~ 0,
                                                               .[[2]] > model_quant_class[[1]] & .[[2]] <= model_quant_class[[2]] ~ 1,
                                                               .[[2]] > model_quant_class[[2]] & .[[2]] <= model_quant_class[[3]] ~ 2,
@@ -127,11 +141,6 @@ sensitivity_quant_class <- sensitivity_quan_class %>%
                 .after = model_geom_mean) %>%
   # remove the model geometric mean field
   dplyr::select(-model_geom_mean)
-
-
-
-
-
 
 #####################################
 #####################################
@@ -207,11 +216,6 @@ for (i in 1:24){
   print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding", name_change, "data to dataframe", sep = " "))
 }
 
-
-
-
-
-
 #####################################
 #####################################
 
@@ -273,13 +277,20 @@ tc_hist
 ## Create map of total change
 tc_plot <- ggplot() +
   geom_sf(data = sensitivity_quant_total_change, mapping = aes(fill = factor(total_change)), lwd = 0) +
-  scale_fill_manual(values = colorRampPalette(brewer.pal(11, "PiYG"))(25),
+  geom_sf(data = us_boundary, fill = "grey90") +
+  scale_fill_manual(values = color_palette,
                     name = "Total change") +
   labs(x = "",
        y = "",
        title = paste("Total quantile change in", str_to_title(region), sep = " "),
        subtitle = "Aggregated quantile classification change by hex grid") +
+  coord_sf(xlim = c(xmin = st_bbox(sensitivity_quant_total_change)$xmin,
+                    xmax = st_bbox(sensitivity_quant_total_change)$xmax+50000),
+           ylim = c(ymin = st_bbox(sensitivity_quant_total_change)$ymin,
+                    ymax = st_bbox(sensitivity_quant_total_change)$ymax)) +
+  geom_sf_text(data = us_boundary[2,], mapping = aes(label = name)) +
   theme_bw() +
+  guides(fill = guide_legend(ncol = 2)) +
   plot_theme
 
 print(tc_plot)
@@ -287,9 +298,48 @@ print(tc_plot)
 #####################################
 #####################################
 
+# minimum quantitative classification for each index
+sensitivity_quant_minmax <- sensitivity_quant_class %>%
+  dplyr::mutate(quant_min = purrr::pmap(.l = across(starts_with("model")),
+                                        .f = min),
+                quant_max = purrr::pmap(.l = across(starts_with("model")),
+                                        .f = max)) %>%
+  dplyr::select(index,
+                quant_min,
+                quant_max)
+
+sensitivity_quant_minmax <- as.data.frame(lapply(sensitivity_quant_minmax, unlist)) %>%
+  dplyr::group_by(index) %>%
+  dplyr::reframe(quant_min = min(quant_min),
+                 quant_max = max(quant_max)) %>%
+  dplyr::left_join(x = .,
+                   y = sensitivity_quant_total_change,
+                   by = "index") %>%
+  st_as_sf( x = .)
 
 
+min_plot <- ggplot() +
+  geom_sf(data = sensitivity_quant_minmax, mapping = aes(fill = factor(quant_min)), lwd = 0) +
+  geom_sf(data = us_boundary, fill = "grey90") +
+  scale_fill_manual(values = colorRampPalette(brewer.pal(9, "PuRd"))(10),
+                    name = "Minimum quantile classification") +
+  labs(x = "",
+       y = "",
+       title = paste("Minimum quantile classification in", str_to_title(region), sep = " "),
+       subtitle = "Minimum quantile classification change by hex grid") +
+  coord_sf(xlim = c(xmin = st_bbox(sensitivity_quant_minmax)$xmin,
+                    xmax = st_bbox(sensitivity_quant_minmax)$xmax+50000),
+           ylim = c(ymin = st_bbox(sensitivity_quant_minmax)$ymin,
+                    ymax = st_bbox(sensitivity_quant_minmax)$ymax)) +
+  geom_sf_text(data = us_boundary[2,], mapping = aes(label = name)) +
+  theme_bw() +
+  guides(fill = guide_legend(ncol = 2)) +
+  plot_theme
 
+print(min_plot)
+
+#####################################
+#####################################
 
 list <- list()
 
@@ -297,7 +347,7 @@ list <- list()
 for (i in 3:length(sensitivity_quant_class) - 1){
   #i <- 5
   
-  original_data <- as.data.frame(sensitivity_quant_class[,c(2,i)]) %>%
+  original_data <- as.data.frame(sensitivity_quant_class[, c(2,i)]) %>%
     dplyr::select(-geom)
   
   layer_name <- names(original_data)[2] %>%
@@ -344,6 +394,10 @@ print(matrix_plot)
 
 clean_list <- list[2:25]
 
+add_diag <- function(x,t){
+  sum(x[row(x)+col(x)==t])
+}
+
 quant_sum <- as.data.frame(matrix(nrow = length(clean_list),
                                   ncol = 5)) %>%
   dplyr::rename(layer_name = V1,
@@ -377,12 +431,6 @@ data_names_list <- list("Submarine cable (500m)",
                         "Fisheries",
                         "Wind")
 
-add_diag <- function(x,t){
-  sum(x[row(x)+col(x)==t])
-}
-
-#####################################
-
 # Quantile change table
 for (i in 1:length(clean_list)){
   #i <- 2
@@ -400,6 +448,32 @@ for (i in 1:length(clean_list)){
   quant_sum[i,5] <- sum(quant_sum[i, 2:4])
 }
 
+#####################################
+
+
+
+results <- lapply(1:length(clean_list), function(i) {
+  add_diag <- function(x,t){
+    sum(x[row(x)+col(x)==t])
+  }
+  
+  data <- clean_list[[i]]
+  
+  quant_sum <- data.frame(
+    layer_name = data_names_list[[i]],
+    no_change = add_diag(x = data, t = seq(2, 18, 2)),
+    increase = sum(sapply(2:9, function(j) sum(data[c(1:j - 1), j]))),
+    decrease = sum(sapply(2:9, function(j) sum(data[j, c(1:j - 1)]))),
+    total = 0)
+  
+  quant_sum$total <- sum(quant_sum$no_change,
+                         quant_sum$increase,
+                         quant_sum$decrease)
+  quant_sum
+})
+
+final_result <- bind_rows(results)
+final_result
 
 
 
@@ -409,19 +483,21 @@ for (i in 1:length(clean_list)){
 
 
 
+for (i in 1:length(clean_list)){
+  quant_sum2 <- as.data.frame(matrix(nrow = length(clean_list),
+                                     ncol = 5)) %>%
+    dplyr::rename(layer_name = V1,
+                  no_change = V2,
+                  increase = V3,
+                  decrease = V4,
+                  total = V5) %>%
+    dplyr::mutate(layer_name = data_names_list) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(no_change = add_diag(x = clean_list[[i]], t = seq(2, 18, 2)))
+}
 
 
 
-
-
-quant_sum <- as.data.frame(matrix(nrow = length(clean_list),
-                                  ncol = 5)) %>%
-  dplyr::rename(layer_name = V1,
-                no_change = V2,
-                increase = V3,
-                decrease = V4,
-                total = V5) %>%
-  dplyr::mutate(layer_name = data_names_list)
 
 
 
