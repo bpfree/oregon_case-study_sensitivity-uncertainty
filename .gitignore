@@ -94,3 +94,6 @@ data/c_submodel_data/natural_resources_submodel.gpkg
 
 ## Suitability model
 data/d_suitability_data/suitability_model.gpkg
+
+## Sensitivity model
+data/f_sensitivity_data/oregon_sensitivity.gpkg
