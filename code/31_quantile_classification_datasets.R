@@ -21,9 +21,13 @@ pacman::p_load(docxtractr,
                ggplot2,
                janitor,
                ncf,
+               paletteer,
                pdftools,
                plyr,
+               purrr,
                raster,
+               RColorBrewer,
+               reshape2,
                rgdal,
                rgeoda,
                rgeos,
@@ -62,6 +66,36 @@ region <- "oregon"
 
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
+
+#####################################
+
+plot_theme <- theme(panel.grid.major = element_blank(),
+                    panel.grid.minor = element_blank(),
+                    axis.title.x = element_text(size = 10),
+                    axis.text.x = element_text(size = 8),
+                    axis.title.y = element_text(size = 10),
+                    axis.text.y = element_text(size = 8),
+                    plot.subtitle = element_text(size = 8),
+                    plot.caption = element_text(size = 6,
+                                                lineheight = 0.5),
+                    legend.title = element_text(size = 8),
+                    legend.text = element_text(size = 5))
+
+color_palette <- c(colorRampPalette(rev(brewer.pal(9, "BuPu")))(14),
+                   # 0 values
+                   "grey",
+                   # positive values
+                   colorRampPalette(brewer.pal(9, "YlGn"))(10))
+
+color_palette <- c(rev(paletteer_c("ggthemes::Purple", 14)),
+                   # 0 values
+                   "grey",
+                   # positive values
+                   colorRampPalette(brewer.pal(9, "YlGn"))(10))
+
+us_boundary <- rnaturalearth::ne_states(country = "United States of America", returnclass = "sf") %>%
+  dplyr::filter(name %in% c("California",
+                            "Oregon"))
 
 #####################################
 #####################################
@@ -162,17 +196,11 @@ for (i in 2:(length(oregon_suitability) - 1)){
 #####################################
 #####################################
 
-xx<-c(1:(length(oregon_dataset_quant_class)-2))
-yy<-combn(xx,2)
-yy<-transform(yy)
-yy<-t(yy) %>%
-  as.data.frame.matrix()
-
 # Calculate quantile classifications change for each model iteration
 oregon_dataset_quant_class_change <- oregon_dataset_quant_class %>%
   dplyr::select(index)
 
-for (i in 2:(length(oregon_dataset_quant_class)-1)){
+for (i in 2:(length(oregon_dataset_quant_class)-2)){
   start2 <- Sys.time()
   
   #i <- 2
@@ -208,7 +236,7 @@ for (i in 2:(length(oregon_dataset_quant_class)-1)){
     oregon_dataset_quant_class_change <- cbind(oregon_dataset_quant_class_change, quant_change_iteration)
     
     # stop when it gets to the final two datasets (no need to compare the final dataset against itself)
-    if (i == (length(oregon_dataset_quant_class)-2) & p == (length(oregon_dataset_quant_class)-1)) break
+    #if (i == (length(oregon_dataset_quant_class)-2) & p == (length(oregon_dataset_quant_class)-1)) break
     
     # print how long it takes to calculate
     print(paste("Iteration", p, "takes", Sys.time() - start2, "minutes to complete creating and adding changes between", dataset1_name, "and", dataset2_name, "data to dataframe", sep = " "))
@@ -218,4 +246,104 @@ for (i in 2:(length(oregon_dataset_quant_class)-1)){
   print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding changes between for all of", dataset1_name, "data to dataframe", sep = " "))
 }
 
+#####################################
+#####################################
+
+combination_names <- oregon_dataset_quant_class_change %>%
+  as.data.frame() %>%
+  dplyr::select(-index,
+                -geom) %>%
+  base::colnames(.) %>%
+  # substitute nothing ("") for all the parts of the names that contain "_quant_score_change"
+  base::gsub(pattern = "_quant_score_change",
+             # replacement (i.e., "")
+             replacement = "",
+             # vector where the matches will be compared against
+             x = .) %>%
+  base::gsub(pattern = "sub_cable",
+             replacement = "Submarine cable",
+             x = .) %>%
+  base::gsub(pattern = "sci_survey",
+             replacement = "Scientific survey",
+             x = .) %>%
+  base::gsub(pattern = "species_product",
+             replacement = "Species Product",
+             x = .) %>%
+  base::gsub(pattern = "habitat",
+             replacement = "Habitat",
+             x = .) %>%
+  base::gsub(pattern = "marine_bird",
+             replacement = "Marine seabird",
+             x = .) %>%
+  base::gsub(pattern = "fisheries",
+             replacement = "Fisheries",
+             x = .) %>%
+  base::gsub(pattern = "wind",
+             replacement = "Wind",
+             x = .) %>%
+  base::gsub(pattern = "_",
+             replacement = " & ",
+             x = .)
+
+data_combo_tbl_compare <- as.data.frame(matrix(nrow = length(combination_names),
+                             ncol = 5)) %>%
+  dplyr::rename(layer_combination = V1,
+                no_change = V2,
+                change = V3,
+                total = V4,
+                change_pct = V5)
+
+oregon_combo_change <- oregon_dataset_quant_class_change %>%
+  as.data.frame() %>%
+  dplyr::select(-index,
+                -geom) %>%
+  as.matrix()
+
+# Initialize vectors to store occurrences
+no_change_occurrences <- numeric((length(oregon_dataset_quant_class_change)-2))
+change_occurrences <- numeric((length(oregon_dataset_quant_class_change)-2))
+
+# Calculate occurrences for each column
+for (data_combo in 1:((length(oregon_dataset_quant_class_change))-2)){
+  
+  # retrieve column with data combination
+  quant_combo <- oregon_combo_change[, data_combo]
+  
+  # get sum of all occurrences when quantitative classifications are equal (i.e., 0)
+  no_change_occurrences[data_combo] <- sum(quant_combo == 0)
+  
+  # get sum of all values not equal to zero and add to the list
+  change_occurrences[data_combo] <- sum(quant_combo != 0)
+}
+
+# Quantile change table
+for (i in 1:(length(oregon_dataset_quant_class_change)-2)){
+  #i <- 1
+  
+  data_combo_tbl_compare[i,1] <- combination_names[[i]]
+  
+  data_combo_tbl_compare[i,2] <- no_change_occurrences[[i]]
+  
+  data_combo_tbl_compare[i,3] <- change_occurrences[[i]]
+  
+  data_combo_tbl_compare[i,4] <- sum(data_combo_tbl_compare[i, 2:3])
+  
+  data_combo_tbl_compare[i,5] <- round(data_combo_tbl_compare[i, 3] / data_combo_tbl_compare[i, 4], 3)
+}
+
+
+
+n <- ggplot(data_combo_tbl_compare, aes(x = reorder(layer_combination, change_pct), y = change_pct)) +
+  geom_bar(stat = "identity",
+           fill = "lightblue") +
+  coord_flip() +
+  labs(x = "Dataset combination",
+       y = "Change proportion",
+       title = paste("Comparison of quantitative classification change in", str_to_title(region), "between two datasets", sep = " "), 
+       subtitle = "Aggregated hexes with a changed quantitative classification",
+       caption = "Calculation: Total changed hexes / Total hexes") +
+  theme_bw() +
+  plot_theme
+
+print(n)
 
