@@ -1,0 +1,54 @@
+*****************************************************************
+Journal for accession number:  0242882
+Created on:                    2021-11-08 21:33:56 UTC
+By:                            National Centers for Environmental Information
+
+Source: NCCOS Data Manager, US DOC; NOAA; NOS; National Centers for Coastal
+Ocean Science (NCCOS), submitted data and metadata to NCEI in submission
+package 4LFC6T via Send2NCEI (S2N).
+
+Actions: An automated procedure copied the files from the submission package
+into this accession. A metadata record in ISO 19115-2 XML format was also
+generated from the information provided by the submitter and was copied into
+this accession. Zipped directories were created for GIS files at the submitters 
+request to facilitate user download.
+
+Files:
+
+about/ 
+This directory contains files created by NCEI staff and processing, including
+'negotiable' information between NCEI staff and the data provider.
+
+0242882_lonlat.txt - 
+  Contains sample collection area bounding coordinates for these data. 
+  Each row contains the geographical position (longitude in the left column
+  and latitude in the right column, both in degrees).
+  
+0242882_map.jpg - 
+  The four dots represent the bounding area coordinates for these data. 
+  Data were collected within the box that they represent. Individual sample 
+  locations are not represented.
+
+0-email.txt - 
+  E-mail from personnel discussing with NCEI about correcting and resubmiiting
+  DataDocumentation.pdf file.
+
+
+4LFC6T-confirmation_email.txt -
+  Email from the Send2NCEI web application to NCCOS Data Manager, US DOC;
+  NOAA; NOS; National Centers for Coastal Ocean Science (NCCOS), confirming
+  that NCEI has received the submission information package.
+  
+0242882_preview.jpg -
+  Copy of the submitter's map of "model-predicted density for Pink-footed Shearwater
+  (Ardenna creatopus) in the summer season" file also available as
+  data/0-data/4LFC6T_PacificBirds_NCCOS/Pacific_marine_bird_mapping_browse_graphic_PFSH_summer.jpg,
+  created by NCEI to support NCEI browse graphic management.
+
+data/0-data/
+This directory contains files in their original format as downloaded to NCEI.
+
+data/1-data/
+DataDocumentation.pdf -
+ Portable Document Format (PDF) file that NCEI converted to 
+ Section  508 compliant .pdf/a document.
