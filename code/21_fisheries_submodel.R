@@ -12,6 +12,7 @@ start <- Sys.time()
 #####################################
 
 # Load packages
+if (!require("pacman")) install.packages("pacman")
 pacman::p_load(docxtractr,
                dplyr,
                elsa,
@@ -20,9 +21,13 @@ pacman::p_load(docxtractr,
                ggplot2,
                janitor,
                ncf,
+               paletteer,
                pdftools,
                plyr,
+               purrr,
                raster,
+               RColorBrewer,
+               reshape2,
                rgdal,
                rgeoda,
                rgeos,

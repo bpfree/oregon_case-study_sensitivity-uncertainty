@@ -8,16 +8,21 @@ rm(list = ls())
 
 # Load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(docxtractr,
+               dplyr,
                elsa,
                fasterize,
                fs,
                ggplot2,
                janitor,
                ncf,
+               paletteer,
                pdftools,
                plyr,
+               purrr,
                raster,
+               RColorBrewer,
+               reshape2,
                rgdal,
                rgeoda,
                rgeos,
@@ -25,6 +30,7 @@ pacman::p_load(dplyr,
                rnaturalearth, # use devtools::install_github("ropenscilabs/rnaturalearth") if packages does not install properly
                sf,
                sp,
+               stringr,
                terra, # is replacing the raster package
                tidyr)
 
