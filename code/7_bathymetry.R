@@ -16,6 +16,7 @@ start <- Sys.time()
 ### ***Note: May need restart R upon installing (stop running after first installation)
 install.packages('terra', repos='https://rspatial.r-universe.dev')
 
+# Load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(docxtractr,
                dplyr,
@@ -25,9 +26,13 @@ pacman::p_load(docxtractr,
                ggplot2,
                janitor,
                ncf,
+               paletteer,
                pdftools,
                plyr,
+               purrr,
                raster,
+               RColorBrewer,
+               reshape2,
                rgdal,
                rgeoda,
                rgeos,
