@@ -21,9 +21,13 @@ pacman::p_load(docxtractr,
                ggplot2,
                janitor,
                ncf,
+               paletteer,
                pdftools,
                plyr,
+               purrr,
                raster,
+               RColorBrewer,
+               reshape2,
                rgdal,
                rgeoda,
                rgeos,
@@ -87,12 +91,14 @@ plot_theme <- theme(panel.grid.major = element_blank(),
 # load data
 sensitivity_jackknife <- sf::st_read(dsn = sensitivity_gpkg, layer = paste(region, "sensitivity", sep = "_"))
 
+#####################################
+#####################################
+
+# set template table for populating with nominal and percent changes
+# between the different jackknifed analyses
 sensitivity_nominal_percent_change <- sensitivity_jackknife %>%
   dplyr::select(index,
                 model_geom_mean)
-
-#####################################
-#####################################
 
 # Calculate nominal and percent changes between model iterations
 for (i in 1:24){
@@ -105,45 +111,58 @@ for (i in 1:24){
   original_model_score <- 33
   
   # identify all jackknifed final scores
+  ## final scores are every 5th column
+  ## 4 submodels + 1 final model
   p <- original_model_score + i*5
   
-  # grab the name of the datasent
+  # grab the name of the dataset
   name_change <- names(sensitivity_jackknife)[p] %>%
-    # extract name of leftout dataset
+    # extract name of omitted dataset (field name contains
+    # the omitted dataset)
     ## ?<= will look back and exclude the match (mean_)
     ## .*? will look for match until next pattern
     ## ?= will look ahead and exclude the match (_value)
     stringr::str_extract(string = ., pattern = "(?<=mean_).*?(?=_value)")
   
+  #####################################
+  
   # calculate the nominal and percent changes between dataset removal
   change_iteration <- sensitivity_jackknife %>%
-    # create nominal change ()
+    # create nominal change (new score - original score)
     dplyr::mutate(!!paste("model_geom_mean", name_change, "nominal_change", sep = "_") := .[[p]] - .[[original_model_score]],
                   # move field after the dataset model geometric mean field
                   .after = paste0("model_geom_mean_", name_change, "_value")) %>%
-    # create percent change field ((new value - old value) / old value * 100)
+    # create percent change field ((new score - old score) / old score * 100)
     dplyr::mutate(!!paste("model_geom_mean", name_change, "percent_change", sep = "_") := round(((.[[p]] - .[[original_model_score]]) / .[[original_model_score]]) * 100, 2),
                   # move field after the dataset model nominal change field
                   .after = paste("model_geom_mean", name_change, "nominal_change", sep = "_")) %>%
     
+    #####################################
     
-    # convert to dataframe so geometry is dropped and not duplicated when binded to the reference dataframe
+    # convert to dataframe so geometry is dropped and not duplicated when bound to the reference dataframe
     as.data.frame() %>%
+    
+    #####################################
     
     # select the fields created by the iteration
     dplyr::select(paste("model_geom_mean", name_change, "nominal_change", sep = "_"),
                   paste("model_geom_mean", name_change, "percent_change", sep = "_"))
   
-  # add the results from the iteration to the sensitivity nominal and percent change dataframe
-  sensitivity_nominal_percent_change <- cbind(sensitivity_nominal_percent_change, change_iteration)
+    # add the results from the iteration to the sensitivity nominal and percent change dataframe
+    sensitivity_nominal_percent_change <- cbind(sensitivity_nominal_percent_change, change_iteration)
+    
+    #####################################
   
-  # print how long it takes to calculate
-  print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding", name_change, "data to dataframe", sep = " "))
+    # print how long it takes to calculate
+    print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding", name_change, "data to dataframe", sep = " "))
 }
 
 #####################################
 #####################################
 
+# create reference table to populate with
+# minimum and maximum values for nominal
+# and percent changes
 table <- data.frame(dataset = character(),
                     n_min = numeric(),
                     n_max = numeric(),
@@ -164,6 +183,8 @@ for (i in 0:23){
   ## percent change
   percent_data <- 4 + i*2
   
+  #####################################
+  
   # grab the name of the datasent
   name_change <- names(sensitivity_nominal_percent_change)[nominal_data] %>%
     # extract name of leftout dataset
@@ -173,14 +194,16 @@ for (i in 0:23){
     stringr::str_extract(string = ., pattern = "(?<=mean_).*?(?=_nominal_change)")
   
   # add the dataset layer name to the dataset list
-  ## this will allow for each row to have minimum and maximums
+  ## this will allow for each row to have minimums and maximums
   ## for nominal and percent changes by dataset
   dataset_list <- c(name_change)
   
-  # calculate minimum and maximum nonimal changes
+  #####################################
+  
+  # calculate minimum and maximum nominal changes
   ## minimum
   n_min <- min(sensitivity_nominal_percent_change[[nominal_data]])
-  ## maximim
+  ## maximum
   n_max <- max(sensitivity_nominal_percent_change[[nominal_data]])
   
   # calculate minimum and maximum percent changes
@@ -188,6 +211,8 @@ for (i in 0:23){
   p_min <- min(sensitivity_nominal_percent_change[[percent_data]])
   ## maximum
   p_max <- max(sensitivity_nominal_percent_change[[percent_data]])
+  
+  #####################################
   
   # get resulting table with nominal and percent change minimums and maximums
   result_table <- data.frame(
@@ -199,6 +224,8 @@ for (i in 0:23){
   
   # bind the resulting table to the original table
   table <- rbind(table, result_table)
+  
+  #####################################
   
   # print how long it takes to calculate
   print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding", name_change, "data to dataframe", sep = " "))
