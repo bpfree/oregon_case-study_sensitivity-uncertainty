@@ -51,6 +51,10 @@ suitability_models <- "data/d_suitability_data/suitability_model.gpkg"
 sensitivity_gpkg <- "data/f_sensitivity_data/oregon_sensitivity.gpkg"
 sensitivity_dir <- "data/f_sensitivity_data"
 
+
+### Figures
+figure_dir <- "figure"
+
 #####################################
 
 # Inspect available layers and names within suitability model geopackage
@@ -285,6 +289,8 @@ combination_names <- oregon_dataset_quant_class_change %>%
              replacement = " & ",
              x = .)
 
+#####################################
+
 data_combo_tbl_compare <- as.data.frame(matrix(nrow = length(combination_names),
                              ncol = 5)) %>%
   dplyr::rename(layer_combination = V1,
@@ -299,27 +305,29 @@ oregon_combo_change <- oregon_dataset_quant_class_change %>%
                 -geom) %>%
   as.matrix()
 
+#####################################
+
 # Initialize vectors to store occurrences
 no_change_occurrences <- numeric((length(oregon_dataset_quant_class_change)-2))
 change_occurrences <- numeric((length(oregon_dataset_quant_class_change)-2))
-
-# Calculate occurrences for each column
-for (data_combo in 1:((length(oregon_dataset_quant_class_change))-2)){
-  
-  # retrieve column with data combination
-  quant_combo <- oregon_combo_change[, data_combo]
-  
-  # get sum of all occurrences when quantitative classifications are equal (i.e., 0)
-  no_change_occurrences[data_combo] <- sum(quant_combo == 0)
-  
-  # get sum of all values not equal to zero and add to the list
-  change_occurrences[data_combo] <- sum(quant_combo != 0)
-}
 
 # Quantile change table
 for (i in 1:(length(oregon_dataset_quant_class_change)-2)){
   #i <- 1
   
+  # Calculate occurrences for each column
+  ## retrieve column with data combination
+  quant_combo <- oregon_combo_change[, i]
+  
+  ## get sum of all occurrences when quantitative classifications are equal (i.e., 0)
+  no_change_occurrences[i] <- sum(quant_combo == 0)
+  
+  ## get sum of all values not equal to zero and add to the list
+  change_occurrences[i] <- sum(quant_combo != 0)
+  
+  #####################################
+  
+  # Populate comparison table
   data_combo_tbl_compare[i,1] <- combination_names[[i]]
   
   data_combo_tbl_compare[i,2] <- no_change_occurrences[[i]]
@@ -331,7 +339,7 @@ for (i in 1:(length(oregon_dataset_quant_class_change)-2)){
   data_combo_tbl_compare[i,5] <- round(data_combo_tbl_compare[i, 3] / data_combo_tbl_compare[i, 4], 3)
 }
 
-
+#####################################
 
 n <- ggplot(data_combo_tbl_compare, aes(x = reorder(layer_combination, change_pct), y = change_pct)) +
   geom_bar(stat = "identity",
@@ -347,3 +355,113 @@ n <- ggplot(data_combo_tbl_compare, aes(x = reorder(layer_combination, change_pc
 
 print(n)
 
+#####################################
+#####################################
+
+for (i in 2:(length(oregon_dataset_quant_class_change) - 1)){
+  start2 <- Sys.time()
+  
+  # i <- 8
+  
+  values <- data.frame((unique(oregon_dataset_quant_class_change[[i]])))
+  decrease <- length(values[values < 0])
+  increase <- length(values[values > 0])
+  
+  #####################################
+  
+  dataset_name <- colnames(oregon_dataset_quant_class_change)[[i]] %>%
+    # extract name of leftout dataset
+    ## ?<= will look back and exclude the match (mean_)
+    ## .*? will look for match until next pattern
+    ## ?= will look ahead and exclude the match (_value)
+    stringr::str_extract(string = ., pattern = ".*?(?=_quant)")
+  
+  #####################################
+  
+  dataset_comp_map <- ggplot() +
+    geom_sf(data = oregon_dataset_quant_class_change,
+            # map the minimum classification for the hex grid
+            mapping = aes(fill = factor(oregon_dataset_quant_class_change[[i]])),
+            # line width is 0 (i.e., no line)
+            lwd = 0) +
+    
+    # add US state boundary data
+    geom_sf(data = us_boundary,
+            # fill with grey
+            fill = "grey90",
+            # line with a darker grey
+            color = "grey30",
+            # line type is dot-dash
+            linetype = "dotdash",
+            # transparency at 50%
+            alpha = 0.5) +
+    
+    # rescale the fill colors between purple and red (stretch from 9 colors to 10)
+    scale_fill_manual(values = c(rev(paletteer_c("ggthemes::Purple", decrease)),
+                                 # 0 values
+                                 "grey",
+                                 # positive values
+                                 colorRampPalette(brewer.pal(9, "YlGn"))(increase)),
+                      # have legend name be: "Minimum quantile classification"
+                      name = "Quantile\nclassification\nchange") +
+    
+    # alter labels
+    labs(x = "",
+         # no y-axis label
+         y = "",
+         # title
+         title = paste("Quantile classification change between\n", dataset_name, "in", str_to_title(region), sep = " "),
+         # subtitle
+         subtitle = paste("Quantile classification change by hex grid between\n", dataset_name, sep = " ")) +
+    
+    # expand view so US coastal boundary is visible
+    coord_sf(xlim = c(xmin = st_bbox(oregon_dataset_quant_class_change)$xmin,
+                      # show more eastern longitudes
+                      xmax = st_bbox(oregon_dataset_quant_class_change)$xmax+50000),
+             # latitudes
+             ylim = c(ymin = st_bbox(oregon_dataset_quant_class_change)$ymin,
+                      ymax = st_bbox(oregon_dataset_quant_class_change)$ymax)) +
+    
+    # add label for Oregon
+    geom_sf_text(data = us_boundary[2,],
+                 mapping = aes(label = name),
+                 # text size
+                 size = 4,
+                 # shift from the central location to the west
+                 nudge_x = -295000,
+                 # shift from the central location to the south
+                 nudge_y = -140000) +
+    theme_bw() +
+    plot_theme
+  
+  #####################################
+  
+  # print(dataset_comp_map)
+  
+  ggplot2::ggsave(plot = dataset_comp_map, filename = file.path(figure_dir, paste(region, dataset_name, "comparison_map.tiff", sep = "_")),
+                  width = 6, height = 8, units = "in", dpi = 600, compression = "lzw")
+  
+  #####################################
+  
+  # print how long it takes to calculate
+  print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating maps between", dataset_name, sep = " "))
+}
+
+#####################################
+#####################################
+
+# Export data
+## Tables
+base::saveRDS(object = oregon_dataset_quant_class, file = paste(sensitivity_dir, paste(region, "combined_dataset_comparison_quantile_classifications.rds", sep = "_"), sep = "/"))
+base::saveRDS(object = oregon_dataset_quant_class_change, file = paste(sensitivity_dir, paste(region, "combined_dataset_comparison_quantile_classifications_change.rds", sep = "_"), sep = "/"))
+base::saveRDS(object = data_combo_tbl_compare, file = paste(sensitivity_dir, paste(region, "dataset_combination_comparison_table.rds", sep = "_"), sep = "/"))
+
+## Map
+ggplot2::ggsave(plot = n, filename = file.path(figure_dir, paste(region, "dataset_combination_comparison_table.tiff", sep = "_")),
+                width = 10, height = 4.5, units = "in", dpi = 600, compression = "lzw")
+
+#####################################
+#####################################
+
+# calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
