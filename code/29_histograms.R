@@ -21,9 +21,13 @@ pacman::p_load(docxtractr,
                ggplot2,
                janitor,
                ncf,
+               paletteer,
                pdftools,
                plyr,
+               purrr,
                raster,
+               RColorBrewer,
+               reshape2,
                rgdal,
                rgeoda,
                rgeos,
@@ -83,7 +87,6 @@ plot_theme <- theme(panel.grid.major = element_blank(),
                                                 lineheight = 0.5),
                     legend.title = element_text(size = 8),
                     legend.text = element_text(size = 5))
-                   
 
 #####################################
 #####################################
