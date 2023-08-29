@@ -21,9 +21,13 @@ pacman::p_load(docxtractr,
                ggplot2,
                janitor,
                ncf,
+               paletteer,
                pdftools,
                plyr,
+               purrr,
                raster,
+               RColorBrewer,
+               reshape2,
                rgdal,
                rgeoda,
                rgeos,
@@ -55,7 +59,7 @@ pacman::p_load(docxtractr,
 #####################################
 
 # Create function that will pull data from publicly available websites
-## This allows for the analyis to have the most current data; for some
+## This allows for the analysis to have the most current data; for some
 ## of the datasets are updated with periodical frequency (e.g., every 
 ## month) or when needed. Additionally, this keeps consistency with
 ## naming of files and datasets.
