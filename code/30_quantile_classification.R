@@ -70,6 +70,32 @@ region <- "oregon"
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
 
+## data layer names
+data_names_list <- list("Submarine cable (500m)",
+                        "Submarine cable (1000m)",
+                        "Submarine cable (combined)",
+                        "East-west surveys",
+                        "East-west surveys (additional)",
+                        "Survey station",
+                        "Survey transect",
+                        "Scientific survey (combined)",
+                        "Leatherback sea turtle",
+                        "Killer whale",
+                        "Humpback whale (CA)",
+                        "Humpback whale (MX)",
+                        "Blue whale",
+                        "Species product (combined)",
+                        "EFHCA",
+                        "Rocky reef (mapped)",
+                        "Rocky reef (probable)",
+                        "Deep sea coral-sponge",
+                        "Contiental shelf (10km)",
+                        "Methane bubble streams",
+                        "Habitat (combined)",
+                        "Marine seabird",
+                        "Fisheries",
+                        "Wind")
+
 #####################################
 #####################################
 
@@ -85,11 +111,11 @@ plot_theme <- theme(panel.grid.major = element_blank(),
                     legend.title = element_text(size = 8),
                     legend.text = element_text(size = 5))
 
-color_palette <- c(colorRampPalette(rev(brewer.pal(9, "BuPu")))(14),
-                   # 0 values
-                   "grey",
-                   # positive values
-                   colorRampPalette(brewer.pal(9, "YlGn"))(10))
+# color_palette <- c(colorRampPalette(rev(brewer.pal(9, "BuPu")))(14),
+#                    # 0 values
+#                    "grey",
+#                    # positive values
+#                    colorRampPalette(brewer.pal(9, "YlGn"))(10))
 
 color_palette <- c(rev(paletteer_c("ggthemes::Purple", 14)),
                    # 0 values
@@ -111,7 +137,6 @@ sensitivity_jackknife <- sf::st_read(dsn = sensitivity_gpkg, layer = paste(regio
 #####################################
 
 # Calculate sample quantiles
-
 ## Template sensitivity quantile classification
 sensitivity_quant_class <- sensitivity_jackknife %>%
   # select fields of interest
@@ -129,15 +154,40 @@ model_quant_class <- quantile(x = sensitivity_quant_class[["model_geom_mean"]],
 
 ### Reclassification of probabilities too classifications (1 - 8)
 sensitivity_quant_class <- sensitivity_quant_class %>%
+  # recode quantile scores
   dplyr::mutate(model_score_classification = dplyr::case_when(.[[2]] <= model_quant_class[[1]] ~ 0,
-                                                              .[[2]] > model_quant_class[[1]] & .[[2]] <= model_quant_class[[2]] ~ 1,
-                                                              .[[2]] > model_quant_class[[2]] & .[[2]] <= model_quant_class[[3]] ~ 2,
-                                                              .[[2]] > model_quant_class[[3]] & .[[2]] <= model_quant_class[[4]] ~ 3,
-                                                              .[[2]] > model_quant_class[[4]] & .[[2]] <= model_quant_class[[5]] ~ 4,
-                                                              .[[2]] > model_quant_class[[5]] & .[[2]] <= model_quant_class[[6]] ~ 5,
-                                                              .[[2]] > model_quant_class[[6]] & .[[2]] <= model_quant_class[[7]] ~ 6,
-                                                              .[[2]] > model_quant_class[[7]] & .[[2]] <= model_quant_class[[8]] ~ 7,
-                                                              .[[2]] > model_quant_class[[8]] & .[[2]] <= model_quant_class[[9]] ~ 8),
+                                                              # when value is above the 0% quantile and below the 12.5% quantile,
+                                                              # give it a value of 1
+                                                              .[[2]] > model_quant_class[[1]] & 
+                                                                .[[2]] <= model_quant_class[[2]] ~ 1,
+                                                              # when value is above the 12.5% quantile and below the 25% quantile,
+                                                              # give it a value of 2
+                                                              .[[2]] > model_quant_class[[2]] & 
+                                                                .[[2]] <= model_quant_class[[3]] ~ 2,
+                                                              # when value is above the 25% quantile and below the 37.5% quantile,
+                                                              # give it a value of 3
+                                                              .[[2]] > model_quant_class[[3]] & 
+                                                                .[[2]] <= model_quant_class[[4]] ~ 3,
+                                                              # when value is above the 37.5% quantile and below the 50% quantile,
+                                                              # give it a value of 4
+                                                              .[[2]] > model_quant_class[[4]] & 
+                                                                .[[2]] <= model_quant_class[[5]] ~ 4,
+                                                              # when value is above the 50% quantile and below the 67.5% quantile,
+                                                              # give it a value of 5
+                                                              .[[2]] > model_quant_class[[5]] & 
+                                                                .[[2]] <= model_quant_class[[6]] ~ 5,
+                                                              # when value is above the 67.5% quantile and below the 75% quantile,
+                                                              # give it a value of 6
+                                                              .[[2]] > model_quant_class[[6]] & 
+                                                                .[[2]] <= model_quant_class[[7]] ~ 6,
+                                                              # when value is above the 75% quantile and below the 87.5% quantile,
+                                                              # give it a value of 7
+                                                              .[[2]] > model_quant_class[[7]] & 
+                                                                .[[2]] <= model_quant_class[[8]] ~ 7,
+                                                              # when value is above the 87.5% quantile and below the 100% quantile,
+                                                              # give it a value of 8
+                                                              .[[2]] > model_quant_class[[8]] & 
+                                                                .[[2]] <= model_quant_class[[9]] ~ 8),
                 # move classification field after the model geometric mean field
                 .after = model_geom_mean) %>%
   # remove the model geometric mean field
@@ -177,28 +227,36 @@ for (i in 1:24){
   quant_class_iteration <- sensitivity_jackknife %>%
     # create new score classification and dictate which quantile a hex grid gets classified
     dplyr::mutate(!!paste("model_geom_mean", name_change, "score_classification", sep = "_") := dplyr::case_when(.[[p]] <= quantile_calculation[[1]] ~ 0,
-                                                                                                                 # 12.5% percentile
+                                                                                                                 # when value is above the 0% quantile and below the 12.5% quantile,
+                                                                                                                 # give it a value of 1
                                                                                                                  .[[p]] > quantile_calculation[[1]] &
                                                                                                                    .[[p]] <= quantile_calculation[[2]] ~ 1,
-                                                                                                                 # 25% percentile
+                                                                                                                 # when value is above the 12.5% quantile and below the 25% quantile,
+                                                                                                                 # give it a value of 2
                                                                                                                  .[[p]] > quantile_calculation[[2]] & 
                                                                                                                    .[[p]] <= quantile_calculation[[3]] ~ 2,
-                                                                                                                 # 37.5% percentile
+                                                                                                                 # when value is above the 25% quantile and below the 37.5% quantile,
+                                                                                                                 # give it a value of 3
                                                                                                                  .[[p]] > quantile_calculation[[3]] & 
                                                                                                                    .[[p]] <= quantile_calculation[[4]] ~ 3,
-                                                                                                                 # 50% percentile
+                                                                                                                 # when value is above the 37.5% quantile and below the 50% quantile,
+                                                                                                                 # give it a value of 4
                                                                                                                  .[[p]] > quantile_calculation[[4]] & 
                                                                                                                    .[[p]] <= quantile_calculation[[5]] ~ 4,
-                                                                                                                 # 67.5% percentile
+                                                                                                                 # when value is above the 50% quantile and below the 67.5% quantile,
+                                                                                                                 # give it a value of 5
                                                                                                                  .[[p]] > quantile_calculation[[5]] & 
                                                                                                                    .[[p]] <= quantile_calculation[[6]] ~ 5,
-                                                                                                                 # 75% percentile
+                                                                                                                 # when value is above the 67.5% quantile and below the 75% quantile,
+                                                                                                                 # give it a value of 6
                                                                                                                  .[[p]] > quantile_calculation[[6]] & 
                                                                                                                    .[[p]] <= quantile_calculation[[7]] ~ 6,
-                                                                                                                 # 87.5% percentile
+                                                                                                                 # when value is above the 75% quantile and below the 87.5% quantile,
+                                                                                                                 # give it a value of 7
                                                                                                                  .[[p]] > quantile_calculation[[7]] & 
                                                                                                                    .[[p]] <= quantile_calculation[[8]] ~ 7,
-                                                                                                                 # 100% percentile
+                                                                                                                 # when value is above the 87.5% quantile and below the 100% quantile,
+                                                                                                                 # give it a value of 8
                                                                                                                  .[[p]] > quantile_calculation[[8]] & 
                                                                                                                    .[[p]] <= quantile_calculation[[9]] ~ 8),
                   # move field after the dataset model geometric mean field
@@ -212,6 +270,8 @@ for (i in 1:24){
   
   # add the results from the iteration to the template quantile classification dataframe
   sensitivity_quant_class <- cbind(sensitivity_quant_class, quant_class_iteration)
+  
+  #####################################
   
   # print how long it takes to calculate
   print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding", name_change, "data to dataframe", sep = " "))
@@ -236,10 +296,12 @@ for (i in 3:26){
     ## ?= will look ahead and exclude the match (_value)
     stringr::str_extract(string = ., pattern = "(?<=mean_).*?(?=_score)")
   
+  #####################################
+  
   quant_change_iteration <- sensitivity_quant_class %>%
     dplyr::mutate(!!paste("model_geom_mean", name_change, "quant_score_change", sep = "_") := (sensitivity_quant_class[[i]] - sensitivity_quant_class[[2]])) %>%
     
-    # convert to dataframe so geometry is dropped and not duplicated when binded to the reference dataframe
+    # convert to dataframe so geometry is dropped and not duplicated when bound to the reference dataframe
     as.data.frame() %>%
     
     # select the fields created by the iteration
@@ -247,6 +309,8 @@ for (i in 3:26){
     
   # add the results from the iteration to the template quantile classification change dataframe
   sensitivity_quant_change <- cbind(sensitivity_quant_change, quant_change_iteration)
+  
+  #####################################
   
   # print how long it takes to calculate
   print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding", name_change, "data to dataframe", sep = " "))
@@ -256,16 +320,27 @@ for (i in 3:26){
 
 # Create total change across all datasets
 sensitivity_quant_total_change <- as.data.frame(sensitivity_quant_change) %>%
+  # calculate the total change
   dplyr::mutate(total_change = base::rowSums(x = .[2:25])) %>%
+  # select fields of interest
   dplyr::select(index,
                 total_change,
                 geom) %>%
+  # set back as sf
   sf::st_as_sf(x = .)
 
 ## Create histogram of total change
 tc_hist <- ggplot() +
-  geom_histogram(data = sensitivity_quant_total_change, aes(x = total_change),
-                 fill = "#869BC4", color = "#869BC4", alpha = 0.8, bins = 25) +
+  geom_histogram(data = sensitivity_quant_total_change,
+                 aes(x = total_change),
+                 # fill color of histogram
+                 fill = "#869BC4",
+                 # line color of histogram
+                 color = "#869BC4",
+                 # transparency of 80%
+                 alpha = 0.8,
+                 # bin size is 25
+                 bins = 25) +
   labs(x = "Quantile change",
        y = "Occurances",
        title = paste("Total quantile change in", str_to_title(region), sep = " "), 
@@ -277,21 +352,36 @@ tc_hist
 
 ## Create map of total change
 tc_plot <- ggplot() +
-  geom_sf(data = sensitivity_quant_total_change, mapping = aes(fill = factor(total_change)), lwd = 0) +
-  geom_sf(data = us_boundary, fill = "grey90") +
+  # add the total change data
+  geom_sf(data = sensitivity_quant_total_change,
+          # what will be mapped is the value of total change for each hex grid
+          mapping = aes(fill = factor(total_change)),
+          # line width is 0 (i.e., no line)
+          lwd = 0) +
+  # add US state boundary data
+  geom_sf(data = us_boundary,
+          # fill with grey
+          fill = "grey90",
+          color = "grey30",
+          linetype = "dotdash",
+          alpha = 0.5) +
+  # fill the total change by the pre-defined color palette
   scale_fill_manual(values = color_palette,
                     name = "Total change") +
   labs(x = "",
        y = "",
        title = paste("Total quantile change in", str_to_title(region), sep = " "),
        subtitle = "Aggregated quantile classification change by hex grid") +
+  # change the coordinate box so it goes beyond just the offshore wind farms
   coord_sf(xlim = c(xmin = st_bbox(sensitivity_quant_total_change)$xmin,
                     xmax = st_bbox(sensitivity_quant_total_change)$xmax+50000),
+           # latitudes
            ylim = c(ymin = st_bbox(sensitivity_quant_total_change)$ymin,
                     ymax = st_bbox(sensitivity_quant_total_change)$ymax)) +
+  # have legend get two columns
+  guides(fill = guide_legend(ncol = 2)) +
   geom_sf_text(data = us_boundary[2,], mapping = aes(label = name)) +
   theme_bw() +
-  guides(fill = guide_legend(ncol = 2)) +
   plot_theme
 
 print(tc_plot)
@@ -318,23 +408,55 @@ sensitivity_quant_minmax <- as.data.frame(lapply(sensitivity_quant_minmax, unlis
                    by = "index") %>%
   st_as_sf( x = .)
 
+#####################################
 
 min_plot <- ggplot() +
-  geom_sf(data = sensitivity_quant_minmax, mapping = aes(fill = factor(quant_min)), lwd = 0) +
-  geom_sf(data = us_boundary, fill = "grey90") +
+  geom_sf(data = sensitivity_quant_minmax,
+          # map the minimum classification for the hex grid
+          mapping = aes(fill = factor(quant_min)),
+          # line width is 0 (i.e., no line)
+          lwd = 0) +
+  # add US state boundary data
+  geom_sf(data = us_boundary,
+          # fill with grey
+          fill = "grey90",
+          # line with a darker grey
+          color = "grey30",
+          # line type is dot-dash
+          linetype = "dotdash",
+          # transparency at 50%
+          alpha = 0.5) +
+  # rescale the fill colors between purple and red (stretch from 9 colors to 10)
   scale_fill_manual(values = colorRampPalette(brewer.pal(9, "PuRd"))(10),
-                    name = "Minimum quantile classification") +
+                    # have legend name be: "Minimum quantile classification"
+                    name = "Minimum\nquantile\nclassification") +
+  # alter labels
   labs(x = "",
+       # no y-axis label
        y = "",
+       # title
        title = paste("Minimum quantile classification in", str_to_title(region), sep = " "),
+       # subtitle
        subtitle = "Minimum quantile classification change by hex grid") +
+  # have legend be across 3 columns
+  #guides(fill = guide_legend(ncol = 3)) +
+  # expand view so US coastal boundary is visible
   coord_sf(xlim = c(xmin = st_bbox(sensitivity_quant_minmax)$xmin,
+                    # show more eastern longitudes
                     xmax = st_bbox(sensitivity_quant_minmax)$xmax+50000),
+           # latitudes
            ylim = c(ymin = st_bbox(sensitivity_quant_minmax)$ymin,
                     ymax = st_bbox(sensitivity_quant_minmax)$ymax)) +
-  geom_sf_text(data = us_boundary[2,], mapping = aes(label = name)) +
+  # add label for Oregon
+  geom_sf_text(data = us_boundary[2,],
+               mapping = aes(label = name),
+               # text size
+               size = 4,
+               # shift from the central location to the west
+               nudge_x = -295000,
+               # shift from the central location to the south
+               nudge_y = -140000) +
   theme_bw() +
-  guides(fill = guide_legend(ncol = 2)) +
   plot_theme
 
 print(min_plot)
@@ -345,12 +467,18 @@ print(min_plot)
 list <- list()
 
 # Contingency matrix
-for (i in 3:length(sensitivity_quant_class) - 1){
-  #i <- 5
+## create dataframes and list of 
+for (i in 3:(length(sensitivity_quant_class) - 1)){
+  start2 <- Sys.time()
+  
+  # i <- 6
   
   original_data <- as.data.frame(sensitivity_quant_class[, c(2,i)]) %>%
     dplyr::select(-geom)
   
+  #####################################
+  
+  # get the dataset name
   layer_name <- names(original_data)[2] %>%
     # extract name of leftout dataset
     ## ?<= will look back and exclude the match (mean_)
@@ -360,199 +488,149 @@ for (i in 3:length(sensitivity_quant_class) - 1){
   
   matrix_name <- paste("contingency_matrix", layer_name, sep = "_")
   
+  #####################################
+  
+  # create a contigency matrix for the desired dataset compared to the original model
   contigency_matrix <- assign(matrix_name, as.data.frame(unclass(table(original_data))))
   
+  # add each contigency matrix to the reference list
   list[[length(list) + 1]] <- contigency_matrix
+  
+  #####################################
+  
+  # save each dataset's contigency matrix as an RDS file
+  base::saveRDS(object = contigency_matrix,
+                file = paste(sensitivity_dir, paste(region, layer_name, "consistency_matrix.rds", sep = "_"), sep = "/"))
+
+  #####################################
+  
+  # print how long it takes to calculate and export as RDS file
+  print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding", layer_name, "data to dataframe and export as RDS file", sep = " "))
 }
 
-contingency_matrix_bluewhale2 <- contingency_matrix_bluewhale %>%
-  dplyr::mutate(class = row_number() - 1) %>%
-  dplyr::relocate(class, .before = 0)
+## create plot of consistency matrices for each dataset
+for (i in 1:length(list)){
+  start2 <- Sys.time()
+  
+  #i <- 1
+  
+  layer_name <- data_names_list[[i]]
+  
+  #####################################
+  
+  contigency_matrix_species <- list[[i]] %>%
+    dplyr::mutate(class = row_number() - 1) %>%
+    dplyr::relocate(class, .before = 0) %>%
+    reshape2::melt(.,
+                   id.var = "class")
+  
+  #####################################
+  
+  matrix_plot <- ggplot(contigency_matrix_species,
+                        mapping = aes(x=variable,
+                                      y=class,
+                                      fill=factor(value))) +
+    geom_tile() +
+    scale_fill_manual(values = colorRampPalette(brewer.pal(9, "BuGn"))(32)) +
+    geom_text(aes(label = value)) +
+    scale_y_reverse(breaks = c(0:8)) +
+    # add labels
+    labs(x = paste("Reclassified quantiles for", layer_name, sep = " "),
+         # y-axis
+         y = "Original quantiles",
+         # title
+         title = paste("Classification reclassifications in", str_to_title(region), sep = " "),
+         # subtitle
+         subtitle = "Aggregated quantile reclassifications") +
+    theme_bw() +
+    plot_theme +
+    # remove legend
+    theme(legend.position = "none")
+  
+  # print(matrix_plot)
+  
+  #####################################
+  
+  ggplot2::ggsave(plot = matrix_plot, filename = file.path(figure_dir, paste(region, layer_name, "consistency_matrix.tiff", sep = "_")),
+                  width = 6.5, height = 4.5, units = "in", dpi = 600, compression = "lzw")
+  
+  #####################################
+  
+  # print how long it takes to generate figures and export
+  print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding", layer_name, "data to dataframe and export as plot", sep = " "))
+}
 
-melt <- contingency_matrix_bluewhale2 %>%
-  reshape2::melt(.,
-                 id.var = "class")
-
-matrix_plot <- ggplot(melt,
-                      mapping = aes(x=variable,
-                                    y=class,
-                                    fill=factor(value))) +
-  geom_tile() +
-  scale_fill_manual(values = colorRampPalette(brewer.pal(11, "BuGn"))(19)) +
-  geom_text(aes(label = value)) +
-  scale_y_reverse(breaks = c(0:8)) +
-  labs(x = paste("Reclassified quantiles"),
-       y = "Original quantiles",
-       title = paste("Classification reclassifications in", str_to_title(region), sep = " "),
-       subtitle = "Aggregated quantile reclassifications") +
-  theme_bw() +
-  plot_theme +
-  theme(legend.position = "none")
-
-print(matrix_plot)
 
 #####################################
 
-clean_list <- list[2:25]
+# Create quantile change table
+quantile_table <- lapply(1:length(clean_list), function(i) {
 
-add_diag <- function(x,t){
-  sum(x[row(x)+col(x)==t])
-}
-
-quant_sum <- as.data.frame(matrix(nrow = length(clean_list),
-                                  ncol = 5)) %>%
-  dplyr::rename(layer_name = V1,
-                no_change = V2,
-                increase = V3,
-                decrease = V4,
-                total = V5)
-
-data_names_list <- list("Submarine cable (500m)",
-                        "Submarine cable (1000m)",
-                        "Submarine cable (combined)",
-                        "East-west surveys",
-                        "East-west surveys (additional)",
-                        "Survey station",
-                        "Survey transect",
-                        "Scientific survey (combined)",
-                        "Leatherback sea turtle",
-                        "Killer whale",
-                        "Humpback whale (CA)",
-                        "Humpback whale (MX)",
-                        "Blue whale",
-                        "Species product (combined)",
-                        "EFHCA",
-                        "Rocky reef (mapped)",
-                        "Rocky reef (probable)",
-                        "Deep sea coral-sponge",
-                        "Contiental shelf (10km)",
-                        "Methane bubble streams",
-                        "Habitat (combined)",
-                        "Marine seabird",
-                        "Fisheries",
-                        "Wind")
-
-# Quantile change table
-for (i in 1:length(clean_list)){
-  #i <- 2
-  
-  data <- clean_list[[i]]
-  
-  quant_sum[i,1] <- data_names_list[[i]]
-  
-  quant_sum[i,2] <- add_diag(x = data, t = seq(2,18,2))
-  
-  quant_sum[i,3] <- sum(sapply(2:9, function(j) sum(data[c(1:j-1),j])))
-  
-  quant_sum[i,4] <- sum(sapply(2:9, function(j) sum(data[j,c(1:j-1)])))
-  
-  quant_sum[i,5] <- sum(quant_sum[i, 2:4])
-}
-
-#####################################
-
-
-
-results <- lapply(1:length(clean_list), function(i) {
+  # create function that will find places where column and row equal each other
+  ## these will designate when no change has occurred
   add_diag <- function(x,t){
     sum(x[row(x)+col(x)==t])
   }
   
+  # designate contigency matrix for analyzing
   data <- clean_list[[i]]
   
+  #####################################
+  
+  # create a dataframe for each summarised contigency matrix
   quant_sum <- data.frame(
+    # designate dataset name
     layer_name = data_names_list[[i]],
+    # calculate when the quantile classifications did not change
     no_change = add_diag(x = data, t = seq(2, 18, 2)),
+    # calculate when the quantile classification increased
+    # from the original iteration and the removed dataset iteration
+    ## will occur when the column number is greater than the row number
     increase = sum(sapply(2:9, function(j) sum(data[c(1:j - 1), j]))),
+    # calculate when the quantile classification decreased
+    # from the original iteration and the removed dataset iteration
+    ## will occur when the row number is greater than the column number
     decrease = sum(sapply(2:9, function(j) sum(data[j, c(1:j - 1)]))),
+    # give a placeholder value of 0 for the dataset's total
     total = 0)
   
+  #####################################
+  
+  # verify that all no change, increased, and decreased hex grids
+  # equal the total number of hex grids in study area
   quant_sum$total <- sum(quant_sum$no_change,
                          quant_sum$increase,
                          quant_sum$decrease)
   quant_sum
 })
 
-final_result <- bind_rows(results)
-final_result
-
-
-
-
-
-
-
-
-
-for (i in 1:length(clean_list)){
-  quant_sum2 <- as.data.frame(matrix(nrow = length(clean_list),
-                                     ncol = 5)) %>%
-    dplyr::rename(layer_name = V1,
-                  no_change = V2,
-                  increase = V3,
-                  decrease = V4,
-                  total = V5) %>%
-    dplyr::mutate(layer_name = data_names_list) %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(no_change = add_diag(x = clean_list[[i]], t = seq(2, 18, 2)))
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-for (i in 1:length(clean_list)){
-  #i <- 2
-  
-  data <- clean_list[[i]]
-  
-  quant_sum <- quant_sum %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(no_change = add_diag(x = data, t = seq(2,18,2)))
-}
-
-quant_sum <- clean_list %>%
-  purrr::map_dfr(~ tibble(layer_name = data_names_list[[.y]],
-                   no_change = add_diag(.x, seq(2, 18, 2)),
-                   increase = sum(sapply(2:9, function(j) sum(.x[c(1:(j - 1)), j]))),
-                   decrease = sum(sapply(2:9, function(j) sum(.x[j, c(1:(j - 1))]))),
-                   total = no_change + increase + decrease),
-          .id = "row_id")
-
-# Rename the columns
-quant_sum <- quant_sum %>%
-  rename(row_id = row_id,
-         layer_name = layer_name,
-         no_change = no_change,
-         increase = increase,
-         decrease = decrease,
-         total = total)
+# add all the results to a final table
+final_quantile_table <- bind_rows(quantile_table)
+final_quantile_table
 
 #####################################
 #####################################
 
 # Export data
 ## Tables
+base::saveRDS(object = sensitivity_quant_class, file = paste(sensitivity_dir, paste(region, "sensitivity_quantile_classifications.rds", sep = "_"), sep = "/"))
+base::saveRDS(object = sensitivity_quant_change, file = paste(sensitivity_dir, paste(region, "sensitivity_quantile_classification_change.rds", sep = "_"), sep = "/"))
+base::saveRDS(object = sensitivity_quant_total_change, file = paste(sensitivity_dir, paste(region, "sensitivity_quantile_classification_total_change.rds", sep = "_"), sep = "/"))
+base::saveRDS(object = sensitivity_quant_minmax, file = paste(sensitivity_dir, paste(region, "sensitivity_quantile_classification_minmax.rds", sep = "_"), sep = "/"))
+base::saveRDS(object = final_quantile_table, file = paste(sensitivity_dir, paste(region, "sensitivity_quantile_change_table.rds", sep = "_"), sep = "/"))
 
 ## Figures
-
+### total change
+ggplot2::ggsave(plot = tc_hist, filename = file.path(figure_dir, paste(region, "quantile_total_change_histogram.tiff", sep = "_")),
+                width = 6.5, height = 4.5, units = "in", dpi = 600, compression = "lzw")
+ggplot2::ggsave(plot = tc_plot, filename = file.path(figure_dir, paste(region, "quantile_total_change_plot.tiff", sep = "_")),
+                width = 5, height = 8, units = "in", dpi = 600, compression = "lzw")
+ggplot2::ggsave(plot = min_plot, filename = file.path(figure_dir, paste(region, "minimum_quantile_value_map.tiff", sep = "_")),
+                width = 5, height = 8, units = "in", dpi = 600, compression = "lzw")
 
 #####################################
 #####################################
 
 # calculate end time and print time difference
+print(Sys.time() - start) # print how long it takes to calculate
 print(Sys.time() - start) # print how long it takes to calculate
