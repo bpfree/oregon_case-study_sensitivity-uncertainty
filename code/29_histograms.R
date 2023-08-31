@@ -117,8 +117,8 @@ print(h)
 #####################################
 #####################################
 
-# Create a list for the plots to be placed
-plot_list <- list()
+# # Create a list for the plots to be placed
+# plot_list <- list()
 
 # Produce histograms of the minimum and maximum changes 
 for (i in 0:23){
