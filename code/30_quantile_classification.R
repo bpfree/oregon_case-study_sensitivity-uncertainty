@@ -123,6 +123,11 @@ color_palette <- c(rev(paletteer_c("ggthemes::Purple", 14)),
                    # positive values
                    colorRampPalette(brewer.pal(9, "YlGn"))(10))
 
+iteration_change_palette <- c(# 0 values
+                   "grey",
+                   # positive values
+                   colorRampPalette(brewer.pal(9, "YlOrRd"))(15))
+
 us_boundary <- rnaturalearth::ne_states(country = "United States of America", returnclass = "sf") %>%
   dplyr::filter(name %in% c("California",
                             "Oregon"))
@@ -319,19 +324,23 @@ for (i in 3:26){
 #####################################
 
 # Create total change across all datasets
-sensitivity_quant_total_change <- as.data.frame(sensitivity_quant_change) %>%
-  # calculate the total change
-  dplyr::mutate(total_change = base::rowSums(x = .[2:25])) %>%
+sensitivity_quant_total_iteration_change <- as.data.frame(sensitivity_quant_change) %>%
+  # calculate the total change and iteration change
+  dplyr::mutate(total_change = base::rowSums(x = .[2:25]),
+                # total number of times a hex grid changed classification in any iteration
+                # no change = 0, so anytime change does not equal 0
+                iteration_change = base::rowSums(x = .[2:25] != 0)) %>%
   # select fields of interest
   dplyr::select(index,
                 total_change,
+                iteration_change,
                 geom) %>%
   # set back as sf
   sf::st_as_sf(x = .)
 
 ## Create histogram of total change
 tc_hist <- ggplot() +
-  geom_histogram(data = sensitivity_quant_total_change,
+  geom_histogram(data = sensitivity_quant_total_iteration_change,
                  aes(x = total_change),
                  # fill color of histogram
                  fill = "#869BC4",
@@ -353,7 +362,7 @@ tc_hist
 ## Create map of total change
 tc_plot <- ggplot() +
   # add the total change data
-  geom_sf(data = sensitivity_quant_total_change,
+  geom_sf(data = sensitivity_quant_total_iteration_change,
           # what will be mapped is the value of total change for each hex grid
           mapping = aes(fill = factor(total_change)),
           # line width is 0 (i.e., no line)
@@ -373,11 +382,11 @@ tc_plot <- ggplot() +
        title = paste("Total quantile change in", str_to_title(region), sep = " "),
        subtitle = "Aggregated quantile classification change by hex grid") +
   # change the coordinate box so it goes beyond just the offshore wind farms
-  coord_sf(xlim = c(xmin = st_bbox(sensitivity_quant_total_change)$xmin,
-                    xmax = st_bbox(sensitivity_quant_total_change)$xmax+50000),
+  coord_sf(xlim = c(xmin = st_bbox(sensitivity_quant_total_iteration_change)$xmin,
+                    xmax = st_bbox(sensitivity_quant_total_iteration_change)$xmax+50000),
            # latitudes
-           ylim = c(ymin = st_bbox(sensitivity_quant_total_change)$ymin,
-                    ymax = st_bbox(sensitivity_quant_total_change)$ymax)) +
+           ylim = c(ymin = st_bbox(sensitivity_quant_total_iteration_change)$ymin,
+                    ymax = st_bbox(sensitivity_quant_total_iteration_change)$ymax)) +
   # have legend get two columns
   guides(fill = guide_legend(ncol = 2)) +
   geom_sf_text(data = us_boundary[2,], mapping = aes(label = name)) +
@@ -385,6 +394,65 @@ tc_plot <- ggplot() +
   plot_theme
 
 print(tc_plot)
+
+#####################################
+
+## Create histogram of total change
+ic_hist <- ggplot() +
+  geom_histogram(data = sensitivity_quant_total_iteration_change,
+                 aes(x = iteration_change),
+                 # fill color of histogram
+                 fill = "#869BC4",
+                 # line color of histogram
+                 color = "#869BC4",
+                 # transparency of 80%
+                 alpha = 0.8,
+                 # bin size is 25
+                 bins = 25) +
+  labs(x = "Quantile change",
+       y = "Occurances",
+       title = paste("Iteration quantile change in", str_to_title(region), sep = " "), 
+       subtitle = "Aggregated quantile classification change by hex grid") +
+  theme_bw() +
+  plot_theme
+
+ic_hist
+
+## Create map of iteration change
+ic_plot <- ggplot() +
+  # add the iteration change data
+  geom_sf(data = sensitivity_quant_total_iteration_change,
+          # what will be mapped is the value of iteration change for each hex grid
+          mapping = aes(fill = factor(iteration_change)),
+          # line width is 0 (i.e., no line)
+          lwd = 0) +
+  # add US state boundary data
+  geom_sf(data = us_boundary,
+          # fill with grey
+          fill = "grey90",
+          color = "grey30",
+          linetype = "dotdash",
+          alpha = 0.5) +
+  # fill the iteration change by the pre-defined color palette
+  scale_fill_manual(values = iteration_change_palette,
+                    name = "Iteration change") +
+  labs(x = "",
+       y = "",
+       title = paste("Iteration quantile change in", str_to_title(region), sep = " "),
+       subtitle = "Aggregated quantile classification change by hex grid") +
+  # change the coordinate box so it goes beyond just the offshore wind farms
+  coord_sf(xlim = c(xmin = st_bbox(sensitivity_quant_total_iteration_change)$xmin,
+                    xmax = st_bbox(sensitivity_quant_total_iteration_change)$xmax+50000),
+           # latitudes
+           ylim = c(ymin = st_bbox(sensitivity_quant_total_iteration_change)$ymin,
+                    ymax = st_bbox(sensitivity_quant_total_iteration_change)$ymax)) +
+  # have legend get two columns
+  guides(fill = guide_legend(ncol = 2)) +
+  geom_sf_text(data = us_boundary[2,], mapping = aes(label = name)) +
+  theme_bw() +
+  plot_theme
+
+print(ic_plot)
 
 #####################################
 #####################################
@@ -404,7 +472,7 @@ sensitivity_quant_minmax <- as.data.frame(lapply(sensitivity_quant_minmax, unlis
   dplyr::reframe(quant_min = min(quant_min),
                  quant_max = max(quant_max)) %>%
   dplyr::left_join(x = .,
-                   y = sensitivity_quant_total_change,
+                   y = sensitivity_quant_total_iteration_change,
                    by = "index") %>%
   st_as_sf( x = .)
 
@@ -535,7 +603,7 @@ for (i in 1:length(list)){
     geom_text(aes(label = value)) +
     scale_y_reverse(breaks = c(0:8)) +
     # add labels
-    labs(x = paste("Reclassified quantiles for", layer_name, sep = " "),
+    labs(x = paste("Reclassified quantiles after", layer_name, "removed", sep = " "),
          # y-axis
          y = "Original quantiles",
          # title
@@ -564,7 +632,7 @@ for (i in 1:length(list)){
 #####################################
 
 # Create quantile change table
-quantile_table <- lapply(1:length(clean_list), function(i) {
+quantile_table <- lapply(1:length(list), function(i) {
 
   # create function that will find places where column and row equal each other
   ## these will designate when no change has occurred
@@ -573,7 +641,7 @@ quantile_table <- lapply(1:length(clean_list), function(i) {
   }
   
   # designate contigency matrix for analyzing
-  data <- clean_list[[i]]
+  data <- list[[i]]
   
   #####################################
   
@@ -606,7 +674,7 @@ quantile_table <- lapply(1:length(clean_list), function(i) {
 
 # add all the results to a final table
 final_quantile_table <- bind_rows(quantile_table)
-final_quantile_table
+View(final_quantile_table)
 
 #####################################
 #####################################
@@ -615,7 +683,7 @@ final_quantile_table
 ## Tables
 base::saveRDS(object = sensitivity_quant_class, file = paste(sensitivity_dir, paste(region, "sensitivity_quantile_classifications.rds", sep = "_"), sep = "/"))
 base::saveRDS(object = sensitivity_quant_change, file = paste(sensitivity_dir, paste(region, "sensitivity_quantile_classification_change.rds", sep = "_"), sep = "/"))
-base::saveRDS(object = sensitivity_quant_total_change, file = paste(sensitivity_dir, paste(region, "sensitivity_quantile_classification_total_change.rds", sep = "_"), sep = "/"))
+base::saveRDS(object = sensitivity_quant_total_iteration_change, file = paste(sensitivity_dir, paste(region, "sensitivity_quantile_classification_total_iteration_change.rds", sep = "_"), sep = "/"))
 base::saveRDS(object = sensitivity_quant_minmax, file = paste(sensitivity_dir, paste(region, "sensitivity_quantile_classification_minmax.rds", sep = "_"), sep = "/"))
 base::saveRDS(object = final_quantile_table, file = paste(sensitivity_dir, paste(region, "sensitivity_quantile_change_table.rds", sep = "_"), sep = "/"))
 
@@ -626,6 +694,12 @@ ggplot2::ggsave(plot = tc_hist, filename = file.path(figure_dir, paste(region, "
 ggplot2::ggsave(plot = tc_plot, filename = file.path(figure_dir, paste(region, "quantile_total_change_plot.tiff", sep = "_")),
                 width = 5, height = 8, units = "in", dpi = 600, compression = "lzw")
 ggplot2::ggsave(plot = min_plot, filename = file.path(figure_dir, paste(region, "minimum_quantile_value_map.tiff", sep = "_")),
+                width = 5, height = 8, units = "in", dpi = 600, compression = "lzw")
+
+### total change
+ggplot2::ggsave(plot = ic_hist, filename = file.path(figure_dir, paste(region, "quantile_iteration_change_histogram.tiff", sep = "_")),
+                width = 6.5, height = 4.5, units = "in", dpi = 600, compression = "lzw")
+ggplot2::ggsave(plot = ic_plot, filename = file.path(figure_dir, paste(region, "quantile_iteration_change_plot.tiff", sep = "_")),
                 width = 5, height = 8, units = "in", dpi = 600, compression = "lzw")
 
 #####################################
