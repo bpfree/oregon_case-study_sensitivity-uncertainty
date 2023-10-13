@@ -88,9 +88,11 @@ data/b_intermediate_data/oregon_rocky_reef.gpkg
 ### Constraints
 data/c_submodel_data/constraints.gpkg
 
+### Natural Resources
+data/c_submodel_data/natural_resources_submodel.gpkg
+
 ### Fisheries
 data/c_submodel_data/fisheries_submodel.gpkg
-data/c_submodel_data/natural_resources_submodel.gpkg
 
 ## Suitability model
 data/d_suitability_data/suitability_model.gpkg
