@@ -65,9 +65,6 @@ wind_area_dir <- "data/a_raw_data/BOEM-Renewable-Energy-Geodatabase/BOEMWindLaye
 original_hex_gdb <- "data/a_raw_data/Draft_5_final.gdb"
 
 ### Output directories
-#### Analysis directories
-analysis_gpkg <- "data/c_analysis_data/gom_cable_study.gpkg"
-
 #### Intermediate directories
 study_area_gpkg <- "data/b_intermediate_data/oregon_study_area.gpkg"
 wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
