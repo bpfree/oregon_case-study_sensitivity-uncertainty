@@ -56,8 +56,6 @@ suitability_dir <- "data/d_suitability_data"
 dir.create(paste0(suitability_dir, "/",
                   "natural_resources_suitability"))
 
-
-
 oregon_natural_resources_dir <- "data/d_suitability_data/natural_resources_suitability"
 dir.create(paste0(oregon_natural_resources_dir, "/",
                   "protected_species"))
