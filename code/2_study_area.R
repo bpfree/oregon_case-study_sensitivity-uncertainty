@@ -110,7 +110,7 @@ wind_areas <- sf::st_read(dsn = wind_area_dir,
                           layer = paste(sf::st_layers(dsn = wind_area_dir,
                                                 # [[1]] --> first component, which is the column "layer_name"
                                                 # [5] --> 5th element of that list, which is the planning area outlines
-                                                do_count = TRUE)[[1]][5])) %>%
+                                                do_count = TRUE)[[1]][2])) %>%
   # filter for only Oregon call areas
   dplyr::filter(grepl(pattern = "Oregon",
                       x = ADDITIONAL_INFORMATION)) %>%
