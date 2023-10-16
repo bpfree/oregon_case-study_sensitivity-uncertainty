@@ -52,7 +52,7 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
 #### Analysis directories
-industry_operations_submodel <- "data/c_submodel_data/industry_operations_submodel.gpkg"
+industry_operations_submodel <- "data/c_submodel_data/oregon_industry_operations_submodel.gpkg"
 
 #### Intermediate directories
 nmfs_scientific_survey_gpkg <- "data/b_intermediate_data/oregon_nmfs_scientific_survey.gpkg"
