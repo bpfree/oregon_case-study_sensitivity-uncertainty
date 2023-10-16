@@ -53,7 +53,7 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
 #### Submodel directory
-natural_resources_submodel <- "data/c_submodel_data/natural_resources_submodel.gpkg"
+natural_resources_submodel <- "data/c_submodel_data/oregon_natural_resources_submodel.gpkg"
 
 #### Intermediate directories
 methane_bubble_gpkg <- "data/b_intermediate_data/oregon_methane_bubble_streams.gpkg"
