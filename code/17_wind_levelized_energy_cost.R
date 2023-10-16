@@ -52,7 +52,7 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
 #### Submodel directory
-wind_submodel <- "data/c_submodel_data/wind_submodel.gpkg"
+wind_submodel <- "data/c_submodel_data/oregon_wind_submodel.gpkg"
 
 #### Intermediate directories
 wind_gpkg <- "data/b_intermediate_data/wind.gpkg"
