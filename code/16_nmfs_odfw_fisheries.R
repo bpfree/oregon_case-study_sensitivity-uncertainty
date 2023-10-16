@@ -52,7 +52,7 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 
 ### Output directories
 #### Submodel directory
-fisheries_submodel <- "data/c_submodel_data/fisheries_submodel.gpkg"
+fisheries_submodel <- "data/c_submodel_data/oregon_fisheries_submodel.gpkg"
 
 #### Intermediate directories
 ##### Fisheries geopackage
