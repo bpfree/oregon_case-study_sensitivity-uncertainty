@@ -86,16 +86,16 @@ data/b_intermediate_data/oregon_rocky_reef.gpkg
 
 ## Submodel
 ### Constraints
-data/c_submodel_data/constraints.gpkg
+data/c_submodel_data/oregon_constraints.gpkg
 
 ### Natural Resources
-data/c_submodel_data/natural_resources_submodel.gpkg
+data/c_submodel_data/oregon_natural_resources_submodel.gpkg
 
 ### Fisheries
-data/c_submodel_data/fisheries_submodel.gpkg
+data/c_submodel_data/oregon_fisheries_submodel.gpkg
 
 ## Suitability model
-data/d_suitability_data/suitability_model.gpkg
+data/d_suitability_data/oregon_suitability_model.gpkg
 
 ## Sensitivity model
 data/f_sensitivity_data/oregon_sensitivity.gpkg
