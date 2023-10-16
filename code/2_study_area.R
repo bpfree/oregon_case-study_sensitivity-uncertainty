@@ -80,7 +80,8 @@ region <- "oregon"
 #####################################
 
 # Inspect available layers and names within BOEM geodatabase
-## Note: as of October 6th 2023, there are 5 elements within the BOEM geodatabase; previously there were 4 elements
+## Note: as of October 6th 2023, there are 5 elements within the BOEM geodatabase;
+##       previously there were 4 elements and the order was different
 sf::st_layers(dsn = wind_area_dir,
               do_count = TRUE)
 
@@ -109,7 +110,7 @@ wind_areas <- sf::st_read(dsn = wind_area_dir,
                           ## area outlines will no longer be the 4th dataset
                           layer = paste(sf::st_layers(dsn = wind_area_dir,
                                                 # [[1]] --> first component, which is the column "layer_name"
-                                                # [5] --> 5th element of that list, which is the planning area outlines
+                                                # [2] --> 2nd element of that list, which is the planning area outlines
                                                 do_count = TRUE)[[1]][2])) %>%
   # filter for only Oregon call areas
   dplyr::filter(grepl(pattern = "Oregon",
