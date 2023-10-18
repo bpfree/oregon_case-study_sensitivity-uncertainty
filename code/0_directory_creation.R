@@ -22,7 +22,7 @@ for (i in 1:length(data_subdirectories)){
 
 #####################################
 
-# Create code direcotry
+# Create code directory
 code_dir <- dir.create("code")
 
 #####################################
