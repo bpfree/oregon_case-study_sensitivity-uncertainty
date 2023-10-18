@@ -104,10 +104,10 @@ original_hex_grid <- sf::st_read(dsn = original_hex_gdb, layer = "most_conservat
 # Load call areas
 wind_areas <- sf::st_read(dsn = wind_area_dir,
                           # select the layer for call areas and use to open desired layer (planning area outlines)
-                          ## ***Note: the planning area outlines is the 4th dataset
+                          ## ***Note: the planning area outlines is the 2nd dataset
                           ## Using this method will avoid having to update the layer name each time BOEM updates the dataset
                           ## ***Note: If BOEM changes which layers are available it is possible in the future that the planning
-                          ## area outlines will no longer be the 4th dataset
+                          ## area outlines will no longer be the 2nd dataset
                           layer = paste(sf::st_layers(dsn = wind_area_dir,
                                                 # [[1]] --> first component, which is the column "layer_name"
                                                 # [2] --> 2nd element of that list, which is the planning area outlines
