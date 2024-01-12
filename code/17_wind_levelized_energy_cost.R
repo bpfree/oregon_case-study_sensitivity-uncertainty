@@ -104,7 +104,6 @@ oregon_lcoe_2027 <- lcoe_2027 %>%
                       clip = oregon_call_areas) %>%
   # make sure all features are polygons
   sf::st_cast("MULTIPOLYGON")
-  
 
 #####################################
 
