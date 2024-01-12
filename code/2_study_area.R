@@ -72,13 +72,6 @@ wind_area_gpkg <- "data/b_intermediate_data/oregon_wind_area.gpkg"
 #####################################
 #####################################
 
-# Set parameters
-## designate region name
-region <- "oregon"
-
-#####################################
-#####################################
-
 # Inspect available layers and names within BOEM geodatabase
 ## Note: as of October 6th 2023, there are 5 elements within the BOEM geodatabase;
 ##       previously there were 4 elements and the order was different
@@ -88,6 +81,13 @@ sf::st_layers(dsn = wind_area_dir,
 # Inspect available layers and names within original final Oregon study geodatabase
 sf::st_layers(dsn = original_hex_gdb,
               do_count = TRUE)
+
+#####################################
+#####################################
+
+# Set parameters
+## designate region name
+region <- "oregon"
 
 #####################################
 #####################################
@@ -104,14 +104,14 @@ original_hex_grid <- sf::st_read(dsn = original_hex_gdb, layer = "most_conservat
 # Load call areas
 wind_areas <- sf::st_read(dsn = wind_area_dir,
                           # select the layer for call areas and use to open desired layer (planning area outlines)
-                          ## ***Note: the planning area outlines is the 2nd dataset
+                          ## ***Note: the planning area outlines is the 5th dataset (as of October 19 2023)
                           ## Using this method will avoid having to update the layer name each time BOEM updates the dataset
                           ## ***Note: If BOEM changes which layers are available it is possible in the future that the planning
-                          ## area outlines will no longer be the 2nd dataset
+                          ## area outlines will no longer be the 5th dataset
                           layer = paste(sf::st_layers(dsn = wind_area_dir,
                                                 # [[1]] --> first component, which is the column "layer_name"
-                                                # [2] --> 2nd element of that list, which is the planning area outlines
-                                                do_count = TRUE)[[1]][2])) %>%
+                                                # [5th] --> 5th element of that list, which is the planning area outlines
+                                                do_count = TRUE)[[1]][5])) %>%
   # filter for only Oregon call areas
   dplyr::filter(grepl(pattern = "Oregon",
                       x = ADDITIONAL_INFORMATION)) %>%
