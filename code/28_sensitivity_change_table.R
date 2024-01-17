@@ -44,7 +44,7 @@ pacman::p_load(docxtractr,
 
 # Set directories
 ## Input directories
-suitability_models <- "data/d_suitability_data/suitability_model.gpkg"
+suitability_models <- "data/d_suitability_data/oregon_suitability_model.gpkg"
 
 ## Output directories
 ### Sensitivity directory
@@ -154,7 +154,7 @@ for (i in 1:24){
     #####################################
   
     # print how long it takes to calculate
-    print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding", name_change, "data to dataframe", sep = " "))
+    print(paste("Iteration", i, "takes", units(Sys.time() - start2), "to complete creating and adding", name_change, "data to dataframe", sep = " "))
 }
 
 #####################################
@@ -174,7 +174,7 @@ for (i in 0:23){
   start2 <- Sys.time()
   
   # if wanting to test a particular dataset
-  #i <- 4
+  # i <- 4
   
   # identify all jackknifed changed score fields (nominal and percent changes)
   ## nominal change
@@ -228,7 +228,7 @@ for (i in 0:23){
   #####################################
   
   # print how long it takes to calculate
-  print(paste("Iteration", i, "takes", Sys.time() - start2, "minutes to complete creating and adding", name_change, "data to dataframe", sep = " "))
+  print(paste("Iteration", i, "takes", Sys.time() - start2, units(Sys.time() - start2), "to complete creating and adding", name_change, "data to dataframe", sep = " "))
 }
 
 #####################################
